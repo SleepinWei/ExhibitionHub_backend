@@ -10,7 +10,7 @@
         <relativePath/>
     </parent>
 
-    <artifactId>spring-first</artifactId>
+    <artifactId>backend</artifactId>
 
     <properties>
         <maven.compiler.source>18</maven.compiler.source>
