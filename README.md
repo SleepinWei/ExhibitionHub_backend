@@ -20,6 +20,7 @@
 
 在环境克隆代码
 以下工具需要安装好
+
 * [Maven 3.3]
 * [JDK 1.8]
 
@@ -77,7 +78,7 @@ mvn install
 执行如下命令拉起应用:
 
 ```bash
-java -jar ./target/javaWebDemo-1.0.jar
+java -jar ./target/backend-3.0.3.jar
 ```
 
 通过地址 http://localhost:8080/ 访问
