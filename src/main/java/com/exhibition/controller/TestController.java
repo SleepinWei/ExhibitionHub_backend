@@ -1,4 +1,4 @@
-package com.huawei.devcloud.controller;
+package com.exhibition.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
