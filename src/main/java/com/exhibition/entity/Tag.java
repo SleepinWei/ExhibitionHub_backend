@@ -9,5 +9,5 @@ public class Tag {
     private Integer id;
 
     @TableField
-    private Integer name;
+    private String name;
 }
