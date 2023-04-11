@@ -6,3 +6,22 @@ CREATE TABLE user(
     password VARCHAR(32) NOT NULL,
     PRIMARY KEY(id)
 );
+
+DROP TABLE IF EXISTS tag;
+CREATE TABLE tag(
+    id INTEGER NOT NULL AUTO_INCREMENT,
+    name VARCHAR(32) NOT NULL,
+    PRIMARY KEY(id)
+);
+
+DROP TABLE IF EXISTS exhibition;
+CREATE TABLE exhibition(
+    id INTEGER NOT NULL AUTO_INCREMENT,
+    name VARCHAR(32) NOT NULL,
+    organizer VARCHAR(32),
+    beginDate DATE,
+    endDate DATE,
+    location VARCHAR(256),
+    introduction VARCHAR(1024),
+    link VARCHAR(256),
+);
