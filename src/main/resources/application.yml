@@ -9,11 +9,11 @@ server:
 #  mapper-locations:
 #      - classpath:mapper/*.xml
 spring:
-  datasource :
+  datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/exhibition?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT
     username: root
-    password: "000000"
+    password: "woshiliuxin!2001"
   sql:
     init:
       schema-locations: classpath:db/schema.sql
@@ -24,7 +24,7 @@ mybatis-plus:
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: com.exhibition.entity
   global-config:
-      db-config:
-          id-type: auto
-          field-strategy: NOT_EMPTY
-          db-type: MYSQL
+    db-config:
+      id-type: auto
+      field-strategy: NOT_EMPTY
+      db-type: MYSQL

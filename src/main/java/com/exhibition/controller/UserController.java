@@ -11,7 +11,7 @@ import org.springframework.stereotype.Controller;
  * </p>
  *
  * @author 
- * @since 2023-04-08
+ * @since 2023-04-11
  */
 @Controller
 @RequestMapping("/exhibition/user")

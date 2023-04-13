@@ -6,3 +6,13 @@ CREATE TABLE user(
     password VARCHAR(32) NOT NULL,
     PRIMARY KEY(id)
 );
+
+
+DROP TABLE IF EXISTS schedule;
+
+CREATE TABLE schedule(
+    id INTEGER NOT NULL AUTO_INCREMENT,
+    date VARCHAR(12) NOT NULL,
+    content VARCHAR(128) NOT NULL,
+    PRIMARY KEY(id)
+);

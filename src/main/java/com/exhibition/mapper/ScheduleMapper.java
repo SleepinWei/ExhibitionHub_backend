@@ -1,16 +1,16 @@
 package com.exhibition.mapper;
 
-import com.exhibition.entity.User;
+import com.exhibition.entity.Schedule;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
  * <p>
- *  Mapper 接口
+ * Mapper 接口
  * </p>
  *
- * @author 
+ * @author
  * @since 2023-04-11
  */
-public interface UserMapper extends BaseMapper<User> {
+public interface ScheduleMapper extends BaseMapper<Schedule> {
 
 }
