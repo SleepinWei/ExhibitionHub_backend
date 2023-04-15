@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "test")
 public class TestController {
 
-
+//http://localhost:8080/test?nickname=zhangsan
     @RequestMapping
-    public String index() {
-        return "hello world";
+    public String hello(String nickname ) {
+        return "hello "+nickname;
     }
 
 }

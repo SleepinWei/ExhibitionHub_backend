@@ -78,7 +78,7 @@ mvn install
 执行如下命令拉起应用:
 
 ```bash
-java -jar ./target/backend-3.0.3.jar
+java -jar ./target/backend-2.7.10.jar
 ```
 
 通过地址 http://localhost:8080/ 访问
