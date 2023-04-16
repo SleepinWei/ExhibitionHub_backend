@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 @TableName("exhibition_tag")
-public class ExhibitionTag {
+public class ExTag {
     @TableId
     private Integer id;
 

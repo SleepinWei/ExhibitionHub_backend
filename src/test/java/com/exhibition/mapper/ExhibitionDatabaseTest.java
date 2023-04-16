@@ -1,12 +1,8 @@
-package com.exhibition.infomanage;
+package com.exhibition.mapper;
 
 import com.exhibition.entity.Exhibition;
-import com.exhibition.entity.ExhibitionTag;
+import com.exhibition.entity.ExTag;
 import com.exhibition.entity.Tag;
-import com.exhibition.mapper.ExhibitionMapper;
-import com.exhibition.mapper.ExhibitionTagMapper;
-import com.exhibition.mapper.TagMapper;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,16 +15,16 @@ import java.util.List;
 @RunWith(SpringJUnit4ClassRunner.class)
 public class ExhibitionDatabaseTest {
     @Autowired
-    private ExhibitionMapper exhibitionMapper;
+    private ExMapper exMapper;
     @Autowired
     private TagMapper tagMapper;
 
     @Autowired
-    private ExhibitionTagMapper exTagMapper;
+    private ExTagMapper exTagMapper;
 
     @Test
     public void testExhibitionSelect(){
-        List<Exhibition> list= exhibitionMapper.selectList(null);
+        List<Exhibition> list= exMapper.selectList(null);
         list.forEach(System.out::println);
     }
     @Test
@@ -38,7 +34,7 @@ public class ExhibitionDatabaseTest {
     }
     @Test
     public void testExhibitionTagSelect(){
-        List<ExhibitionTag> list= exTagMapper.selectList(null);
+        List<ExTag> list= exTagMapper.selectList(null);
         list.forEach(System.out::println);
     }
 }
