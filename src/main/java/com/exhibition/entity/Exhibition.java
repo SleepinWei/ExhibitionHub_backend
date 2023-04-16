@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.sql.Date;
@@ -12,6 +13,7 @@ import java.sql.Date;
 @Data
 @TableName("exhibition")
 @AllArgsConstructor
+@NoArgsConstructor
 public class Exhibition {
     @TableId
     private Integer id; // 主键id
