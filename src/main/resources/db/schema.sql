@@ -17,10 +17,14 @@ DROP TABLE IF EXISTS exhibition;
 CREATE TABLE exhibition(
     id INTEGER NOT NULL AUTO_INCREMENT,
     name VARCHAR(32) NOT NULL,
+    site_name VARCHAR(32) NOT NULL,
     organizer VARCHAR(32),
     begin_date DATE DEFAULT NULL,
     end_date DATE DEFAULT NULL,
+    begin_time DATE DEFAULT NULL,
+    end_time DATE DEFAULT NULL,
     location VARCHAR(256) DEFAULT NULL,
+    ticket_info VARCHAR(256) DEFAULT NULL,
     introduction VARCHAR(1024) DEFAULT NULL,
     link VARCHAR(256) DEFAULT NULL,
     PRIMARY KEY(id)
