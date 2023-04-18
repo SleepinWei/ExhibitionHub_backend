@@ -11,4 +11,7 @@
         from user
         where email = #{email}
     </select>
+    <select id="searchByAccount" resultType="com.exhibition.entity.User">
+        select * from user where account = #{account}
+    </select>
 </mapper>
