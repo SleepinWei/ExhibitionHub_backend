@@ -22,7 +22,7 @@ public class Exhibition {
     private String name; // 展览名称
 
     @TableField
-    private String site_name; // 展馆名称
+    private String venue_name; // 展馆名称
 
     @TableField
     private String ticket_info; // 票务信息
@@ -31,21 +31,19 @@ public class Exhibition {
     private String organizer; // 主办方
 
     @TableField
-//    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date begin_date; // 开始日期
 
     @TableField
-//    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date end_date; // 结束日期
 
     @TableField
-    @DateTimeFormat(pattern = "xx:yy:zz")
+    @JsonFormat(pattern = "HH:mm:ss")
     private Date begin_time; // 开始时间
 
     @TableField
-    @DateTimeFormat(pattern = "xx:yy:zz")
+    @JsonFormat(pattern = "HH:mm:ss")
     private Date end_time; // 结束时间
 
     @TableField
