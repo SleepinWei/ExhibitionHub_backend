@@ -1,26 +1,39 @@
 package com.exhibition.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.exhibition.entity.Exhibition;
+import com.exhibition.entity.derived.ExSearchResult;
 import com.exhibition.service.IExService;
-import com.exhibition.service.impl.ExServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.sql.Date;
 
 @RestController
-@RequestMapping("/exhibition")
+@RequestMapping()
 public class ExhibitionController {
     @Autowired
     private IExService exService;
 
-    @GetMapping("/{exId}")
-    public Exhibition getExhibitionInfo(HttpServletRequest request, HttpServletResponse response, @PathVariable Integer exId){
+    @GetMapping("/searchByKeyword")
+    public ExSearchResult searchByKeyword(@RequestParam(name = "querytext") String querytext){
+        Exhibition searchResult = exService.getOne(
+                new QueryWrapper<Exhibition>()
+                        .select("name,location,begin_date,end_date")
+                        .eq("name",querytext)
+        );
+        ExSearchResult result = new ExSearchResult(
+            searchResult.getName(),
+            searchResult.getLocation(),
+            searchResult.getBegin_date(),
+            searchResult.getEnd_date()
+        );
+        return result;
+    }
+
+    @GetMapping("/searchById")
+    public Exhibition searchById(HttpServletRequest request, HttpServletResponse response, @RequestParam(name = "exId") Integer exId){
         // test
 //        Exhibition exInfo = new Exhibition(1,"2","3", Date.valueOf("2001-01-01"),Date.valueOf("2001-03-03"),"Shanghai","sssssssssss\nsssssss","https://bilibili.com");
         Exhibition result= exService.getById(exId);
