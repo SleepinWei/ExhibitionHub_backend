@@ -31,8 +31,6 @@ public class User implements Serializable {
 
     private String email;
 
-    private String phone;
-
     private String sex;
 
     @Override
@@ -43,7 +41,6 @@ public class User implements Serializable {
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
-                ", phone='" + phone + '\'' +
                 ", sex='" + sex + '\'' +
                 '}';
     }
@@ -51,7 +48,7 @@ public class User implements Serializable {
     //比较两个User是否相同
     public boolean compare(User u1){//string比较用equals
         if(u1.id==id&&u1.role.equals(role)&&u1.username.equals(username)&&u1.password.equals(password)&&
-           u1.email.equals(email)&&u1.phone.equals(phone)&&u1.sex.equals(sex))
+           u1.email.equals(email)&&u1.sex.equals(sex))
             return true;
         else
             return false;

@@ -13,7 +13,6 @@ CREATE TABLE user(
     username VARCHAR(128) NOT NULL,
     password VARCHAR(32) NOT NULL,
     email VARCHAR(32) NOT NULL,
-    phone VARCHAR(11) NOT NULL,
     sex VARCHAR(2) check(sex='男' or sex='女') not null,
     PRIMARY KEY(id)
 );
