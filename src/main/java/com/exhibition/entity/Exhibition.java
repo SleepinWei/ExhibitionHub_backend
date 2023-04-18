@@ -1,5 +1,6 @@
 package com.exhibition.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -15,7 +16,7 @@ import java.sql.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Exhibition {
-    @TableId
+    @TableId(value = "id",type = IdType.INPUT)
     private Integer id; // 主键id
 
     @TableField
