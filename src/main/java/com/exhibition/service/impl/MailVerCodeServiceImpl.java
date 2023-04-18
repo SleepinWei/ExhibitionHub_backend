@@ -25,6 +25,12 @@ public class MailVerCodeServiceImpl  implements MailVerCodeService {
         return new String(numbers);
     }
 
+    /**
+     *
+     * @param to      收件人
+     * @return "404"        邮箱没有发送成功
+     *         邮箱六位验证码  邮箱发送成功
+     */
     public String sendVerCodeMail(String to)
     {
         String vercode=generateVerCode();

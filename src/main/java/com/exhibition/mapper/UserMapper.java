@@ -18,6 +18,6 @@ import java.util.List;
 @Mapper
 public interface UserMapper extends BaseMapper<User> {
 //查询所有用户
-
+    User searchByEmail(String email);
 
 }
