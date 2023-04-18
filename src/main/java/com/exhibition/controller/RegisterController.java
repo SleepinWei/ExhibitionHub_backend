@@ -104,10 +104,13 @@ public class RegisterController {
         String email = (String) requestBody.get("email");
         String username = (String) requestBody.get("username");
         String password = (String) requestBody.get("password");
-        User user = new User(username, password);
+//        User user = new User(username, password,);
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword(password);
         user.setEmail(email);
-        user.setRole("ordinary");
-        user.setSex("male");
+        user.setRole("普通用户");
+        user.setSex("男");
         int isright=isVerCodeRight(requestBody);
         EmailVerification emailVerification = this.emailVerifications.get(email);
         if (emailVerification.isVeri()) {

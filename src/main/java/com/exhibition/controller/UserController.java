@@ -34,7 +34,7 @@ import javax.servlet.http.HttpSession;
 @ResponseBody
 public class UserController {
     @Autowired
-    IUserService userService;
+    IUserService userService; // = new UserServiceImpl();
 
     @PostMapping("/login")
     public Result login(@RequestParam String idOrEmail, @RequestParam String password// ){
