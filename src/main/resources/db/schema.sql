@@ -17,7 +17,7 @@ DROP TABLE IF EXISTS exhibition;
 CREATE TABLE exhibition(
     id INTEGER NOT NULL AUTO_INCREMENT,
     name VARCHAR(32) NOT NULL,
-    site_name VARCHAR(32) NOT NULL,
+    venue_name VARCHAR(32) NOT NULL,
     organizer VARCHAR(32),
     begin_date DATE DEFAULT NULL,
     end_date DATE DEFAULT NULL,
