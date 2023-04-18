@@ -17,6 +17,9 @@ import java.util.List;
  */
 @Mapper
 public interface UserMapper extends BaseMapper<User> {
+    User searchById(Integer id);
+
+    User searchByEmail(String email);
 //查询所有用户
 
 
