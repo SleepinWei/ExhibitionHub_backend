@@ -19,6 +19,19 @@ spring:
       schema-locations: classpath:db/schema.sql
       data-locations: classpath:db/data.sql
       mode: always
+  mail:
+    username: ServerEmail_One@163.com
+    password: VGSUYCDDOILEOAYO
+    host: smtp.163.com
+    protocol: smtp
+    default-encoding: UTF-8
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+      mail.smtp.starttls.required: true
+      mail.smtp.socketFactory.port: 465
+      mail.smtp.socketFactory.class: javax.net.ssl.SSLSocketFactory
+      mail.smtp.socketFactory.fallback: false
 
 mybatis-plus:
   mapper-locations: classpath:mapper/*.xml
@@ -30,3 +43,4 @@ mybatis-plus:
           id-type: auto
           field-strategy: NOT_EMPTY
           db-type: MYSQL
+
