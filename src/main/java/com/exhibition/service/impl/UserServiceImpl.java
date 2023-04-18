@@ -57,7 +57,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
                     // 设置cookie
                     int expire = 3 * 24 * 60 * 60; // cookie过期时间为3天
                     CookieUtil.setCookie(response, "cookieAccount", user.getId().toString(), expire);
-
+                    CookieUtil.setCookie(response, "cookieName", user.getUsername(), expire);
                     // 判断用户角色，返回前端跳转不同页面
                     if ("普通用户".equals(user.getRole())) {
                         return "Success!This is a regular user.";
