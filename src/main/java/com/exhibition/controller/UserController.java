@@ -3,12 +3,18 @@ package com.exhibition.controller;
 
 import com.exhibition.entity.User;
 import com.exhibition.mapper.UserMapper;
+import com.exhibition.util.Result;
+import com.exhibition.util.ResultUtil;
+import com.exhibition.service.impl.UserServiceImpl;
+import org.springframework.stereotype.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.exhibition.service.MailVerCodeService;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * <p>
@@ -18,9 +24,42 @@ import javax.servlet.http.HttpServletResponse;
  * @author 
  * @since 2023-04-08
  */
+@Controller
 @RestController
 @CrossOrigin//跨域访问
+@ResponseBody
 public class UserController {
+
+    @Autowired
+    UserServiceImpl userServiceImpl;
+
+    @PostMapping("/login")
+    public Result login(@RequestParam String idOrEmail, @RequestParam String password// ){
+            , HttpSession session, HttpServletRequest request, HttpServletResponse response) {
+        // public Result login(@RequestParam String account, @RequestParam String
+        // password){
+        String msg = userServiceImpl.loginService(idOrEmail, password, session, request, response);
+
+        if (("Success!This is a regular user.").equals(msg)) {
+            return ResultUtil.regularUser("登录成功！即将跳转到普通用户界面...");
+        } else if (("Success!This is an administrator.").equals(msg)) {
+            return ResultUtil.administrator("登录成功！即将跳转到管理员界面...");
+        } else {
+            return ResultUtil.error(msg);
+        }
+    }
+
+    @RequestMapping("/logout")
+    public Result logout(HttpServletRequest request, HttpServletResponse response) {
+        String msg = userServiceImpl.logoutService(request, response);
+        if (("SUCCESS").equals(msg)) {
+            return ResultUtil.success("推出账户成功");
+        } else {
+            return ResultUtil.error(msg);
+        }
+    }
+
+
     @Autowired
     private UserMapper userMapper;
     @GetMapping("/user/find/{id}")
