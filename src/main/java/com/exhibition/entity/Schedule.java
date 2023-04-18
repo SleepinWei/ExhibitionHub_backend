@@ -21,6 +21,8 @@ public class Schedule implements Serializable {
 
     private String date;
 
+    private Integer type;
+
     private String content;
 
     public Integer getId() {
@@ -37,6 +39,14 @@ public class Schedule implements Serializable {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
     }
 
     public String getContent() {

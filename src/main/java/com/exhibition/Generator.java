@@ -27,7 +27,7 @@ public class Generator {
                                     "D:\\softwares\\Web_workspace\\Exhibition\\backend\\src\\main\\resources\\mapper\\")); // 设置mapperXml生成路径
                 })
                 .strategyConfig(builder -> {
-                    builder.addInclude("schedule") // 设置需要生成的表名
+                    builder.addInclude("test") // 设置需要生成的表名
                             .addTablePrefix("", "")
                             // 设置自动填充的时间字段
                             .entityBuilder().addTableFills(

@@ -6,7 +6,7 @@ INSERT INTO user(id,username,password) VALUES
 
 DELETE FROM schedule;
 
-INSERT INTO schedule(id,date,content) VALUES
-(1,'2023-04-10','玉石展'),
-(2,'2023-04-10','美食展'),
-(3,'2023-04-23','电影展');
+INSERT INTO schedule(id,date,type,content) VALUES
+(1,'2023-04-10',1,'玉石展'),
+(2,'2023-04-11',2,'美食展'),
+(3,'2023-04-23',1,'电影展');
