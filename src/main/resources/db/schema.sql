@@ -2,7 +2,7 @@ DROP TABLE IF EXISTS user;
 
 CREATE TABLE user(
     id INTEGER NOT NULL AUTO_INCREMENT,
-    role VARCHAR(10) check(role='管理员' or role='普通用户') not null,
+    role VARCHAR(10) check(role='管理员' or role='普通用户' or role='博物馆') not null,
     username VARCHAR(128) NOT NULL,
     password VARCHAR(32) NOT NULL,
     email VARCHAR(32) NOT NULL,
