@@ -31,6 +31,7 @@ CREATE TABLE exhibition(
     ticket_info VARCHAR(256) DEFAULT NULL,
     introduction VARCHAR(1024) DEFAULT NULL,
     link VARCHAR(256) DEFAULT NULL,
+    poster_url VARCHAR(256) DEFAULT NULL,
     PRIMARY KEY(id)
 );
 
