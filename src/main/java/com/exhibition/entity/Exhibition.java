@@ -48,7 +48,16 @@ public class Exhibition {
     private Date end_time; // 结束时间
 
     @TableField
-    private String location; // 地点
+    private String province; // 省
+
+    @TableField
+    private String city; // 市
+
+    @TableField
+    private String area; // 区
+
+    @TableField
+    private String address; // 详细地址
 
     @TableField
     private String introduction; // 图文内容简介

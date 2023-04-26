@@ -1,5 +1,8 @@
 package com.exhibition;
 
+import com.exhibition.controller.CalenderController;
+import com.exhibition.entity.Exhibition;
+import com.exhibition.entity.SubExhibition;
 import com.exhibition.mapper.UserMapper;
 import com.exhibition.entity.User;
 import org.junit.Assert;
@@ -15,13 +18,19 @@ import java.util.List;
 @RunWith(SpringJUnit4ClassRunner.class)
 public class SampleTest {
     @Autowired
-    private UserMapper userMapper;
+    private CalenderController controller;
 
     @Test
     public void testSelect(){
-        System.out.println("----------- method test --------------");
-        List<User> userList = userMapper.selectList(null);
-        Assert.assertEquals(2,userList.size());
-        userList.forEach(System.out::println);
+        int userid=2;
+        String src="2023-04-01";
+        String dst="2024-04-30";
+        String pro="北京市";
+        String ci="北京市";
+        String ar="东城区";
+
+
+        List<SubExhibition> ex=controller.calendarByLocation(userid,src,dst,pro,ci,ar);
+        System.out.println(ex);
     }
 }
