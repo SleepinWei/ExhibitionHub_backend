@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 @RestController
 @RequestMapping()
@@ -17,19 +18,10 @@ public class ExhibitionController {
     private IExService exService;
 
     @GetMapping("/searchByKeyword")
-    public ExSearchResult searchByKeyword(@RequestParam(name = "querytext") String querytext) {
-        Exhibition searchResult = exService.getOne(
-                new QueryWrapper<Exhibition>()
-                        .select("name,location,begin_date,end_date")
-                        .eq("name", querytext)
-        );
-        ExSearchResult result = new ExSearchResult(
-                searchResult.getName(),
-                searchResult.getLocation(),
-                searchResult.getBegin_date(),
-                searchResult.getEnd_date()
-        );
-        return result;
+    public List<Exhibition> searchByKeyword(@RequestParam(name = "querytext") String querytext) {
+        List<Exhibition> searchResult = exService.searchByKeyword(querytext);
+
+        return searchResult;
     }
 
     @GetMapping("/searchById")
