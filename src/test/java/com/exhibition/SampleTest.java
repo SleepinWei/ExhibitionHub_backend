@@ -1,11 +1,7 @@
 package com.exhibition;
 
 import com.exhibition.controller.CalenderController;
-import com.exhibition.entity.Exhibition;
 import com.exhibition.entity.SubExhibition;
-import com.exhibition.mapper.UserMapper;
-import com.exhibition.entity.User;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,12 +21,14 @@ public class SampleTest {
         int userid=2;
         String src="2023-04-01";
         String dst="2024-04-30";
-        String pro="北京市";
-        String ci="北京市";
-        String ar="东城区";
+        String pro="";
+        String ci="";
+        String ar="";
+        String ve="国家典籍";
+        String tag="";
 
 
-        List<SubExhibition> ex=controller.calendarByLocation(userid,src,dst,pro,ci,ar);
+        List<SubExhibition> ex=controller.calendarSelect(userid,src,dst,ve,tag,pro,ci,ar);
         System.out.println(ex);
     }
 }

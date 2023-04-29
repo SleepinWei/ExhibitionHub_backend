@@ -1,12 +1,9 @@
 package com.exhibition.controller;
 
-import com.exhibition.entity.Exhibition;
 import com.exhibition.entity.SubExhibition;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Calendar;
 import java.util.List;
 
 @RestController
@@ -20,10 +17,14 @@ public class TestController {
         int userid=2;
         String src="2023-04-01";
         String dst="2024-04-30";
-        String vuene="国家典籍";
+        String pro="北京市";
+        String ci="北京市";
+        String ar="东城区";
+        String ve="";
+        String tag="";
 
         CalenderController controller=new CalenderController();
-        List<SubExhibition> ex=controller.calendarByVenue(userid,src,dst,vuene);
+        List<SubExhibition> ex=controller.calendarSelect(userid,src,dst,ve,tag,pro,ci,ar);
         System.out.println(ex);
     }
 

@@ -17,6 +17,7 @@ INSERT INTO tag(id,name) VALUES
 
 INSERT INTO exhibition_tag(id,ex_id,tag_id)VALUES
 (1,1,1),
+(4,1,2),
 (2,2,2),
 (3,2,2);
 

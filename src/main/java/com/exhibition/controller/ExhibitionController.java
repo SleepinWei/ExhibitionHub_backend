@@ -16,21 +16,24 @@ public class ExhibitionController {
     @Autowired
     private IExService exService;
 
-//    @GetMapping("/searchByKeyword")
-//    public ExSearchResult searchByKeyword(@RequestParam(name = "querytext") String querytext) {
-//        Exhibition searchResult = exService.getOne(
-//                new QueryWrapper<Exhibition>()
-//                        .select("name,location,begin_date,end_date")
-//                        .eq("name", querytext)
-//        );
-//        ExSearchResult result = new ExSearchResult(
-//                searchResult.getName(),
-//                searchResult.getLocation(),
-//                searchResult.getBegin_date(),
-//                searchResult.getEnd_date()
-//        );
-//        return result;
-//    }
+    @GetMapping("/searchByKeyword")
+    public ExSearchResult searchByKeyword(@RequestParam(name = "querytext") String querytext) {
+        Exhibition searchResult = exService.getOne(
+                new QueryWrapper<Exhibition>()
+                        .select("name,province,city,area,address,begin_date,end_date")
+                        .eq("name", querytext)
+        );
+        ExSearchResult result = new ExSearchResult(
+                searchResult.getName(),
+                searchResult.getProvince(),
+                searchResult.getCity(),
+                searchResult.getArea(),
+                searchResult.getAddress(),
+                searchResult.getBegin_date(),
+                searchResult.getEnd_date()
+        );
+        return result;
+    }
 
     @GetMapping("/searchById")
     public Exhibition searchById(HttpServletRequest request, HttpServletResponse response, @RequestParam(name = "exId") Integer exId) {

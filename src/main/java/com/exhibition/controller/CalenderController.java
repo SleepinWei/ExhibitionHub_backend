@@ -1,23 +1,19 @@
 package com.exhibition.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.exhibition.entity.*;
-import com.exhibition.entity.derived.ExSearchResult;
-import com.exhibition.mapper.ExMapper;
+import com.exhibition.entity.CalendarCache;
+import com.exhibition.entity.SubExhibition;
+import com.exhibition.entity.SubExhibitionTemp;
 import com.exhibition.mapper.ExTagMapper;
 import com.exhibition.mapper.SubMapper;
-import com.exhibition.service.IExService;
-import kotlin.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.sql.Timestamp;
 import java.util.*;
-import java.util.concurrent.Flow;
 
 @RestController
 @EnableScheduling
@@ -34,99 +30,105 @@ public class CalenderController {
     //按时间查询，传入用户Id，开始时间，结束时间。时间格式"yyyy-MM-dd"
     @GetMapping("/calendar/{userid}/{src}/{dst}")
     public List<SubExhibition> calendar(@PathVariable int userid,@PathVariable String src,@PathVariable String dst){
+        List<SubExhibitionTemp> subExhibitionTempList=subMapper.getUserSubscription(userid,src,dst);    //查表结果
+        //合并同一展览的所有tag，存放在list中
+        Map<Integer,SubExhibition> subExhibitionMap=new HashMap<>();
+        for(SubExhibitionTemp temp:subExhibitionTempList){
+            Integer exid=temp.getEx_id();
+            if(subExhibitionMap.containsKey(exid)){
+                subExhibitionMap.get(exid).getTags().add(temp.getTag_id());
+            }
+            else{
+                subExhibitionMap.put(exid,new SubExhibition(temp));
+            }
+        }
+
         CalendarCache calendarCache=new CalendarCache();
         calendarCache.setDst(dst);
         calendarCache.setSrc(src);
-        calendarCache.setSubExhibitions(subMapper.getUserSubscription(userid,src,dst));
+        calendarCache.setSubExhibitions(new LinkedList<>(subExhibitionMap.values()));
         calendarCache.setTimestamp(System.currentTimeMillis());
         calendercaches.put(userid,calendarCache);
         return calendarCache.getSubExhibitions();
     }
 
+    /*
+        多选项联合筛选，要求传入所有参数，如果某项为空，请传入""
+        此处可能传入多个tag，要求传入string类型，每个tag之间用空格隔开
+     */
+    @GetMapping("/calendarByOrganizer/{userid}/{src}/{dst}/{venue}/{tags}/{province}/{city}/{area}")
+    public List<SubExhibition> calendarSelect(@PathVariable int userid,@PathVariable String src,@PathVariable String dst,
+                                              @PathVariable String venue,@PathVariable String tags,
+                                              @PathVariable String province,@PathVariable String city,@PathVariable String area) {
+        if (calendercaches.isEmpty()||!calendercaches.containsKey(userid)) {
+            calendar(userid, src, dst);
+        }
+
+        CalendarCache calendarCache = calendercaches.get(userid);
+        if (!calendarCache.getSrc().equals(src)|| !calendarCache.getDst().equals(dst)) {
+            calendar(userid, src, dst);
+            calendarCache = calendercaches.get(userid);
+        }
+
+        LinkedList<SubExhibition> subExhibitons = calendarCache.getSubExhibitions();
+        //按不同条件进行筛选
+        if(!venue.isEmpty()){
+            calendarByVenue(subExhibitons,venue);
+        }
+        if(!province.isEmpty()&&!city.isEmpty()&&!area.isEmpty()){
+            calendarByLocation(subExhibitons,province,city,area);
+        }
+        if(!tags.isEmpty()){
+            calendarByTag(subExhibitons,tags);
+        }
+
+        return subExhibitons;
+    }
+
+
     //按标签查询
     //注意：此处可能传入多个tag，要求传入string类型，每个tag之间用空格隔开
-    @GetMapping("/calendarByTag/{userid}/{src}/{dst}/{tags}")
-    public List<SubExhibition> calendarByTag(@PathVariable int userid,@PathVariable String src,@PathVariable String dst,@PathVariable String tags) {
+    private LinkedList<SubExhibition> calendarByTag(LinkedList<SubExhibition> subExhibitions,String tags) {
         Set<Integer> tagids = new HashSet<Integer>();
         for (String s : tags.split(" ")) {
             tagids.add(Integer.parseInt(s));
         }
 
-        if (calendercaches.isEmpty()||!calendercaches.containsKey(userid)) {
-            calendar(userid, src, dst);
-        }
-
-        CalendarCache calendarCache = calendercaches.get(userid);
-        if (!calendarCache.getSrc().equals(src)|| !calendarCache.getDst().equals(dst)) {
-            calendar(userid, src, dst);
-            calendarCache = calendercaches.get(userid);
-        }
-
-        List<SubExhibition> subExhibitons = new ArrayList<SubExhibition>();
-        List<SubExhibition> origin=calendarCache.getSubExhibitions();
-        for (SubExhibition exhibition : origin) {    //查询每一个现有项是否符合条件
-            QueryWrapper<ExTag> queryWrapper = new QueryWrapper<>();
-            queryWrapper.eq("ex_id", exhibition.getEx_id()).select("tag_id");
-            List<ExTag> exTags = exTagMapper.selectList(queryWrapper);
-            for (ExTag tag : exTags) {
-                if (tagids.contains(tag.getTag_id())) {
-                    subExhibitons.add(exhibition);
+        for (SubExhibition exhibition : subExhibitions) {    //查询每一个现有项是否符合条件
+            List<Integer> Tags = exhibition.getTags();
+            boolean remove=true;
+            for (Integer tag : Tags) {
+                if (tagids.contains(tag)) {
+                    remove=false;
                     break;
                 }
             }
+            if(remove) {
+                subExhibitions.remove(exhibition);
+            }
         }
-        //List<SubExhibiton> subExhibiton= subMapper.getUserSubscriptionWithTag(userid,src,dst,tagid);
-        System.out.println(subExhibitons);
-        return subExhibitons;
+        return subExhibitions;
     }
 
     //按展馆查询
-    @GetMapping("/calendarByOrganizer/{userid}/{src}/{dst}/{venue}")
-    public List<SubExhibition> calendarByVenue(@PathVariable int userid,@PathVariable String src,@PathVariable String dst,@PathVariable String venue) {
-        if (calendercaches.isEmpty()||!calendercaches.containsKey(userid)) {
-            calendar(userid, src, dst);
-        }
-
-        CalendarCache calendarCache = calendercaches.get(userid);
-        if (!calendarCache.getSrc().equals(src)|| !calendarCache.getDst().equals(dst)) {
-            calendar(userid, src, dst);
-            calendarCache = calendercaches.get(userid);
-        }
-
-        List<SubExhibition> subExhibitons = new ArrayList<SubExhibition>();
-        List<SubExhibition> origin=calendarCache.getSubExhibitions();
-        for (SubExhibition exhibition : origin) {
-            if (exhibition.getVenue_name().contains(venue)) {
-                subExhibitons.add(exhibition);
+    private LinkedList<SubExhibition> calendarByVenue(LinkedList<SubExhibition> subExhibitions, String venue) {
+        for (SubExhibition exhibition : subExhibitions) {
+            if (!exhibition.getVenue_name().contains(venue)) {
+                subExhibitions.remove(exhibition);
             }
         }
-        System.out.println(subExhibitons);
-        return subExhibitons;
+        return subExhibitions;
     }
 
     //按省市查询
-    @GetMapping("/calendarByOrganizer/{userid}/{src}/{dst}/{province}/{city}/{area}")
-    public List<SubExhibition> calendarByLocation(@PathVariable int userid,@PathVariable String src,@PathVariable String dst,
-                                                  @PathVariable String province,@PathVariable String city,@PathVariable String area) {
-        if (calendercaches.isEmpty()||!calendercaches.containsKey(userid)) {
-            calendar(userid, src, dst);
-        }
-
-        CalendarCache calendarCache = calendercaches.get(userid);
-        if (!calendarCache.getSrc().equals(src)|| !calendarCache.getDst().equals(dst)) {
-            calendar(userid, src, dst);
-            calendarCache = calendercaches.get(userid);
-        }
-
-        List<SubExhibition> subExhibitons = new ArrayList<SubExhibition>();
-        List<SubExhibition> origin=calendarCache.getSubExhibitions();
-        for (SubExhibition exhibition : origin) {
-            if (exhibition.getProvince().equals(province) && exhibition.getCity().equals(city) && exhibition.getArea().equals(area)) {
-                subExhibitons.add(exhibition);
+    private List<SubExhibition> calendarByLocation(LinkedList<SubExhibition> subExhibitions,
+                                                  String province, String city, String area) {
+        for (SubExhibition exhibition : subExhibitions) {
+            if (!exhibition.getProvince().equals(province) || !exhibition.getCity().equals(city) || !exhibition.getArea().equals(area)) {
+                subExhibitions.remove(exhibition);
             }
         }
-        System.out.println(subExhibitons);
-        return subExhibitons;
+        return subExhibitions;
     }
 
     //当离开日历界面时，要求调用本函数，清除查询记录
