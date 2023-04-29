@@ -2,6 +2,10 @@ package com.exhibition.controller;
 
 
 import com.exhibition.entity.User;
+import com.exhibition.service.IUserService;
+import com.exhibition.service.impl.UserServiceImpl;
+import org.springframework.web.bind.annotation.RequestMapping;
+
 import com.exhibition.mapper.UserMapper;
 import com.exhibition.util.Result;
 import com.exhibition.util.ResultUtil;
@@ -29,16 +33,15 @@ import javax.servlet.http.HttpSession;
 @CrossOrigin//跨域访问
 @ResponseBody
 public class UserController {
-
     @Autowired
-    UserServiceImpl userServiceImpl;
+    IUserService userService; // = new UserServiceImpl();
 
     @PostMapping("/login")
     public Result login(@RequestParam String idOrEmail, @RequestParam String password// ){
             , HttpSession session, HttpServletRequest request, HttpServletResponse response) {
         // public Result login(@RequestParam String account, @RequestParam String
         // password){
-        String msg = userServiceImpl.loginService(idOrEmail, password, session, request, response);
+        String msg = userService.loginService(idOrEmail, password, session, request, response);
 
         if (("Success!This is a regular user.").equals(msg)) {
             return ResultUtil.regularUser("登录成功！即将跳转到普通用户界面...");
@@ -51,7 +54,7 @@ public class UserController {
 
     @RequestMapping("/logout")
     public Result logout(HttpServletRequest request, HttpServletResponse response) {
-        String msg = userServiceImpl.logoutService(request, response);
+        String msg = userService.logoutService(request, response);
         if (("SUCCESS").equals(msg)) {
             return ResultUtil.success("推出账户成功");
         } else {
@@ -65,16 +68,16 @@ public class UserController {
     @GetMapping("/user/find/{id}")
     public User query(@PathVariable int id){//根据用户id查找用户信息
         User u=userMapper.selectById(id);
-        System.out.println(u);
+//        System.out.println(u);
         return u;
     }
 
     @PutMapping("/user")//更新用户基本信息
     public boolean update(@RequestBody User user){
         User old=userMapper.selectById(user.getId());
-        System.out.println("user"+user);
-        System.out.println("old"+old);
-        System.out.println(user.compare(old));
+//        System.out.println("user"+user);
+//        System.out.println("old"+old);
+//        System.out.println(user.compare(old));
         if(user.compare(old)){
             return false;
         }

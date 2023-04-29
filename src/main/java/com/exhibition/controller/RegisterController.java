@@ -48,7 +48,10 @@ public class RegisterController {
 
         String vercode = mailVerCodeServie.sendVerCodeMail(email);//生成六位随机验证码并发送，若发送失败返回404
         this.emailVerifications.put(email, new EmailVerification(email, vercode, timestamp, false));
-        return vercode;
+        if (vercode == "404")
+            return "404";
+        else
+            return "2000";
     }
 
     /**
@@ -104,10 +107,13 @@ public class RegisterController {
         String email = (String) requestBody.get("email");
         String username = (String) requestBody.get("username");
         String password = (String) requestBody.get("password");
-        User user = new User(username, password);
+//        User user = new User(username, password,);
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword(password);
         user.setEmail(email);
-        user.setRole("ordinary");
-        user.setSex("male");
+        user.setRole("普通用户");
+        user.setSex("男");
         int isright=isVerCodeRight(requestBody);
         EmailVerification emailVerification = this.emailVerifications.get(email);
         if (emailVerification.isVeri()) {

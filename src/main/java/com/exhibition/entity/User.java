@@ -32,6 +32,9 @@ public class User implements Serializable {
     private String email;
 
     private String sex;
+
+    public User(){
+    }
     public User(Integer id,String username,String password,String email,String role) {
         this.id = id;
         this.username = username;
