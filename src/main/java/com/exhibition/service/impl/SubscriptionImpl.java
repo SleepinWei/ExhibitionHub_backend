@@ -9,9 +9,11 @@ import com.exhibition.mapper.SubscriptionMapper;
 import com.exhibition.service.SubscriptionService;
 import com.exhibition.service.impl.SubscriptionImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.expression.spel.ast.NullLiteral;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 /**
  * @Author: JudyLou
@@ -71,10 +73,12 @@ public class SubscriptionImpl extends ServiceImpl<SubscriptionMapper, Subscripti
     // 查看订阅
     public List<Exhibition> viewSubscription(Integer user_id){
         List<Subscription> allSub = subscriptionMapper.searchByUserid(user_id);
-        List<Exhibition> allEx = exMapper.selectList(new QueryWrapper<Exhibition>()
-                .select("id","name","venue_name","ticket_info","organizer","begin_date"
-                        ,"end_date","location","introduction","link")
-                .eq("user_id",user_id));
+        List<Exhibition> allEx = new ArrayList<>();
+        for(Subscription sub : allSub){
+            Integer ex_id = sub.getEx_id();
+            Exhibition ex = exMapper.selectById(ex_id);
+            allEx.add(ex);
+        }
         return allEx;
     }
 }

@@ -45,9 +45,9 @@ public class SubscriptionController {
     }
 
     // 查看订阅
-    @PostMapping("/subscription")
-    public List<Exhibition> ViewSubscription(@RequestParam Integer user_id){
-        List<Exhibition> allSubscription= subscriptionService.viewSubscription(user_id);
+    @GetMapping("/subscribe/getAllSub/{user_id}")
+    public List<Exhibition> ViewSubscription(@PathVariable String user_id){
+        List<Exhibition> allSubscription= subscriptionService.viewSubscription(Integer.valueOf(user_id));
         return allSubscription;
     }
 }
