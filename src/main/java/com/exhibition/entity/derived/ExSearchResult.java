@@ -11,7 +11,13 @@ import java.sql.Date;
 public class ExSearchResult {
     private String name;
 
-    private String location;
+    private String province; // 省
+
+    private String city; // 市
+
+    private String area; // 区
+
+    private String address; // 详细地址
 
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date begin_date;

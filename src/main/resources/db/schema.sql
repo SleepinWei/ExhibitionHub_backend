@@ -27,7 +27,10 @@ CREATE TABLE exhibition(
     end_date DATE DEFAULT NULL,
     begin_time TIME DEFAULT NULL,
     end_time TIME DEFAULT NULL,
-    location VARCHAR(256) DEFAULT NULL,
+    province VARCHAR(50) DEFAULT NULL,
+    city VARCHAR(50) DEFAULT NULL,
+    area VARCHAR(50) DEFAULT NULL,
+    address VARCHAR(256) DEFAULT NULL,
     ticket_info VARCHAR(256) DEFAULT NULL,
     introduction VARCHAR(1024) DEFAULT NULL,
     link VARCHAR(256) DEFAULT NULL,
@@ -41,4 +44,11 @@ CREATE TABLE exhibition_tag(
     ex_id INTEGER NOT NULL,
     tag_id INTEGER NOT NULL,
     PRIMARY KEY(id)
+);
+
+DROP TABLE IF EXISTS subscription;
+CREATE TABLE subscription(
+    user_id INTEGER NOT NULL,
+    ex_id INTEGER NOT NULL,
+    visitdate DATE NOT NULL
 );
