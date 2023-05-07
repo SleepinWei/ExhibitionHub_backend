@@ -31,4 +31,7 @@ public class Subscription implements Serializable {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date date; // 用户选择的观展日期
 
+    public Date getDate(){return date;}
+
+    public Integer getExid(){return ex_id;}
 }
