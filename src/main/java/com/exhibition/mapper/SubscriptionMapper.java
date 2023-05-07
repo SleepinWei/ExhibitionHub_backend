@@ -12,6 +12,8 @@ import java.util.List;
 @Mapper
 public interface SubscriptionMapper extends BaseMapper<Subscription> {
     Subscription deleteByExid(Integer user_id,Integer ex_id);// 取消订阅
-    List<Subscription> searchByUserid(Integer user_id);// 查看订阅
+    List<Subscription> searchExidByUserid(Integer user_id);// 查看指定user_id对应的所有ex_id
+
+    List<Subscription> searchAllByUserid(Integer user_id);// 查看指定user_id的订所有阅信息（user_id、ex_id、date）
 
 }

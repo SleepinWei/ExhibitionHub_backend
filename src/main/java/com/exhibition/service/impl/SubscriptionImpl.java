@@ -72,7 +72,7 @@ public class SubscriptionImpl extends ServiceImpl<SubscriptionMapper, Subscripti
 
     // 查看订阅的展览信息
     public List<Exhibition> viewSubscription(Integer user_id){
-        List<Subscription> allSub = subscriptionMapper.searchByUserid(user_id);
+        List<Subscription> allSub = subscriptionMapper.searchExidByUserid(user_id);
         List<Exhibition> allEx = new ArrayList<>();
         for(Subscription sub : allSub){
             Integer ex_id = sub.getEx_id();
@@ -84,10 +84,12 @@ public class SubscriptionImpl extends ServiceImpl<SubscriptionMapper, Subscripti
 
     // 查看用户订阅某展览的时间
     public String viewSubscriptionDate(Integer user_id,Integer ex_id){
-        List<Subscription> allSub = subscriptionMapper.searchByUserid(user_id);
+        List<Subscription> allSub = subscriptionMapper.searchAllByUserid(user_id);
+//        System.out.println(allSub);
         for(Subscription sub:allSub){
-            Integer exId = sub.getEx_id();
+            Integer exId = sub.getExid();
             if(exId == ex_id){
+//                System.out.println(sub.getDate());
                 return sub.getDate().toString();
             }
         }
@@ -96,7 +98,7 @@ public class SubscriptionImpl extends ServiceImpl<SubscriptionMapper, Subscripti
 
     // 查看某用户是否订阅某展览
     public Integer isSubscribed(Integer user_id,Integer ex_id){
-        List<Subscription> allSub = subscriptionMapper.searchByUserid(user_id);
+        List<Subscription> allSub = subscriptionMapper.searchExidByUserid(user_id);
         for(Subscription sub: allSub){
             Integer exId = sub.getEx_id();
             if(exId == ex_id)
