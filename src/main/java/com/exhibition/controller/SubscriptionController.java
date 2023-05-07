@@ -1,12 +1,14 @@
 package com.exhibition.controller;
 
 import com.exhibition.entity.Exhibition;
+import com.exhibition.entity.Subscription;
 import com.exhibition.service.SubscriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.sql.Date;
 import java.util.Map;
 
 import static java.lang.Integer.parseInt;
@@ -27,7 +29,7 @@ public class SubscriptionController {
     public Integer addSubscription(@RequestBody Map<String, Object> requestBody){//@RequestParam Integer user_id, @RequestParam Integer ex_id, @RequestParam String date ){
         Integer user_id = parseInt(String.valueOf(requestBody.get("user_id")));
         Integer ex_id = parseInt(String.valueOf(requestBody.get("ex_id")));
-        String date = (String) requestBody.get("date");
+        Date date = (Date) requestBody.get("date");
         Integer result = subscriptionService.addSubscription(user_id,ex_id,date);
         return result;
     }
@@ -37,8 +39,6 @@ public class SubscriptionController {
     public Integer cancelSubscription(@RequestBody Map<String, Object> requestBody){//@RequestParam Integer user_id,@RequestParam Integer ex_id){
         Integer user_id = parseInt(String.valueOf(requestBody.get("user_id")));
         Integer ex_id = parseInt(String.valueOf(requestBody.get("ex_id")));
-
-
         Integer result = subscriptionService.cancelSubscription(user_id,ex_id);
         return result;
     }
@@ -50,11 +50,19 @@ public class SubscriptionController {
         return allSubscription;
     }
 
+    // 查看用户订阅某展览的时间
+    @PostMapping("/subscribe/getSubDate")
+    public String ViewSubscriptionDate(@RequestBody Map<String, Object> requestBody){
+        Integer user_id = parseInt(String.valueOf(requestBody.get("user_id")));
+        Integer ex_id = parseInt(String.valueOf(requestBody.get("ex_id")));
+        return subscriptionService.viewSubscriptionDate(user_id,ex_id);
+    }
+
     // 查询某用户是否订阅某展览
-    @PostMapping("/subscribe/isSub")
+    @GetMapping("/subscribe/isSub")
     public Integer isSubscribed(@RequestBody Map<String, Object> requestBody){
-        Integer user_id = (Integer) requestBody.get("user_id");
-        Integer ex_id = (Integer) requestBody.get("ex_Id");
+        Integer user_id = parseInt(String.valueOf(requestBody.get("user_id")));
+        Integer ex_id = parseInt(String.valueOf(requestBody.get("ex_id")));
         return subscriptionService.isSubscribed(user_id,ex_id);
     }
 }
