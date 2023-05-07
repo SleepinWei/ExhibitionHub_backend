@@ -61,7 +61,7 @@ public class CalenderController {
                                               @PathVariable String src, @PathVariable String dst,
                                               @PathVariable String venue, @PathVariable String tags,
                                               @PathVariable String province, @PathVariable String city, @PathVariable String area) {
-        System.out.println(userid+"  "+src+"  "+dst+"  "+venue+"  "+tags+"  "+province+"  "+city+"  "+area+"***");
+        //System.out.println(userid+"  "+src+"  "+dst+"  "+venue+"  "+tags+"  "+province+"  "+city+"  "+area+"***");
         if (calendercaches.isEmpty() || !calendercaches.containsKey(userid)) {
             calendar(userid, src, dst);
         }
@@ -89,7 +89,7 @@ public class CalenderController {
             calendarByTag(subExhibitons, tags);
         }
 
-        System.out.println("resultsize"+subExhibitons.size());
+        //System.out.println("resultsize"+subExhibitons.size());
         return subExhibitons;
     }
 
