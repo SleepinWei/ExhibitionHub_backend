@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.Format;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.sql.Date;
 import java.util.Map;
@@ -29,8 +32,17 @@ public class SubscriptionController {
     public Integer addSubscription(@RequestBody Map<String, Object> requestBody){//@RequestParam Integer user_id, @RequestParam Integer ex_id, @RequestParam String date ){
         Integer user_id = parseInt(String.valueOf(requestBody.get("user_id")));
         Integer ex_id = parseInt(String.valueOf(requestBody.get("ex_id")));
-        Date date = (Date) requestBody.get("date");
-        Integer result = subscriptionService.addSubscription(user_id,ex_id,date);
+//        Date date = (Date) requestBody.get("date");
+        String s_date = (String) requestBody.get("date");
+        Date sqlDate = null ;
+        try{
+             java.util.Date utilDate = new SimpleDateFormat("yyyy-MM-dd").parse(s_date);
+             sqlDate = new java.sql.Date(utilDate.getTime());
+        }catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        Integer result = subscriptionService.addSubscription(user_id,ex_id,sqlDate);
         return result;
     }
 
@@ -59,7 +71,7 @@ public class SubscriptionController {
     }
 
     // 查询某用户是否订阅某展览
-    @GetMapping("/subscribe/isSub")
+    @PostMapping("/subscribe/isSub")
     public Integer isSubscribed(@RequestBody Map<String, Object> requestBody){
         Integer user_id = parseInt(String.valueOf(requestBody.get("user_id")));
         Integer ex_id = parseInt(String.valueOf(requestBody.get("ex_id")));
