@@ -50,7 +50,7 @@ DROP TABLE IF EXISTS subscription;
 CREATE TABLE subscription(
     user_id INTEGER NOT NULL AUTO_INCREMENT,
     ex_id INTEGER NOT NULL,
-    date DATE DEFAULT NULL,
+    date DATE NOT NULL,
     FOREIGN KEY (user_id) REFERENCES user(id),
     FOREIGN KEY (ex_id) REFERENCES exhibition(id)
 );
