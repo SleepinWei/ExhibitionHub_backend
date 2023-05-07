@@ -35,9 +35,8 @@ public class SubscriptionController {
     // 取消订阅
     @PostMapping("/subscribe/cancelUesrSub")
     public Integer cancelSubscription(@RequestBody Map<String, Object> requestBody){//@RequestParam Integer user_id,@RequestParam Integer ex_id){
-        Integer user_id = (Integer) requestBody.get("user_id");
-        System.out.println(user_id);
-        Integer ex_id = (Integer) requestBody.get("ex_Id");
+        Integer user_id = parseInt(String.valueOf(requestBody.get("user_id")));
+        Integer ex_id = parseInt(String.valueOf(requestBody.get("ex_id")));
 
 
         Integer result = subscriptionService.cancelSubscription(user_id,ex_id);
@@ -49,5 +48,13 @@ public class SubscriptionController {
     public List<Exhibition> ViewSubscription(@PathVariable String user_id){
         List<Exhibition> allSubscription= subscriptionService.viewSubscription(Integer.valueOf(user_id));
         return allSubscription;
+    }
+
+    // 查询某用户是否订阅某展览
+    @PostMapping("/subscribe/isSub")
+    public Integer isSubscribed(@RequestBody Map<String, Object> requestBody){
+        Integer user_id = (Integer) requestBody.get("user_id");
+        Integer ex_id = (Integer) requestBody.get("ex_Id");
+        return subscriptionService.isSubscribed(user_id,ex_id);
     }
 }

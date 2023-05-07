@@ -81,4 +81,15 @@ public class SubscriptionImpl extends ServiceImpl<SubscriptionMapper, Subscripti
         }
         return allEx;
     }
+
+    // 查看某用户是否订阅某展览
+    public Integer isSubscribed(Integer user_id,Integer ex_id){
+        List<Subscription> allSub = subscriptionMapper.searchByUserid(user_id);
+        for(Subscription sub: allSub){
+            Integer exId = sub.getEx_id();
+            if(exId == ex_id)
+                return 1; // 用户订阅了该展览
+        }
+        return 0; // 未找到，用户未订阅
+    }
 }

@@ -13,5 +13,6 @@ public interface SubscriptionService extends IService<Subscription>{
     public Integer addSubscription(Integer user_id,Integer ex_id, String date);// 添加订阅
     public Integer cancelSubscription(Integer user_id, Integer ex_id);// 取消订阅
     public List<Exhibition> viewSubscription(Integer user_id);// 查看订阅
+    public Integer isSubscribed(Integer user_id,Integer ex_id);// 查看某用户是否订阅某展览
 }
 
