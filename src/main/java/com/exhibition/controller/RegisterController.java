@@ -53,7 +53,10 @@ public class RegisterController {
 
         String vercode = mailVerCodeServie.sendVerCodeMail(email);//生成六位随机验证码并发送，若发送失败返回404
         this.emailVerifications.put(email, new EmailVerification(email, vercode, timestamp, false));
-        return vercode;
+        if (vercode == "404")
+            return "404";
+        else
+            return "2000";
     }
 
     /**
