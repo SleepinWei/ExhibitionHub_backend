@@ -1,7 +1,6 @@
 package com.exhibition.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.exhibition.entity.CalendarCache;
 import com.exhibition.entity.User;
 import com.exhibition.mapper.UserMapper;
 import com.mysql.cj.x.protobuf.MysqlxCrud;

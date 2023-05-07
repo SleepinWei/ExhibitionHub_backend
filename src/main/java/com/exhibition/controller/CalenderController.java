@@ -62,6 +62,10 @@ public class CalenderController {
                                               @PathVariable String venue, @PathVariable String tags,
                                               @PathVariable String province, @PathVariable String city, @PathVariable String area) {
         //System.out.println(userid+"  "+src+"  "+dst+"  "+venue+"  "+tags+"  "+province+"  "+city+"  "+area+"***");
+        if (src == null || dst == null || venue == null || tags == null || province == null || city == null || area == null) {
+            return new ArrayList<SubExhibition>();
+        }
+
         if (calendercaches.isEmpty() || !calendercaches.containsKey(userid)) {
             calendar(userid, src, dst);
         }
