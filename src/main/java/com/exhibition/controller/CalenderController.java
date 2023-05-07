@@ -5,6 +5,7 @@ import com.exhibition.entity.SubExhibition;
 import com.exhibition.entity.SubExhibitionTemp;
 import com.exhibition.mapper.ExTagMapper;
 import com.exhibition.mapper.SubMapper;
+import com.exhibition.util.NumericUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -60,7 +61,11 @@ public class CalenderController {
                                               @PathVariable String src, @PathVariable String dst,
                                               @PathVariable String venue, @PathVariable String tags,
                                               @PathVariable String province, @PathVariable String city, @PathVariable String area) {
-        System.out.println(userid+"  "+src+"  "+dst+"  "+tags+"***");
+        //System.out.println(userid+"  "+src+"  "+dst+"  "+venue+"  "+tags+"  "+province+"  "+city+"  "+area+"***");
+        if (src == null || dst == null || venue == null || tags == null || province == null || city == null || area == null) {
+            return new ArrayList<SubExhibition>();
+        }
+
         if (calendercaches.isEmpty() || !calendercaches.containsKey(userid)) {
             calendar(userid, src, dst);
         }
@@ -88,7 +93,7 @@ public class CalenderController {
             calendarByTag(subExhibitons, tags);
         }
 
-        System.out.println(subExhibitons.size());
+        //System.out.println("resultsize"+subExhibitons.size());
         return subExhibitons;
     }
 
@@ -97,9 +102,10 @@ public class CalenderController {
     //注意：此处可能传入多个tag，要求传入string类型，每个tag之间用空格隔开
     private List<SubExhibition> calendarByTag(List<SubExhibition> subExhibitions, String tags) {
         Set<Integer> tagids = new HashSet<Integer>();
-        for (String s : tags.split("00")) {
-            tagids.add(Integer.parseInt(s));
-            System.out.println("&&"+s+"**");
+        for (String s : tags.split(" ")) {
+            if (s != null && !s.equals("") && NumericUtil.isNumeric(s)) {
+                tagids.add(Integer.parseInt(s));
+            }
         }
 
         //查询每一个现有项是否符合条件
