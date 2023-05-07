@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.exhibition.mapper.SubscriptionMapper">
+    <select id="searchExidByUserid" resultType="com.exhibition.entity.Subscription">
+        select ex_id
+        from subscription
+        where user_id = #{user_id}
+    </select>
+    <select id="searchAllByUserid" resultType="com.exhibition.entity.Subscription">
+        select *
+        from subscription
+        where user_id = #{user_id}
+    </select>
+    <select id="deleteByExid" resultType="com.exhibition.entity.Subscription">
+        delete
+        from subscription
+        where user_id = #{user_id} and ex_id = #{ex_id}
+    </select>
+
+    <select id="searchEmailByExDate" resultType="com.exhibition.entity.PushMessage">
+        select user.email, user.username, ex.id,ex.name,ex.begin_date
+            from subscription as sub left join user on sub.user_id=user.id
+            left join exhibition as ex on sub.ex_id=ex.id
+            where sub.date &lt;= #{upper_bound_date,jdbcType=DATE} and #{current_date,jdbcType=DATE} &lt;= sub.date
+        ;
+
+    </select>
+</mapper>

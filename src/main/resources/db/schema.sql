@@ -1,4 +1,10 @@
+SET FOREIGN_KEY_CHECKS=0;
 DROP TABLE IF EXISTS user;
+DROP TABLE IF EXISTS subscription;
+DROP TABLE IF EXISTS exhibition_tag;
+DROP TABLE IF EXISTS tag;
+DROP TABLE IF EXISTS exhibition;
+SET FOREIGN_KEY_CHECKS=1;
 
 CREATE TABLE user(
     id INTEGER NOT NULL AUTO_INCREMENT,
@@ -6,18 +12,16 @@ CREATE TABLE user(
     username VARCHAR(128) NOT NULL,
     password VARCHAR(32) NOT NULL,
     email VARCHAR(32) NOT NULL,
-    sex VARCHAR(4) check(sex='男' or sex='女') not null,
+    sex VARCHAR(4) check(sex='男' or sex='女'),
     PRIMARY KEY(id)
 );
 
-DROP TABLE IF EXISTS tag;
 CREATE TABLE tag(
     id INTEGER NOT NULL AUTO_INCREMENT,
     name VARCHAR(32) NOT NULL,
     PRIMARY KEY(id)
 );
 
-DROP TABLE IF EXISTS exhibition;
 CREATE TABLE exhibition(
     id INTEGER NOT NULL AUTO_INCREMENT,
     name VARCHAR(32) NOT NULL,
@@ -35,10 +39,17 @@ CREATE TABLE exhibition(
     PRIMARY KEY(id)
 );
 
-DROP TABLE IF EXISTS exhibition_tag;
 CREATE TABLE exhibition_tag(
     id INTEGER NOT NULL AUTO_INCREMENT,
     ex_id INTEGER NOT NULL,
     tag_id INTEGER NOT NULL,
     PRIMARY KEY(id)
+);
+
+CREATE TABLE subscription(
+    user_id INTEGER NOT NULL AUTO_INCREMENT,
+    ex_id INTEGER NOT NULL,
+    date DATE NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES user(id),
+    FOREIGN KEY (ex_id) REFERENCES exhibition(id)
 );
