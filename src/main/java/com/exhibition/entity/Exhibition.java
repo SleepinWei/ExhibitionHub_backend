@@ -8,10 +8,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.sql.Date;
-import java.sql.Time;
 
 @Data
 @TableName("exhibition")
@@ -34,24 +32,20 @@ public class Exhibition {
     private String organizer; // 主办方
 
     @TableField
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date begin_date; // 开始日期
 
     @TableField
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date end_date; // 结束日期
 
     @TableField
-    @DateTimeFormat(pattern = "HH:mm:ss")
     @JsonFormat(pattern = "HH:mm:ss")
-    private Time begin_time; // 开始时间
+    private Date begin_time; // 开始时间
 
     @TableField
-    @DateTimeFormat(pattern = "HH:mm:ss")
     @JsonFormat(pattern = "HH:mm:ss")
-    private Time end_time; // 结束时间
+    private Date end_time; // 结束时间
 
     @TableField
     private String province; // 省
@@ -72,7 +66,4 @@ public class Exhibition {
 
     @TableField
     private String link; // 官方链接
-
-    @TableField
-    private String poster_url;
 }

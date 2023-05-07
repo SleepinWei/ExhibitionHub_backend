@@ -19,8 +19,6 @@ spring:
       schema-locations: classpath:db/schema.sql
       data-locations: classpath:db/data.sql
       mode: always
-  mvc:
-    static-path-pattern= /**
   mail:
     username: ServerEmail_One@163.com
     password: VGSUYCDDOILEOAYO
