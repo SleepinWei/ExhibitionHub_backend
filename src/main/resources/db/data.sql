@@ -24,11 +24,11 @@ INSERT INTO exhibition_tag(id,ex_id,tag_id)VALUES
 (3,2,2);
 
 INSERT INTO user(id,role,username,password,email,sex) VALUES
-(1,'管理员','admin','123456','123456@qq.com','男'),
+(1,'管理员','admin','123456','zhuyunwei12345@163.com','男'),
 (2,'普通用户','user','123456','666666@qq.com','女'),
-(3,'普通用户','vv','123456','wangyxin517@163.com','女');
+(3,'普通用户','vv','123456','zhuyunwei123456@163.com','女');
 
 INSERT INTO subscription(user_id,ex_id,date) VALUES
-    (1,1,"2001-01-01"),
-    (1,2,"2001-02-01"),
-    (1,3,"2001-01-02");
+    (1,1,"2023-05-09"),
+    (1,2,"2023-05-09"),
+    (1,3,"2023-05-09");

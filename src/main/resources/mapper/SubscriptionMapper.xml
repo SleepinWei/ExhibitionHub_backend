@@ -11,4 +11,13 @@
         from subscription
         where user_id = #{user_id} and ex_id = #{ex_id}
     </select>
+
+    <select id="searchEmailByExDate" resultType="com.exhibition.entity.PushMessage">
+        select user.email, user.username, ex.id,ex.name,ex.begin_date
+            from subscription as sub left join user on sub.user_id=user.id
+            left join exhibition as ex on sub.ex_id=ex.id
+            where sub.date &lt;= #{upper_bound_date,jdbcType=DATE} and #{current_date,jdbcType=DATE} &lt;= sub.date
+        ;
+
+    </select>
 </mapper>
