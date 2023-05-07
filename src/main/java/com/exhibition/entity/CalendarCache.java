@@ -2,13 +2,13 @@ package com.exhibition.entity;
 
 import lombok.Data;
 
-import java.util.LinkedList;
+import java.util.List;
 
 @Data
 public class CalendarCache {
     private String src;
     private String dst;
-    private LinkedList<SubExhibition> subExhibitions;
+    private List<SubExhibition> subExhibitions;
     private long timestamp;
 
     public void setDst(java.lang.String dst) {
