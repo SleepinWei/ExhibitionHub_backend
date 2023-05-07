@@ -18,10 +18,22 @@ public class ExhibitionController {
     private IExService exService;
 
     @GetMapping("/searchByKeyword")
-    public List<Exhibition> searchByKeyword(@RequestParam(name = "querytext") String querytext) {
-        List<Exhibition> searchResult = exService.searchByKeyword(querytext);
-
-        return searchResult;
+    public ExSearchResult searchByKeyword(@RequestParam(name = "querytext") String querytext) {
+        Exhibition searchResult = exService.getOne(
+                new QueryWrapper<Exhibition>()
+                        .select("name,province,city,area,address,begin_date,end_date")
+                        .eq("name", querytext)
+        );
+        ExSearchResult result = new ExSearchResult(
+                searchResult.getName(),
+                searchResult.getProvince(),
+                searchResult.getCity(),
+                searchResult.getArea(),
+                searchResult.getAddress(),
+                searchResult.getBegin_date(),
+                searchResult.getEnd_date()
+        );
+        return result;
     }
 
     @GetMapping("/searchById")
