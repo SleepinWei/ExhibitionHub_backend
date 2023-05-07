@@ -28,11 +28,11 @@ public class SubscriptionImpl extends ServiceImpl<SubscriptionMapper, Subscripti
     ExMapper exMapper;
 
     // 添加订阅
-    public Integer addSubscription(Integer user_id,Integer ex_id,String date ){
+    public Integer addSubscription(Integer user_id,Integer ex_id,Date date ){
         Exhibition exhibition = exMapper.selectById(ex_id);// 根据ex_id在exhibition表中查找对应展览
 
 //        System.out.print(exhibition);
-        Date _date = Date.valueOf(date); // 将string转成Date
+//        Date _date = Date.valueOf(date); // 将string转成Date
 //        System.out.println(_date);
 
         // 获得展览起止日期
@@ -42,8 +42,8 @@ public class SubscriptionImpl extends ServiceImpl<SubscriptionMapper, Subscripti
 //        System.out.println(endDate);
 
         // 判断订阅日期是否落在起止日期之间
-        boolean dateCorrect = beginDate.equals(_date) || endDate.equals(_date) ||
-                beginDate.before(_date) && endDate.after(_date); //FIXME:是否够精确？
+        boolean dateCorrect = beginDate.equals(date) || endDate.equals(date) ||
+                beginDate.before(date) && endDate.after(date); //FIXME:是否够精确？
 
         if(dateCorrect){// 订阅日期合法
             Subscription new_subscription = new Subscription(user_id,ex_id,date);
@@ -70,7 +70,7 @@ public class SubscriptionImpl extends ServiceImpl<SubscriptionMapper, Subscripti
         }
     }
 
-    // 查看订阅
+    // 查看订阅的展览信息
     public List<Exhibition> viewSubscription(Integer user_id){
         List<Subscription> allSub = subscriptionMapper.searchByUserid(user_id);
         List<Exhibition> allEx = new ArrayList<>();
@@ -80,6 +80,18 @@ public class SubscriptionImpl extends ServiceImpl<SubscriptionMapper, Subscripti
             allEx.add(ex);
         }
         return allEx;
+    }
+
+    // 查看用户订阅某展览的时间
+    public String viewSubscriptionDate(Integer user_id,Integer ex_id){
+        List<Subscription> allSub = subscriptionMapper.searchByUserid(user_id);
+        for(Subscription sub:allSub){
+            Integer exId = sub.getEx_id();
+            if(exId == ex_id){
+                return sub.getDate().toString();
+            }
+        }
+        return "-1";
     }
 
     // 查看某用户是否订阅某展览
