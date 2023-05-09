@@ -33,7 +33,6 @@ CREATE TABLE exhibition(
     link VARCHAR(256) DEFAULT NULL,
     poster_url VARCHAR(256) DEFAULT NULL,
     is_checked BOOLEAN NOT NULL DEFAULT FALSE,
-    edit_time DATE DEFAULT NULL,
     PRIMARY KEY(id)
 );
 
