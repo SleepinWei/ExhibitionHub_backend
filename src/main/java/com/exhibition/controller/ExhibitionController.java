@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.BeanUtils;
 
@@ -49,22 +51,24 @@ public class ExhibitionController {
         return result;
     }
 
+    @Autowired
+    private IExToBeReviewedService exToBeReviewedService;
+
     @PostMapping("/addEx") // 增加展览信息
-    public String addEx(@RequestBody Exhibition exhibition) {
+    public String addEx(@RequestBody Map<String, Object> exhibitionReview) {
         // add a new exhibition
-        if (exhibition.getId() == 0) {
+        if (exhibitionReview.getId() == 0) {
             System.out.println("addEx");
-            System.out.println(exhibition);
-            exService.save(exhibition);
+            System.out.println(exhibitionReview);
+            exToBeReviewedService.save(exhibitionReview);
         } else {
             System.out.println("id is not 0, Exhibition already exists");
         }
 
+        Integer user_id = parseInt(String.valueOf(exhibitionReview.get("user_id")));
+
         return "success";
     }
-
-    @Autowired
-    private IExToBeReviewedService exToBeReviewedService;
 
     @PostMapping("/alterExInfo")
     public String alterExInfo(@RequestBody ExhibitionReview exhibitionReview) {
