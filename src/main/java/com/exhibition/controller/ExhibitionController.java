@@ -70,6 +70,9 @@ public class ExhibitionController {
         // add a new exhibition
         exToBeReviewedService.save(exhibitionReview);
         Integer ex_review_id = exReviewMapper.getNextId();
+
+        System.out.println(CookieUtil.getCookies(request));
+
         Integer user_id = Integer.parseInt(CookieUtil.getCookies(request).get("userAccount"));
         UserExRelation newRelation = new UserExRelation(user_id,-1,ex_review_id, new Date(System.currentTimeMillis()),false,"新增");
         userExRelMapper.insert(newRelation);

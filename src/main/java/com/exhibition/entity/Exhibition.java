@@ -34,11 +34,6 @@ public class Exhibition {
     private String organizer; // 主办方
 
     @TableField
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date edit_time; // 上次修改时间
-
-    @TableField
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date begin_date; // 开始日期
