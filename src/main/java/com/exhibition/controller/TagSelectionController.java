@@ -1,15 +1,19 @@
 package com.exhibition.controller;
 
-import com.exhibition.entity.Tag;
+import com.exhibition.entity.*;
+import com.exhibition.mapper.ExTagMapper;
+import com.exhibition.mapper.SubMapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.exhibition.entity.Exhibition;
 import com.exhibition.mapper.ExMapper;
+import com.exhibition.service.IExService;
 import com.exhibition.service.ITagService;
+import com.exhibition.util.NumericUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.*;
 
 /**
  * @Author: JudyLou
@@ -23,7 +27,16 @@ public class TagSelectionController {
     private ITagService tagservice;
 
     @Autowired
+    private IExService exService;
+
+    @Autowired
     private ExMapper exMapper;
+
+    @Autowired
+    private ExTagMapper exTagMapper;
+
+    @Autowired
+    private SubMapper subMapper;
 
     // 获取标签名列表
     @GetMapping("/getAllTag")
@@ -33,10 +46,73 @@ public class TagSelectionController {
         return tags;
     }
 
+    // 获取主办方列表
     @GetMapping("/getAllOrganizer")
     public List<String> getAllOrganizer(){
         List<String> organizers = exMapper.getAllOrganizers();
         return organizers;
     }
+    HashMap<Integer, CalendarCache> calendercaches = new HashMap<>();
 
+    // 根据所选内容返回展览内容
+    @GetMapping("/searchByData/{query}/{src}/{dst}/{venue}/{tags}/{province}/{city}/{area}")
+    public List<Exhibition> selectEx(@PathVariable String query,
+                                     @PathVariable String src, @PathVariable String dst,
+                                     @PathVariable String venue, @PathVariable String tags,
+                                     @PathVariable String province, @PathVariable String city, @PathVariable String area){
+
+        if (query == null || src == null || dst == null || venue == null || tags == null || province == null || city == null || area == null) {
+            return new ArrayList<Exhibition>();
+        }
+
+        venue = (venue.equals("null")) ? "" : venue;
+        province = (province.equals("null")) ? "" : province;
+        city = (city.equals("null")) ? "" : city;
+        area = (area.equals("null")) ? "" : area;
+        tags = (tags.equals("-1")) ? "" : tags;
+
+        //不包括tag的查表结果
+        List<Exhibition> ExhibitionList = subMapper.getSearchResult(src,dst,venue,province,city,area,query);
+
+        //按tag进行筛选
+        if (!tags.isEmpty()) {
+            selectByTag(ExhibitionList, tags);
+        }
+
+        //System.out.println("resultsize"+subExhibitons.size());
+        return ExhibitionList;
+    }
+
+    //按标签查询
+    //注意：此处可能传入多个tag，要求传入string类型，每个tag之间用空格隔开
+    private List<Exhibition> selectByTag(List<Exhibition> ExhibitionList, String tags) {
+        // 分割多个标签
+        Set<Integer> tagids = new HashSet<Integer>();
+        for (String s : tags.split(" ")) {
+            if (s != null && !s.equals("") && NumericUtil.isNumeric(s)) {
+                tagids.add(Integer.parseInt(s));
+            }
+        }
+
+        //查询每一个现有项是否符合条件
+        for (int i = 0; i < ExhibitionList.size(); i++) {
+            Exhibition exhibition = ExhibitionList.get(i);
+            Integer exId = exhibition.getId();
+            List<Integer> Tags = exTagMapper.selectAllTagids(exId);// 获取某展览的所有tagid
+            boolean remove = true;
+            for (Integer tag : Tags) {
+                if (tagids.contains(tag)) {
+                    remove = false;
+                    break;
+                }
+            }
+            if (remove) {
+                // 换到末尾进行删除，降低复杂度
+                Collections.swap(ExhibitionList, i, ExhibitionList.size() - 1);
+                ExhibitionList.remove(ExhibitionList.size() - 1);
+                i--;
+            }
+        }
+        return ExhibitionList;
+    }
 }
