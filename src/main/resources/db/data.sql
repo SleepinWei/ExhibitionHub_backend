@@ -30,6 +30,6 @@ INSERT INTO user(id,role,username,password,email,sex,biography) VALUES
 (3,'博物馆','wuwu','123456','111111@qq.com','女','');
 
 INSERT INTO subscription(user_id,ex_id,date) VALUES
-    (1,1,"2023-05-09"),
-    (1,2,"2023-05-09"),
-    (1,3,"2023-05-09");
+    (2,1,"2023-05-09"),
+    (2,2,"2023-05-09"),
+    (2,3,"2023-05-09");
