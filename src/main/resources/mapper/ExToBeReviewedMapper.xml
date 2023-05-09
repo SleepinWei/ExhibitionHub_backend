@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.exhibition.mapper.ExMapper">
-    <resultMap id="ExMap" type="com.exhibition.entity.Exhibition">
+<mapper namespace="com.exhibition.mapper.ExToBeReviewedMapper">
+    <resultMap id="ExToBeReviewedMap" type="com.exhibition.entity.ExhibitionToBeReviewed">
         <result property="id" column="id"/>
         <result property="name" column="name"/>
         <result property="venue_name" column="venue_name"/>
@@ -14,12 +14,9 @@
         <result property="introduction" column="introduction"/>
         <result property="link" column="link"/>
     </resultMap>
-    <select id="searchByKeyword" resultMap="ExMap">
+    <select id="searchByKeyword" resultMap="ExToBeReviewedMap">
         select *
         from exhibition
         where name like CONCAT ('%', #{keyword,jdbcType=VARCHAR},'%');
-    </select>
-    <select id="selectUnchecked" resultType="com.exhibition.entity.ExhibitionUnchecked">
-        select id,name,edit_time from exhibition where is_checked = false;
     </select>
 </mapper>

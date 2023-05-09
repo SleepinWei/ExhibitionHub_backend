@@ -14,10 +14,19 @@ import java.sql.Date;
 import java.sql.Time;
 
 @Data
-@TableName("exhibition")
+@TableName("exhibitiontobereviewed")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Exhibition {
+public class ExhibitionToBeReviewed {
+
+    // public ExhibitionToBeReviewed(Integer id,String name,String venue_name,String
+    // ticket_info,String organizer,Date edit_time,
+    // Date begin_date,Date end_date,Time begin_time,Time end_time,String
+    // location,String introduction,String link,String poster_url,
+    // Boolean is_checked){
+    // ;
+    // };
+
     @TableId(value = "id", type = IdType.INPUT)
     private Integer id; // 主键id
 
