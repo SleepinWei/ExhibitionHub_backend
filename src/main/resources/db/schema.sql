@@ -8,7 +8,7 @@ SET FOREIGN_KEY_CHECKS=1;
 
 CREATE TABLE user(
     id INTEGER NOT NULL AUTO_INCREMENT,
-    role VARCHAR(10) check(role='管理员' or role='普通用户' or role='博物馆') not null,
+    role VARCHAR(10) check(role='管理员' or role='普通用户' or role='博物馆') ,
     username VARCHAR(128) NOT NULL,
     password VARCHAR(32) NOT NULL,
     email VARCHAR(32) NOT NULL,
@@ -55,4 +55,10 @@ CREATE TABLE subscription(
     date DATE NOT NULL,
     FOREIGN KEY (user_id) REFERENCES user(id),
     FOREIGN KEY (ex_id) REFERENCES exhibition(id)
+);
+
+CREATE TABLE organizer(
+    id INTEGER NOT NULL AUTO_INCREMENT,
+    name VARCHAR(32) NOT NULL,
+    PRIMARY KEY(id)
 );
