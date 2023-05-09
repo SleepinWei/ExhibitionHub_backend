@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "test")
 public class TestController {
 
-//http://localhost:8080/test?nickname=zhangsan
+    //http://localhost:8080/test?nickname=zhangsan
     @RequestMapping
     public String hello(String nickname ) {
         return "hello "+nickname;

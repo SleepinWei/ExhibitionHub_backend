@@ -61,9 +61,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
                     // 判断用户角色，返回前端跳转不同页面
                     if ("普通用户".equals(user.getRole())) {
                         return "Success!This is a regular user.";
-                    } else if ("管理员".equals(user.getRole())) {
+                    } 
+                    else if ("管理员".equals(user.getRole())) {
                         return "Success!This is an administrator.";
-                    } else {
+                    } 
+                    else if ("博物馆".equals(user.getRole())) {
+                        return "Success!This is a museum.";
+                    } 
+                    else {
                         return "SUCCESS";
                     }
                 }

@@ -19,6 +19,13 @@ public class ResultUtil {
         result.setData(object);
         return result;
     }
+    public static Result museum(Object object) {
+        Result result = new Result();
+        result.setCode(ResultCode.MUSEUM.getCode());
+        result.setMsg(ResultCode.MUSEUM.getMsg());
+        result.setData(object);
+        return result;
+    }
     /**
      * 成功且带数据
      **/
