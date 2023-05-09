@@ -27,8 +27,8 @@ public class TagSelectionController {
 
     // 获取标签名列表
     @GetMapping("/getAllTag")
-    public List<Tag> getTagName(){
-        List<Tag> tags=tagservice.getTagName();
+    public List<String> getTagName(){
+        List<String> tags=tagservice.getTagName();
         System.out.println(tags);
         return tags;
     }

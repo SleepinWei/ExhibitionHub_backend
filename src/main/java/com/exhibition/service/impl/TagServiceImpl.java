@@ -14,7 +14,7 @@ import java.util.List;
 public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements ITagService{
     @Autowired
     TagMapper tagmapper;
-    public List<Tag> getTagName(){
+    public List<String> getTagName(){
         return tagmapper.selectAllTags();
     }
 }
