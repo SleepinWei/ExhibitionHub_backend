@@ -9,7 +9,7 @@ import java.sql.Date;
 public class SubExhibitionTemp {
     private Integer ex_id; // 订阅的展览id
 
-    private String visitdate; // 用户选择的观展日期
+    private String date; // 用户选择的观展日期
 
     private String name; // 展览名称
 

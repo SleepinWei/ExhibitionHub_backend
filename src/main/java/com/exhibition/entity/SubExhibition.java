@@ -11,7 +11,7 @@ import java.util.List;
 public class SubExhibition {
     private Integer ex_id; // 订阅的展览id
 
-    private String visitdate; // 用户选择的观展日期
+    private String date; // 用户选择的观展日期
 
     private String name; // 展览名称
 
@@ -39,7 +39,7 @@ public class SubExhibition {
 
     public SubExhibition(SubExhibitionTemp temp){
         ex_id=temp.getEx_id();
-        visitdate=temp.getVisitdate();
+        date=temp.getDate();
         name=temp.getName();
         venue_name=temp.getVenue_name();
         organizer=temp.getOrganizer();
