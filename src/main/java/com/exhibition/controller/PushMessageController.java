@@ -22,27 +22,27 @@ public class PushMessageController {
     @Autowired
     private SubscriptionMapper subMapper;
 
-    @Scheduled(cron = "0/20 * * * * ? ")
-    public void sendPushMessage(){
-//        List<Subscription> subs = subMapper.selectList((new QueryWrapper<Subscription>()).eq("user_id",1));
-//        for(Subscription sub : subs){
-//            System.out.println(sub.getEx_id());
-//            System.out.println(sub.getDate());
-//        }
-        System.out.println("Push Message");
-        Long time = System.currentTimeMillis();
-        Long upper_bound = time + 4 * 24 * 60 * 60 * 1000;
-        Date upper_bound_date = new Date(upper_bound);
-        Date current_date = new Date(time);
+//     @Scheduled(cron = "0/20 * * * * ? ")
+//     public void sendPushMessage(){
+// //        List<Subscription> subs = subMapper.selectList((new QueryWrapper<Subscription>()).eq("user_id",1));
+// //        for(Subscription sub : subs){
+// //            System.out.println(sub.getEx_id());
+// //            System.out.println(sub.getDate());
+// //        }
+//         System.out.println("Push Message");
+//         Long time = System.currentTimeMillis();
+//         Long upper_bound = time + 4 * 24 * 60 * 60 * 1000;
+//         Date upper_bound_date = new Date(upper_bound);
+//         Date current_date = new Date(time);
 
-        System.out.println(upper_bound_date);
-        System.out.println(current_date);
+//         System.out.println(upper_bound_date);
+//         System.out.println(current_date);
 
-        List<PushMessage> messages= subMapper.searchEmailByExDate(upper_bound_date,current_date);
-        for(PushMessage message : messages){
-            System.out.println(message.getEmail());
-            String content = "您预订于" + message.getBegin_date() + " 参观展览 " + message.getName() + " 将会在 " + message.getBegin_date();
-            mailService.sendHtmlMail(message.getEmail(),message.getName(),content);
-        }
-    }
+//         List<PushMessage> messages= subMapper.searchEmailByExDate(upper_bound_date,current_date);
+//         for(PushMessage message : messages){
+//             System.out.println(message.getEmail());
+//             String content = "您预订于" + message.getBegin_date() + " 参观展览 " + message.getName() + " 将会在 " + message.getBegin_date();
+//             mailService.sendHtmlMail(message.getEmail(),message.getName(),content);
+//         }
+//     }
 }

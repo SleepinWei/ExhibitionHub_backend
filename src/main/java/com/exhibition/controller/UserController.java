@@ -20,6 +20,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.web.multipart.MultipartFile;
+import com.exhibition.util.FileUploadUtil;
+
 /**
  * <p>
  *  前端控制器
@@ -45,9 +48,14 @@ public class UserController {
 
         if (("Success!This is a regular user.").equals(msg)) {
             return ResultUtil.regularUser("登录成功！即将跳转到普通用户界面...");
-        } else if (("Success!This is an administrator.").equals(msg)) {
+        } 
+        else if (("Success!This is an administrator.").equals(msg)) {
             return ResultUtil.administrator("登录成功！即将跳转到管理员界面...");
-        } else {
+        }
+        else if (("Success!This is a museum.").equals(msg)) {
+            return ResultUtil.museumUser("登录成功！即将跳转到博物馆界面...");
+        } 
+        else {
             return ResultUtil.error(msg);
         }
     }
@@ -104,5 +112,17 @@ public class UserController {
         this.vercode=mailVerCodeServie.sendVerCodeMail(email);
         System.out.print("\nvercode is"+vercode);
         return vercode;
+    }
+
+    @PostMapping("/test/upload")//上传头像
+    public String upload(@RequestParam("file") MultipartFile multipartFile,@RequestParam("uid") int uid) {
+        // replaceAll 用来替换windows中的\\ 为 /
+        System.out.println("uid="+uid);
+        return FileUploadUtil.upload(multipartFile,uid).replaceAll("\\\\", "/");
+    }
+    @GetMapping("/user/load_avatar/{id}")//根据Id加载头像，返回二进制数据
+    public byte[] loadAvatar(@PathVariable int id){
+        System.out.println("this+"+FileUploadUtil.load(id));
+        return FileUploadUtil.load(id);
     }
 }
