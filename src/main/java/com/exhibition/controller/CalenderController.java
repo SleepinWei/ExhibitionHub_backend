@@ -33,6 +33,8 @@ public class CalenderController {
     public List<SubExhibition> calendar(@PathVariable int userid, @PathVariable String src, @PathVariable String dst) {
         List<SubExhibitionTemp> subExhibitionTempList = subMapper.getUserSubscription(userid, src, dst);    //查表结果
         //合并同一展览的所有tag，存放在list中
+        System.out.println(subExhibitionTempList);
+
         Map<Integer, SubExhibition> subExhibitionMap = new HashMap<>();
         for (SubExhibitionTemp temp : subExhibitionTempList) {
             Integer exid = temp.getEx_id();
@@ -48,6 +50,7 @@ public class CalenderController {
         calendarCache.setSrc(src);
         calendarCache.setSubExhibitions(new ArrayList<>(subExhibitionMap.values()));
         calendarCache.setTimestamp(System.currentTimeMillis());
+        System.out.println("in calendar "+calendarCache);
         calendercaches.put(userid, calendarCache);
         return calendarCache.getSubExhibitions();
     }
@@ -66,15 +69,20 @@ public class CalenderController {
             return new ArrayList<SubExhibition>();
         }
 
-        if (calendercaches.isEmpty() || !calendercaches.containsKey(userid)) {
-            calendar(userid, src, dst);
-        }
-
-        CalendarCache calendarCache = calendercaches.get(userid);
-        if (!calendarCache.getSrc().equals(src) || !calendarCache.getDst().equals(dst)) {
-            calendar(userid, src, dst);
-            calendarCache = calendercaches.get(userid);
-        }
+//        if (calendercaches.isEmpty() || !calendercaches.containsKey(userid)) {
+//            calendar(userid, src, dst);
+//        }
+//
+//        CalendarCache calendarCache = calendercaches.get(userid);
+//        if (!calendarCache.getSrc().equals(src) || !calendarCache.getDst().equals(dst)) {
+//            calendar(userid, src, dst);
+//            calendarCache = calendercaches.get(userid);
+//        }
+        CalendarCache calendarCache = new CalendarCache();
+        calendar(userid, src, dst);
+        calendarCache = calendercaches.get(userid);
+        System.out.println("in calendarSelect "+calendarCache);
+        //System.out.println(calendarCache);
 
         List<SubExhibition> subExhibitons = new ArrayList<>(calendarCache.getSubExhibitions());
         venue = (venue.equals("null")) ? "" : venue;
@@ -93,7 +101,7 @@ public class CalenderController {
             calendarByTag(subExhibitons, tags);
         }
 
-        //System.out.println("resultsize"+subExhibitons.size());
+        System.out.println("resultsize"+subExhibitons.size());
         return subExhibitons;
     }
 
