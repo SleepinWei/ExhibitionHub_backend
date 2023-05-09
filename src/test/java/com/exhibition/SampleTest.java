@@ -13,7 +13,7 @@ import java.util.List;
 
 import java.sql.Time;
 import java.sql.Date;
-import com.exhibition.entity.ExhibitionToBeReviewed;
+import com.exhibition.entity.ExhibitionReview;
 import com.exhibition.entity.Exhibition;
 
 import com.exhibition.service.IExToBeReviewedService;
@@ -38,11 +38,11 @@ public class SampleTest {
     @Autowired
     private IExToBeReviewedService exToBeReviewedService;
 
-    public String alterExInfo(ExhibitionToBeReviewed exhibitionToBeReviewed) {
+    public String alterExInfo(ExhibitionReview exhibitionReview) {
         // TODO
         System.out.println("alterExInfo");
-        System.out.println(exhibitionToBeReviewed);
-        if (exToBeReviewedService.saveOrUpdate(exhibitionToBeReviewed)) {
+        System.out.println(exhibitionReview);
+        if (exToBeReviewedService.saveOrUpdate(exhibitionReview)) {
             System.out.println("true");
         } else {
             System.out.println("false");

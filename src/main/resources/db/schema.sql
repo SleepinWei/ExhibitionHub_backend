@@ -1,4 +1,6 @@
-DROP TABLE IF EXISTS user;
+drop database if exists exhibition;
+create database exhibition;
+use exhibition;
 
 CREATE TABLE user(
     id INTEGER NOT NULL AUTO_INCREMENT,
@@ -10,14 +12,12 @@ CREATE TABLE user(
     PRIMARY KEY(id)
 );
 
-DROP TABLE IF EXISTS tag;
 CREATE TABLE tag(
     id INTEGER NOT NULL AUTO_INCREMENT,
     name VARCHAR(32) NOT NULL,
     PRIMARY KEY(id)
 );
 
-DROP TABLE IF EXISTS exhibition;
 CREATE TABLE exhibition(
     id INTEGER NOT NULL AUTO_INCREMENT,
     name VARCHAR(32) NOT NULL,
@@ -37,10 +37,9 @@ CREATE TABLE exhibition(
     PRIMARY KEY(id)
 );
 
-DROP TABLE IF EXISTS exhibitionToBeReviewed;
-
-CREATE TABLE exhibitionToBeReviewed(
-    id INTEGER NOT NULL,
+CREATE TABLE ex_review(
+    id INTEGER NOT NULL AUTO_INCREMENT,
+--    ex_id INTEGER NOT NULL,
     name VARCHAR(32) NOT NULL,
     venue_name VARCHAR(32) DEFAULT NULL,
     organizer VARCHAR(32) DEFAULT NULL,
@@ -54,11 +53,9 @@ CREATE TABLE exhibitionToBeReviewed(
     link VARCHAR(256) DEFAULT NULL,
     poster_url VARCHAR(256) DEFAULT NULL,
     is_checked BOOLEAN NOT NULL DEFAULT FALSE,
-    edit_time DATE DEFAULT NULL,
     PRIMARY KEY(id)
 );
 
-DROP TABLE IF EXISTS exhibition_tag;
 CREATE TABLE exhibition_tag(
     id INTEGER NOT NULL AUTO_INCREMENT,
     ex_id INTEGER NOT NULL,
@@ -66,18 +63,14 @@ CREATE TABLE exhibition_tag(
     PRIMARY KEY(id)
 );
 
-DROP TABLE IF EXISTS exhibition_rel;
-CREATE TABLE exhibition_rel(
-    ex_id INTEGER NOT NULL,
+CREATE TABLE user_ex_relation (
     user_id INTEGER NOT NULL,
-    CONSTRAINT `fk_user`
-      FOREIGN KEY (`user_id`)
-      REFERENCES `user` (`id`)
-      ON DELETE CASCADE
-      ON UPDATE CASCADE,
-    CONSTRAINT `fk_ex`
-      FOREIGN KEY (`ex_id`)
-      REFERENCES `exhibition` (`id`)
-      ON DELETE CASCADE
-      ON UPDATE CASCADE,
+    ex_id INTEGER NOT NULL,
+    ex_review_id INTEGER NOT NULL,
+    date DATE NOT NULL,
+    type VARCHAR(20) NOT NULL,
+    status BOOLEAN NOT NULL,
+--    true : finished , false: unfinished
+    PRIMARY KEY (ex_review_id)
 );
+

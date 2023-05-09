@@ -1,15 +1,10 @@
 package com.exhibition.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.exhibition.entity.Exhibition;
-import com.exhibition.entity.ExhibitionToBeReviewed;
-import com.exhibition.entity.ExhibitionUnchecked;
-import com.exhibition.entity.derived.ExSearchResult;
+import com.exhibition.entity.ExhibitionReview;
 import com.exhibition.service.IExService;
 import com.exhibition.service.IExToBeReviewedService;
-import com.fasterxml.jackson.core.sym.Name;
 
-import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,10 +12,7 @@ import com.exhibition.mapper.ExMapper;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.websocket.server.PathParam;
 
-import java.sql.Time;
-import java.sql.Date;
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
@@ -75,11 +67,11 @@ public class ExhibitionController {
     private IExToBeReviewedService exToBeReviewedService;
 
     @PostMapping("/alterExInfo")
-    public String alterExInfo(@RequestBody ExhibitionToBeReviewed exhibitionToBeReviewed) {
+    public String alterExInfo(@RequestBody ExhibitionReview exhibitionReview) {
         // TODO
         System.out.println("alterExInfo");
-        System.out.println(exhibitionToBeReviewed);
-        exToBeReviewedService.saveOrUpdate(exhibitionToBeReviewed);
+        System.out.println(exhibitionReview);
+        exToBeReviewedService.saveOrUpdate(exhibitionReview);
         return "success";
     }
 
@@ -87,20 +79,21 @@ public class ExhibitionController {
     private ExMapper exMapper;
 
     @GetMapping("/getUncheckedEx") // 获取未审核的展览
-    public List<ExhibitionToBeReviewed> selExhibitionUncheckeds() {
-        List<ExhibitionToBeReviewed> searchResult = exToBeReviewedService.list();
+    public List<ExhibitionReview> selExhibitionUncheckeds() {
+        List<ExhibitionReview> searchResult = exToBeReviewedService.list();
         return searchResult;
     }
 
-    @GetMapping("/getCheckedEx/{id}")
-    public List<Exhibition> selExCheckedById(@RequestParam(name = "id") Integer exerId) {
+    @GetMapping("/getCheckedEx")
+    public List<Exhibition> getCheckedEx(@RequestParam(name = "id") Integer id) {
         // List<Exhibition> result = exService.selectById(id);
 
+        return null;
     }
 
     @PostMapping("/audit/pass")
-    public String auditExPass(Integer id) {
-        ExhibitionToBeReviewed exPassTmp = exToBeReviewedService.getById(id);
+    public String auditExPass(@RequestParam(name = "id") Integer id) {
+        ExhibitionReview exPassTmp = exToBeReviewedService.getById(id);
         Exhibition exPass = new Exhibition();
         BeanUtils.copyProperties(exPassTmp, exPass);
         exService.saveOrUpdate(exPass);
@@ -119,7 +112,7 @@ public class ExhibitionController {
         return "success";
     }
 
-    // @GetMapping("/audit/view/{id}") // 获取未审核的展览
+//     @GetMapping("/audit/view/{id}") // 获取未审核的展览
     // public ExhibitionToBeReviewed selExhibitionUncheckeds() {
     // ExhibitionToBeReviewed searchResult = exMapper.selectUnchecked();
     // return searchResult;
