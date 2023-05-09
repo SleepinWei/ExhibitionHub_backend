@@ -12,7 +12,8 @@ CREATE TABLE user(
     username VARCHAR(128) NOT NULL,
     password VARCHAR(32) NOT NULL,
     email VARCHAR(32) NOT NULL,
-    sex VARCHAR(4) check(sex='男' or sex='女'),
+    sex VARCHAR(4) check(sex='男' or sex='女') not null,
+    biography VARCHAR(20),
     PRIMARY KEY(id)
 );
 

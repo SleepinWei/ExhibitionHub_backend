@@ -53,7 +53,7 @@ public class UserController {
             return ResultUtil.administrator("登录成功！即将跳转到管理员界面...");
         }
         else if (("Success!This is a museum.").equals(msg)) {
-            return ResultUtil.museumUser("登录成功！即将跳转到博物馆界面...");
+            return ResultUtil.museum("登录成功！即将跳转到博物馆界面...");
         } 
         else {
             return ResultUtil.error(msg);
@@ -76,16 +76,12 @@ public class UserController {
     @GetMapping("/user/find/{id}")
     public User query(@PathVariable int id){//根据用户id查找用户信息
         User u=userMapper.selectById(id);
-//        System.out.println(u);
         return u;
     }
 
-    @PutMapping("/user")//更新用户基本信息
+     @PutMapping("/user")//更新用户基本信息
     public boolean update(@RequestBody User user){
         User old=userMapper.selectById(user.getId());
-//        System.out.println("user"+user);
-//        System.out.println("old"+old);
-//        System.out.println(user.compare(old));
         if(user.compare(old)){
             return false;
         }
@@ -100,7 +96,6 @@ public class UserController {
         int newuser=userMapper.updateById(user);
         return userMapper.selectById(newuser);
     }
-
 
     @Autowired
     private MailVerCodeService mailVerCodeServie;

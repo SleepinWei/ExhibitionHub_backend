@@ -33,6 +33,8 @@ public class User implements Serializable {
 
     private String sex;
 
+    private String biography;
+
     public User(){
     }
     public User(Integer id,String username,String password,String email,String role) {
@@ -41,6 +43,7 @@ public class User implements Serializable {
         this.password = password;
         this.email = email;
         this.role = role;
+        this.biography=biography;
     }
 
     public Integer getId() {
@@ -66,6 +69,10 @@ public class User implements Serializable {
     public void setPassword(String password) {
         this.password = password;
     }
+    public void setBiography(String biography) {
+        this.biography = biography;
+    }
+    public String getBiography(){return biography;}
 
     public String getEmail(){return email;}
 
@@ -75,22 +82,11 @@ public class User implements Serializable {
 
     public void setRole(String role){this.role = role;}
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", role=" + role +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                ", sex='" + sex + '\'' +
-                '}';
-    }
 
     //比较两个User是否相同
     public boolean compare(User u1){//string比较用equals
         if(u1.id==id&&u1.role.equals(role)&&u1.username.equals(username)&&u1.password.equals(password)&&
-           u1.email.equals(email)&&u1.sex.equals(sex))
+           u1.email.equals(email)&&u1.sex.equals(sex)&&u1.biography.equals(biography))
             return true;
         else
             return false;

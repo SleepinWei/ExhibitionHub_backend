@@ -19,7 +19,7 @@ public class ResultUtil {
         result.setData(object);
         return result;
     }
-    public static Result museumUser(Object object) {
+    public static Result museum(Object object) {
         Result result = new Result();
         result.setCode(ResultCode.MUSEUM.getCode());
         result.setMsg(ResultCode.MUSEUM.getMsg());
