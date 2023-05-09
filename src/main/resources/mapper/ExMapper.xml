@@ -19,4 +19,9 @@
         from exhibition
         where name like CONCAT ('%', #{keyword,jdbcType=VARCHAR},'%');
     </select>
+
+    <select id="getAllOrganizers" resultType="java.lang.String">
+        select distinct organizer
+        from exhibition;
+    </select>
 </mapper>

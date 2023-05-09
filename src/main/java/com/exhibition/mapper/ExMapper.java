@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface ExMapper extends BaseMapper<Exhibition> {
     List<Exhibition> searchByKeyword(String keyword);
+
+    List<String> getAllOrganizers();
 }
