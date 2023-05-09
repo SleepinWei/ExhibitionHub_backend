@@ -14,10 +14,10 @@ import java.sql.Date;
 import java.sql.Time;
 
 @Data
-@TableName("exhibitiontobereviewed")
+@TableName("ex_review")
 @AllArgsConstructor
 @NoArgsConstructor
-public class ExhibitionToBeReviewed {
+public class ExhibitionReview {
 
     // public ExhibitionToBeReviewed(Integer id,String name,String venue_name,String
     // ticket_info,String organizer,Date edit_time,
@@ -41,11 +41,6 @@ public class ExhibitionToBeReviewed {
 
     @TableField
     private String organizer; // 主办方
-
-    @TableField
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date edit_time; // 上次修改时间
 
     @TableField
     @DateTimeFormat(pattern = "yyyy-MM-dd")

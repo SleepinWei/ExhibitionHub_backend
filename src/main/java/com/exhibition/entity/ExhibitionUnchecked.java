@@ -10,7 +10,7 @@ import lombok.Data;
 import java.sql.Date;
 
 @Data
-// @TableName("exhibition")
+@Deprecated
 public class ExhibitionUnchecked {
     @TableId(value = "id", type = IdType.INPUT)
     private Integer id; // 主键id
@@ -22,5 +22,4 @@ public class ExhibitionUnchecked {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date edit_time; // 上次修改时间
-
 }

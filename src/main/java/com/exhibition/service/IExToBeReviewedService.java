@@ -1,10 +1,8 @@
 package com.exhibition.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.exhibition.entity.ExhibitionToBeReviewed;
+import com.exhibition.entity.ExhibitionReview;
 
-import java.util.List;
-
-public interface IExToBeReviewedService extends IService<ExhibitionToBeReviewed> {
+public interface IExToBeReviewedService extends IService<ExhibitionReview> {
     ;
 }
