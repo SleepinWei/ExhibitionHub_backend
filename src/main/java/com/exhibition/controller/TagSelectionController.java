@@ -52,14 +52,22 @@ public class TagSelectionController {
         List<String> organizers = exMapper.getAllOrganizers();
         return organizers;
     }
-    HashMap<Integer, CalendarCache> calendercaches = new HashMap<>();
 
     // 根据所选内容返回展览内容
-    @GetMapping("/searchByData/{query}/{src}/{dst}/{venue}/{tags}/{province}/{city}/{area}")
-    public List<Exhibition> selectEx(@PathVariable String query,
+    @PostMapping("/searchByData/{query}/{src}/{dst}/{venue}/{tags}/{province}/{city}/{area}")
+    public List<Exhibition> selectEx(/*@PathVariable String query,
                                      @PathVariable String src, @PathVariable String dst,
                                      @PathVariable String venue, @PathVariable String tags,
-                                     @PathVariable String province, @PathVariable String city, @PathVariable String area){
+                                     @PathVariable String province, @PathVariable String , @PathVariable String area){*/
+            @RequestBody Map<String, Object> requestBody){
+        String query = (String) requestBody.get("query");
+        String src = (String) requestBody.get("src");
+        String dst = (String) requestBody.get("dst");
+        String venue = (String) requestBody.get("venue");
+        String tags = (String) requestBody.get("tags");
+        String province = (String) requestBody.get("query");
+        String city = (String) requestBody.get("city");
+        String area = (String) requestBody.get("area");
 
         if (query == null || src == null || dst == null || venue == null || tags == null || province == null || city == null || area == null) {
             return new ArrayList<Exhibition>();
