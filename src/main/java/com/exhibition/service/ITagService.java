@@ -6,5 +6,5 @@ import com.exhibition.entity.Tag;
 import java.util.List;
 
 public interface ITagService extends IService<Tag> {
-    public List<String> getTagName();
+    public List<Tag> getTagName();
 }

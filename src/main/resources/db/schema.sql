@@ -56,9 +56,3 @@ CREATE TABLE subscription(
     FOREIGN KEY (user_id) REFERENCES user(id),
     FOREIGN KEY (ex_id) REFERENCES exhibition(id)
 );
-
-CREATE TABLE organizer(
-    id INTEGER NOT NULL AUTO_INCREMENT,
-    name VARCHAR(32) NOT NULL,
-    PRIMARY KEY(id)
-);

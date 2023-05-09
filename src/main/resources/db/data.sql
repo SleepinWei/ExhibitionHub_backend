@@ -35,6 +35,3 @@ INSERT INTO subscription(user_id,ex_id,date) VALUES
     (1,2,"2023-05-09"),
     (1,3,"2023-05-09");
 
-INSERT INTO organizer(id,name) VALUES
-    (1,"上海博物馆"),
-    (2,"浦东美术馆");
