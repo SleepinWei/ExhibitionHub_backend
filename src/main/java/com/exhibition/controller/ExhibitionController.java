@@ -2,9 +2,13 @@ package com.exhibition.controller;
 
 import com.exhibition.entity.Exhibition;
 import com.exhibition.entity.ExhibitionReview;
+import com.exhibition.entity.UserExRelation;
+import com.exhibition.mapper.ExToBeReviewedMapper;
+import com.exhibition.mapper.UserExRelMapper;
 import com.exhibition.service.IExService;
 import com.exhibition.service.IExToBeReviewedService;
 
+import com.exhibition.util.CookieUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +17,7 @@ import com.exhibition.mapper.ExMapper;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
@@ -54,18 +59,20 @@ public class ExhibitionController {
     @Autowired
     private IExToBeReviewedService exToBeReviewedService;
 
-    @PostMapping("/addEx") // 增加展览信息
-    public String addEx(@RequestBody Map<String, Object> exhibitionReview) {
-        // add a new exhibition
-        if (exhibitionReview.getId() == 0) {
-            System.out.println("addEx");
-            System.out.println(exhibitionReview);
-            exToBeReviewedService.save(exhibitionReview);
-        } else {
-            System.out.println("id is not 0, Exhibition already exists");
-        }
+    @Autowired
+    private ExToBeReviewedMapper exReviewMapper;
 
-        Integer user_id = parseInt(String.valueOf(exhibitionReview.get("user_id")));
+    @Autowired
+    private UserExRelMapper userExRelMapper;
+
+    @PostMapping("/addEx") // 增加展览信息
+    public String addEx(HttpServletRequest request, HttpServletResponse response,@RequestBody ExhibitionReview exhibitionReview) {
+        // add a new exhibition
+        exToBeReviewedService.save(exhibitionReview);
+        Integer ex_review_id = exReviewMapper.getNextId();
+        Integer user_id = Integer.parseInt(CookieUtil.getCookies(request).get("userAccount"));
+        UserExRelation newRelation = new UserExRelation(user_id,-1,ex_review_id, new Date(System.currentTimeMillis()),false,"新增");
+        userExRelMapper.insert(newRelation);
 
         return "success";
     }

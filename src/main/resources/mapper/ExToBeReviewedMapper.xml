@@ -16,7 +16,11 @@
     </resultMap>
     <select id="searchByKeyword" resultMap="ExToBeReviewedMap">
         select *
-        from exhibition
+        from ex_review
         where name like CONCAT ('%', #{keyword,jdbcType=VARCHAR},'%');
+    </select>
+
+    <select id="getNextId" resultMap="java.lang.Integer">
+        select max(id) from ex_review;
     </select>
 </mapper>
