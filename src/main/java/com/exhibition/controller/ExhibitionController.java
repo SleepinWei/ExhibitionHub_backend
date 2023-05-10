@@ -70,22 +70,26 @@ public class ExhibitionController {
         // add a new exhibition
         exToBeReviewedService.save(exhibitionReview);
         Integer ex_review_id = exReviewMapper.getNextId();
-
-        System.out.println(CookieUtil.getCookies(request));
-
         Integer user_id = Integer.parseInt(CookieUtil.getCookies(request).get("cookieAccount"));
-        UserExRelation newRelation = new UserExRelation(user_id,-1,ex_review_id, new Date(System.currentTimeMillis()),false,"新增");
+        UserExRelation newRelation = new UserExRelation(user_id,-1,ex_review_id, new Date(System.currentTimeMillis()),false,"unfinished","新增");
         userExRelMapper.insert(newRelation);
 
         return "success";
     }
 
     @PostMapping("/alterExInfo")
-    public String alterExInfo(@RequestBody ExhibitionReview exhibitionReview) {
-        // TODO
+    public String alterExInfo(HttpServletRequest request, HttpServletResponse response,@RequestBody ExhibitionReview exhibitionReview) {
         System.out.println("alterExInfo");
-        System.out.println(exhibitionReview);
-        exToBeReviewedService.saveOrUpdate(exhibitionReview);
+        Integer ex_id =  exhibitionReview.getId();
+        exhibitionReview.setId(0);
+        exReviewMapper.insert(exhibitionReview);
+
+        Integer ex_review_id = exReviewMapper.getNextId();
+        Integer user_id = Integer.parseInt(CookieUtil.getCookies(request).get("cookieAccount"));
+        Date current = new Date(System.currentTimeMillis());
+        UserExRelation newreview = new UserExRelation(user_id,ex_id,ex_review_id,current,Boolean.FALSE,"unfinished","修改");
+        userExRelMapper.insert(newreview);
+
         return "success";
     }
 
@@ -94,36 +98,59 @@ public class ExhibitionController {
 
     @GetMapping("/getUncheckedEx") // 获取未审核的展览
     public List<ExhibitionReview> selExhibitionUncheckeds() {
-        List<ExhibitionReview> searchResult = exToBeReviewedService.list();
+        List<ExhibitionReview> searchResult = userExRelMapper.getUncheckedEx();
         return searchResult;
     }
 
     @GetMapping("/getCheckedEx")
     public List<Exhibition> getCheckedEx(@RequestParam(name = "id") Integer id) {
-        // List<Exhibition> result = exService.selectById(id);
 
         return null;
     }
 
-    @PostMapping("/audit/pass")
-    public String auditExPass(@RequestParam(name = "id") Integer id) {
-        ExhibitionReview exPassTmp = exToBeReviewedService.getById(id);
+    @GetMapping("/audit/pass")
+    public String auditExPass(@RequestParam(name = "id") Integer ex_review_id) {
+        // 此id为ex_review_id
+        ExhibitionReview exPassTmp = exToBeReviewedService.getById(ex_review_id);
+        UserExRelation relation = userExRelMapper.selectById(ex_review_id);
+        Integer user_id = relation.getUser_id();
+        Integer ex_id = relation.getEx_id();
         Exhibition exPass = new Exhibition();
         BeanUtils.copyProperties(exPassTmp, exPass);
-        exService.saveOrUpdate(exPass);
-        exToBeReviewedService.removeById(id);
+
+        // 修改relation 状态
+        relation.setIs_done(Boolean.TRUE);
+        relation.setResult("pass");
+        userExRelMapper.updateById(relation);
+
+        if(ex_id == -1){
+            // 新增
+            exPass.setId(0);
+            exMapper.insert(exPass);
+        }
+        else {
+            // 修改
+            exPass.setId(ex_id);
+            exMapper.updateById(exPass);
+        }
         return "success";
     }
 
     // TODO : 空处理
-    @PostMapping("/audit/refuse")
-    public String auditExRefuse(Integer id) {
-        if (exToBeReviewedService.removeById(id)) {
-            System.out.println("refuse success");
-        } else {
-            System.out.println(id + ":refuse failed");
-        }
+    @GetMapping("/audit/refuse")
+    public String auditExRefuse(@RequestParam(name = "id") Integer ex_review_id) {
+        UserExRelation relation = userExRelMapper.selectById(ex_review_id);
+        relation.setIs_done(Boolean.TRUE);
+        relation.setResult("refuse");
+        userExRelMapper.updateById(relation);
+
         return "success";
+    }
+
+    @GetMapping("/audit/view")
+    public ExhibitionReview auditView(@RequestParam(name = "id") Integer ex_review_id){
+        ExhibitionReview result = exReviewMapper.selectById(ex_review_id);
+        return result;
     }
 
 //     @GetMapping("/audit/view/{id}") // 获取未审核的展览

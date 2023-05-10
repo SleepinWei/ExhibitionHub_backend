@@ -68,7 +68,8 @@ CREATE TABLE user_ex_relation (
     ex_review_id INTEGER NOT NULL,
     date DATE NOT NULL,
     type VARCHAR(20) NOT NULL,
-    status BOOLEAN NOT NULL,
+    is_done BOOLEAN NOT NULL,
+    result VARCHAR(20) NOT NULL,
 --    true : finished , false: unfinished
     PRIMARY KEY (ex_review_id)
 );

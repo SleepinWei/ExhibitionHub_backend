@@ -20,9 +20,9 @@
  ,"1. 130余件明代珍贵文物\n2.不出京的\"金翼善冠\"\n3.大明场景还原，沉浸式打卡\n4.研学互动，活的历史课堂","https://www.douban.com/event/35620820/",
  "images/1.webp","150RMB",false);
 
- INSERT INTO user_ex_relation(user_id,ex_id,ex_review_id,date,type,status) VALUES
- (1,1,1,"2002-02-02 09:00:00","change",FALSE),
- (1,2,2,"2002-03-03 09:00:00","change",FALSE);
+ INSERT INTO user_ex_relation(user_id,ex_id,ex_review_id,date,type,is_done,result) VALUES
+ (1,1,1,"2002-02-02 09:00:00","change",FALSE,"unfinished"),
+ (1,2,2,"2002-03-03 09:00:00","change",FALSE,"unfinished");
 
 INSERT INTO tag(id,name) VALUES
 (1,"历史"),

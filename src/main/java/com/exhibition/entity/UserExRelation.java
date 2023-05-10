@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.persistence.Table;
 import java.sql.Date;
 
 @Data
@@ -30,7 +31,10 @@ public class UserExRelation {
     private Date date;
 
     @TableField
-    private Boolean status;
+    private Boolean is_done;
+
+    @TableField
+    private String result;
 
     @TableField
     private String type;
