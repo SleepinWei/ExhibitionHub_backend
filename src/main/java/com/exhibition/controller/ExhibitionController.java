@@ -107,9 +107,6 @@ public class ExhibitionController {
         return "success";
     }
 
-    @Autowired
-    private ExMapper exMapper;
-
     @GetMapping("/getUncheckedEx") // 获取未审核的展览
     public List<ExhibitionReview> selExhibitionUncheckeds() {
         List<ExhibitionReview> searchResult = userExRelMapper.getUncheckedEx();
