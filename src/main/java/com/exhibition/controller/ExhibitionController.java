@@ -1,9 +1,10 @@
 package com.exhibition.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.exhibition.entity.Exhibition;
-import com.exhibition.entity.derived.ExSearchResult;
+import com.exhibition.entity.Tag;
+import com.exhibition.mapper.ExMapper;
 import com.exhibition.service.IExService;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +17,9 @@ import java.util.List;
 public class ExhibitionController {
     @Autowired
     private IExService exService;
+
+    @Autowired
+    private ExMapper exMapper;
 
     @GetMapping("/searchByKeyword")
     public List<Exhibition> searchByKeyword(@RequestParam(name = "querytext") String querytext) {
@@ -40,6 +44,14 @@ public class ExhibitionController {
         System.out.print(result);
         return result;
     }
+
+    @GetMapping("/searchTagById")
+    public List<Tag> searchTagById(@RequestParam(name="ex_id") Integer ex_id){
+        List<Tag> result = exMapper.findTagByExId(ex_id);
+        return result;
+    }
+
+
 
     @PostMapping("/addEx") // 增加展览信息
     public String addEx(@RequestBody Exhibition exhibition) {
