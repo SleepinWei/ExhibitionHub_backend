@@ -13,4 +13,8 @@
             select * from exhibition_tag as et where et.ex_id=#{ex_id}
         ) as t left join tag on t.tag_id=tag.id;
     </select>
+
+    <select id="selectUnchecked" resultType="com.exhibition.entity.ExhibitionUnchecked">
+        select id,name,edit_time from exhibition where is_checked = false;
+    </select>
 </mapper>

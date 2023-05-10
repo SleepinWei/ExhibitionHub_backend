@@ -1,10 +1,6 @@
-SET FOREIGN_KEY_CHECKS=0;
-DROP TABLE IF EXISTS user;
-DROP TABLE IF EXISTS subscription;
-DROP TABLE IF EXISTS exhibition_tag;
-DROP TABLE IF EXISTS tag;
-DROP TABLE IF EXISTS exhibition;
-SET FOREIGN_KEY_CHECKS=1;
+drop database if exists exhibition;
+create database exhibition;
+use exhibition;
 
 CREATE TABLE user(
     id INTEGER NOT NULL AUTO_INCREMENT,
@@ -40,6 +36,26 @@ CREATE TABLE exhibition(
     introduction VARCHAR(1024) DEFAULT NULL,
     link VARCHAR(256) DEFAULT NULL,
     poster_url VARCHAR(256) DEFAULT NULL,
+    is_checked BOOLEAN NOT NULL DEFAULT FALSE,
+    PRIMARY KEY(id)
+);
+
+CREATE TABLE ex_review(
+    id INTEGER NOT NULL AUTO_INCREMENT,
+--    ex_id INTEGER NOT NULL,
+    name VARCHAR(32) NOT NULL,
+    venue_name VARCHAR(32) DEFAULT NULL,
+    organizer VARCHAR(32) DEFAULT NULL,
+    begin_date DATE DEFAULT NULL,
+    end_date DATE DEFAULT NULL,
+    begin_time TIME DEFAULT NULL,
+    end_time TIME DEFAULT NULL,
+    location VARCHAR(256) DEFAULT NULL,
+    ticket_info VARCHAR(256) DEFAULT NULL,
+    introduction VARCHAR(1024) DEFAULT NULL,
+    link VARCHAR(256) DEFAULT NULL,
+    poster_url VARCHAR(256) DEFAULT NULL,
+    is_checked BOOLEAN NOT NULL DEFAULT FALSE,
     PRIMARY KEY(id)
 );
 
@@ -57,3 +73,15 @@ CREATE TABLE subscription(
     FOREIGN KEY (user_id) REFERENCES user(id),
     FOREIGN KEY (ex_id) REFERENCES exhibition(id)
 );
+CREATE TABLE user_ex_relation (
+    user_id INTEGER NOT NULL,
+    ex_id INTEGER NOT NULL,
+    ex_review_id INTEGER NOT NULL,
+    date DATE NOT NULL,
+    type VARCHAR(20) NOT NULL,
+    is_done BOOLEAN NOT NULL,
+    result VARCHAR(20) NOT NULL,
+--    true : finished , false: unfinished
+    PRIMARY KEY (ex_review_id)
+);
+

@@ -1,6 +1,5 @@
 package com.exhibition.controller;
 
-
 import com.exhibition.entity.User;
 import com.exhibition.service.IUserService;
 import com.exhibition.service.impl.UserServiceImpl;
@@ -25,15 +24,15 @@ import com.exhibition.util.FileUploadUtil;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
- * @author 
+ * @author
  * @since 2023-04-08
  */
 @Controller
 @RestController
-@CrossOrigin//跨域访问
+@CrossOrigin // 跨域访问
 @ResponseBody
 public class UserController {
     @Autowired
@@ -70,9 +69,9 @@ public class UserController {
         }
     }
 
-
     @Autowired
     private UserMapper userMapper;
+
     @GetMapping("/user/find/{id}")
     public User query(@PathVariable int id){//根据用户id查找用户信息
         User u=userMapper.selectById(id);
@@ -84,28 +83,28 @@ public class UserController {
         User old=userMapper.selectById(user.getId());
         if(user.compare(old)){
             return false;
-        }
-        else{
+        } else {
             userMapper.updateById(user);
             return true;
         }
     }
 
-    @PutMapping("/user/change")//更新用户密码
-    public User changepw(@RequestBody User user){
-        int newuser=userMapper.updateById(user);
+    @PutMapping("/user/change") // 更新用户密码
+    public User changepw(@RequestBody User user) {
+        int newuser = userMapper.updateById(user);
         return userMapper.selectById(newuser);
     }
 
     @Autowired
     private MailVerCodeService mailVerCodeServie;
 
-    private String vercode="";
+    private String vercode = "";
+
     @GetMapping("/user/sendVerCodeMail/{email}")
-    public String sendVerCodeMail(@PathVariable String email){
+    public String sendVerCodeMail(@PathVariable String email) {
         System.out.print(email);
-        this.vercode=mailVerCodeServie.sendVerCodeMail(email);
-        System.out.print("\nvercode is"+vercode);
+        this.vercode = mailVerCodeServie.sendVerCodeMail(email);
+        System.out.print("\nvercode is" + vercode);
         return vercode;
     }
 

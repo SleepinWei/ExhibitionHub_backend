@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.exhibition.mapper.ExToBeReviewedMapper">
+    <resultMap id="ExToBeReviewedMap" type="com.exhibition.entity.ExhibitionReview">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="venue_name" column="venue_name"/>
+        <result property="organizer" column="organizer"/>
+        <result property="begin_date" column="begin_date"/>
+        <result property="end_date" column="end_date"/>
+        <result property="begin_time" column="begin_time"/>
+        <result property="end_time" column="end_time"/>
+        <result property="location" column="location"/>
+        <result property="introduction" column="introduction"/>
+        <result property="link" column="link"/>
+    </resultMap>
+    <select id="searchByKeyword" resultMap="ExToBeReviewedMap">
+        select *
+        from ex_review
+        where name like CONCAT ('%', #{keyword,jdbcType=VARCHAR},'%');
+    </select>
+
+    <select id="getNextId" resultType="java.lang.Integer">
+        select max(id) from ex_review;
+    </select>
+</mapper>
