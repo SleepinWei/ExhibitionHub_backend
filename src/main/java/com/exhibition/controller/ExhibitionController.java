@@ -64,11 +64,10 @@ public class ExhibitionController {
     }
 
     @GetMapping("/searchTagById")
-    public List<Tag> searchTagById(@RequestParam(name="ex_id") Integer ex_id){
+    public List<Tag> searchTagById(@RequestParam(name = "ex_id") Integer ex_id) {
         List<Tag> result = exMapper.findTagByExId(ex_id);
         return result;
     }
-
 
     @Autowired
     private IExToBeReviewedService exToBeReviewedService;
@@ -80,28 +79,32 @@ public class ExhibitionController {
     private UserExRelMapper userExRelMapper;
 
     @PostMapping("/addEx") // 增加展览信息
-    public String addEx(HttpServletRequest request, HttpServletResponse response,@RequestBody ExhibitionReview exhibitionReview) {
+    public String addEx(HttpServletRequest request, HttpServletResponse response,
+            @RequestBody ExhibitionReview exhibitionReview) {
         // add a new exhibition
         exToBeReviewedService.save(exhibitionReview);
         Integer ex_review_id = exReviewMapper.getNextId();
         Integer user_id = Integer.parseInt(CookieUtil.getCookies(request).get("cookieAccount"));
-        UserExRelation newRelation = new UserExRelation(user_id,-1,ex_review_id, new Date(System.currentTimeMillis()),false,"unfinished","新增");
+        UserExRelation newRelation = new UserExRelation(user_id, -1, ex_review_id, new Date(System.currentTimeMillis()),
+                false, "unfinished", "新增");
         userExRelMapper.insert(newRelation);
 
         return "success";
     }
 
     @PostMapping("/alterExInfo")
-    public String alterExInfo(HttpServletRequest request, HttpServletResponse response,@RequestBody ExhibitionReview exhibitionReview) {
+    public String alterExInfo(HttpServletRequest request, HttpServletResponse response,
+            @RequestBody ExhibitionReview exhibitionReview) {
         System.out.println("alterExInfo");
-        Integer ex_id =  exhibitionReview.getId();
+        Integer ex_id = exhibitionReview.getId();
         exhibitionReview.setId(0);
         exReviewMapper.insert(exhibitionReview);
 
         Integer ex_review_id = exReviewMapper.getNextId();
         Integer user_id = Integer.parseInt(CookieUtil.getCookies(request).get("cookieAccount"));
         Date current = new Date(System.currentTimeMillis());
-        UserExRelation newreview = new UserExRelation(user_id,ex_id,ex_review_id,current,Boolean.FALSE,"unfinished","修改");
+        UserExRelation newreview = new UserExRelation(user_id, ex_id, ex_review_id, current, Boolean.FALSE,
+                "unfinished", "修改");
         userExRelMapper.insert(newreview);
 
         return "success";
@@ -134,12 +137,11 @@ public class ExhibitionController {
         relation.setResult("pass");
         userExRelMapper.updateById(relation);
 
-        if(ex_id == -1){
+        if (ex_id == -1) {
             // 新增
             exPass.setId(0);
             exMapper.insert(exPass);
-        }
-        else {
+        } else {
             // 修改
             exPass.setId(ex_id);
             exMapper.updateById(exPass);
@@ -159,12 +161,12 @@ public class ExhibitionController {
     }
 
     @GetMapping("/audit/view")
-    public ExhibitionReview auditView(@RequestParam(name = "id") Integer ex_review_id){
+    public ExhibitionReview auditView(@RequestParam(name = "id") Integer ex_review_id) {
         ExhibitionReview result = exReviewMapper.selectById(ex_review_id);
         return result;
     }
 
-//     @GetMapping("/audit/view/{id}") // 获取未审核的展览
+    // @GetMapping("/audit/view/{id}") // 获取未审核的展览
     // public ExhibitionToBeReviewed selExhibitionUncheckeds() {
     // ExhibitionToBeReviewed searchResult = exMapper.selectUnchecked();
     // return searchResult;
