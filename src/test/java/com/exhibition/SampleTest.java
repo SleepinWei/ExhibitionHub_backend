@@ -54,9 +54,6 @@ public class SampleTest {
     }
 
     @Autowired
-    private IExToBeReviewedService exToBeReviewedService;
-
-    @Autowired
     private IExService exService;
 
     public String addEx(@RequestBody ExhibitionReview exhibitionReview) {

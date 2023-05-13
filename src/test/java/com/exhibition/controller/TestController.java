@@ -27,10 +27,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/test", produces = "application/json; charset=UTF-8")
 public class TestController {
 
-    //http://localhost:8080/test?nickname=zhangsan
+    // http://localhost:8080/test?nickname=zhangsan
     @RequestMapping
-    public String hello(String nickname ) {
-        return "hello "+nickname;
+    public String hello(String nickname) {
+        return "hello " + nickname;
+    }
+
     @Autowired
     private IExService exService;
 
