@@ -16,4 +16,6 @@ public interface ExMapper extends BaseMapper<Exhibition> {
     List<ExhibitionUnchecked> selectUnchecked();
 
     List<ExhibitioncheckedStatusBool> selectchecked(Integer org_id);
+
+    List<ExhibitioncheckedStatusBool> selectCheckedAdmin();
 }
