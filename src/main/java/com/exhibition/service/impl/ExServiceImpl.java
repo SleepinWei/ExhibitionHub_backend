@@ -35,4 +35,15 @@ public class ExServiceImpl extends ServiceImpl<ExMapper, Exhibition> implements 
         }
         return res;
     }
+
+    @Override
+    public List<Exhibitionchecked> selectCheckedAdmin() {
+        List<ExhibitioncheckedStatusBool> tmp = exMapper.selectCheckedAdmin();
+        List<Exhibitionchecked> res = new ArrayList<>();
+        for (ExhibitioncheckedStatusBool i : tmp) {
+            Exhibitionchecked j = new Exhibitionchecked(i);
+            res.add(j);
+        }
+        return res;
+    }
 }
