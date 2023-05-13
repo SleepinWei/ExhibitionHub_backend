@@ -32,7 +32,9 @@ INSERT INTO exhibition_tag(id,ex_id,tag_id)VALUES
 (1,1,1),
 (4,1,2),
 (2,2,2),
-(3,2,2);
+(3,2,3),
+(5,3,3),
+(6,4,4);
 
 INSERT INTO user(id,role,username,password,email,sex,biography) VALUES
 (1,'管理员','admin','123456','123456@qq.com','男',''),

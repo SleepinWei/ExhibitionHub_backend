@@ -11,7 +11,7 @@ import java.util.List;
 public interface SubMapper extends BaseMapper<Subscription> {
     @Select("SELECT DISTINCT subscription.ex_id,date,name,venue_name,organizer,begin_date,end_date,province,city,area,address,link,tag_id " +
             "FROM subscription,exhibition,exhibition_tag " +
-            "WHERE user_id=#{userid} and subscription.ex_id=exhibition.id and date>=#{begin} and date<=#{end}")
+            "WHERE user_id=#{userid} and subscription.ex_id=exhibition.id and exhibition.id=exhibition_tag.ex_id and date>=#{begin} and date<=#{end}")
     List<SubExhibitionTemp> getUserSubscription(@Param("userid") Integer userid, @Param("begin")String begin, @Param("end")String end);
 
 //    @Select("SELECT ex_id,visitdate,name,venue_name,organizer,begin_date,end_date,province,city,area,address,link " +
