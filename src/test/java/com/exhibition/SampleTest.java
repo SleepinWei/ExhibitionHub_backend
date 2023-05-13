@@ -17,6 +17,7 @@ import java.sql.Time;
 import java.sql.Date;
 import com.exhibition.entity.ExhibitionReview;
 import com.exhibition.entity.Exhibition;
+import com.exhibition.entity.Exhibitionchecked;
 
 import com.exhibition.service.IExToBeReviewedService;
 import com.exhibition.service.IExService;
@@ -52,9 +53,6 @@ public class SampleTest {
         }
         return "success";
     }
-
-    @Autowired
-    private IExToBeReviewedService exToBeReviewedService;
 
     @Autowired
     private IExService exService;
@@ -93,6 +91,13 @@ public class SampleTest {
         // exhibitionController.addEx(test);
         addEx(test);
         auditExPass(3);
+        System.out.println("success");
+    }
+
+    @Test
+    public void testUnchecked() {
+        List<Exhibitionchecked> ret = exService.selectchecked(1);
+        System.out.println(ret);
         System.out.println("success");
     }
 }

@@ -20,7 +20,7 @@
         where name like CONCAT ('%', #{keyword,jdbcType=VARCHAR},'%');
     </select>
 
-    <select id="getNextId" resultMap="java.lang.Integer">
+    <select id="getNextId" resultType="java.lang.Integer">
         select max(id) from ex_review;
     </select>
 </mapper>

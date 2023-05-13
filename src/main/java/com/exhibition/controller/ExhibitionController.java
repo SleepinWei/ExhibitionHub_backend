@@ -2,6 +2,7 @@ package com.exhibition.controller;
 
 import com.exhibition.entity.Exhibition;
 import com.exhibition.entity.ExhibitionReview;
+import com.exhibition.entity.Exhibitionchecked;
 import com.exhibition.entity.UserExRelation;
 import com.exhibition.mapper.ExToBeReviewedMapper;
 import com.exhibition.mapper.UserExRelMapper;
@@ -66,12 +67,13 @@ public class ExhibitionController {
     private UserExRelMapper userExRelMapper;
 
     @PostMapping("/addEx") // 增加展览信息
-    public String addEx(HttpServletRequest request, HttpServletResponse response,@RequestBody ExhibitionReview exhibitionReview) {
-        // add a new exhibition
+    public String addEx(HttpServletRequest request, HttpServletResponse response,
+            @RequestBody ExhibitionReview exhibitionReview) {
         exToBeReviewedService.save(exhibitionReview);
         Integer ex_review_id = exReviewMapper.getNextId();
         Integer user_id = Integer.parseInt(CookieUtil.getCookies(request).get("userAccount"));
-        UserExRelation newRelation = new UserExRelation(user_id,-1,ex_review_id, new Date(System.currentTimeMillis()),false,"新增");
+        UserExRelation newRelation = new UserExRelation(user_id, -1, ex_review_id, new Date(System.currentTimeMillis()),
+                false, "新增");
         userExRelMapper.insert(newRelation);
 
         return "success";
@@ -96,10 +98,9 @@ public class ExhibitionController {
     }
 
     @GetMapping("/getCheckedEx")
-    public List<Exhibition> getCheckedEx(@RequestParam(name = "id") Integer id) {
-        // List<Exhibition> result = exService.selectById(id);
-
-        return null;
+    public List<Exhibitionchecked> getCheckedEx(@RequestParam(name = "id") Integer user_id) {
+        List<Exhibitionchecked> ret = exService.selectchecked(user_id);
+        return ret;
     }
 
     @PostMapping("/audit/pass")
@@ -123,7 +124,7 @@ public class ExhibitionController {
         return "success";
     }
 
-//     @GetMapping("/audit/view/{id}") // 获取未审核的展览
+    // @GetMapping("/audit/view/{id}") // 获取未审核的展览
     // public ExhibitionToBeReviewed selExhibitionUncheckeds() {
     // ExhibitionToBeReviewed searchResult = exMapper.selectUnchecked();
     // return searchResult;
