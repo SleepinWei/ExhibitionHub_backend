@@ -5,8 +5,11 @@ import com.exhibition.entity.Tag;
 import com.exhibition.entity.response_type.UncheckedExType;
 import com.exhibition.mapper.ExMapper;
 import com.exhibition.service.IExService;
+
+import org.apache.catalina.connector.Response;
 import org.junit.Test;
 import com.exhibition.entity.ExhibitionReview;
+import com.exhibition.entity.ExhibitionUncheckedAdmin;
 import com.exhibition.entity.Exhibitionchecked;
 import com.exhibition.entity.UserExRelation;
 import com.exhibition.mapper.ExToBeReviewedMapper;
@@ -61,7 +64,6 @@ public class ExhibitionController {
             return new Exhibition();
         }
 
-        System.out.print(result);
         return result;
     }
 
@@ -112,21 +114,6 @@ public class ExhibitionController {
         return "success";
     }
 
-    @GetMapping("/getUncheckedEx") // 获取未审核的展览
-    public List<UncheckedExType> selExhibitionUncheckeds() {
-        List<UncheckedExType> searchResult = userExRelMapper.getUncheckedEx();
-        System.out.println(searchResult);
-
-        return searchResult;
-    }
-
-    @GetMapping("/getCheckedEx")
-    public List<Exhibitionchecked> getCheckedEx(@RequestParam(name = "id") Integer user_id) {
-        List<Exhibitionchecked> ret = exService.selectchecked(user_id);
-
-        return ret;
-    }
-
     @GetMapping("/audit/pass")
     public String auditExPass(@RequestParam(name = "id") Integer ex_review_id) {
         // 此id为ex_review_id
@@ -169,6 +156,37 @@ public class ExhibitionController {
     public ExhibitionReview auditView(@RequestParam(name = "id") Integer ex_review_id) {
         ExhibitionReview result = exReviewMapper.selectById(ex_review_id);
         return result;
+    }
+
+    // TO DO
+    @GetMapping("/delete")
+    public int deleteEx(@RequestParam(name = "id") Integer ex_id) {
+        int ret = exMapper.deleteById(ex_id);
+        return ret;
+    }
+
+    @GetMapping("/getCheckedEx")
+    public List<Exhibitionchecked> getCheckedEx(@RequestParam(name = "id") Integer user_id) {
+        List<Exhibitionchecked> ret = exService.selectchecked(user_id);
+        return ret;
+    }
+
+    @GetMapping("/getUncheckedEx") // 获取未审核的展览
+    public List<ExhibitionUncheckedAdmin> selExhibitionUncheckeds(@RequestParam(name = "id") Integer user_id) {
+        List<ExhibitionUncheckedAdmin> searchResult = exReviewMapper.getUnchecked(user_id);
+        return searchResult;
+    }
+
+    @GetMapping("/admin/getUnchecked")
+    public List<ExhibitionUncheckedAdmin> getUnCheckedEx() {
+        List<ExhibitionUncheckedAdmin> ret = exReviewMapper.getUncheckedAdmin();
+        return ret;
+    }
+
+    @GetMapping("/admin/getChecked")
+    public List<Exhibitionchecked> adminGetChecked() {
+        List<Exhibitionchecked> ret = exService.selectCheckedAdmin();
+        return ret;
     }
 
     // @GetMapping("/audit/view/{id}") // 获取未审核的展览

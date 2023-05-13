@@ -10,4 +10,6 @@ public interface IExService extends IService<Exhibition> {
     List<Exhibition> searchByKeyword(String keyword);
 
     List<Exhibitionchecked> selectchecked(Integer org_id);
+
+    List<Exhibitionchecked> selectCheckedAdmin();
 }
