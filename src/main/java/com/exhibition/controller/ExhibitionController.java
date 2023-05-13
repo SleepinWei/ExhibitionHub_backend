@@ -6,6 +6,7 @@ import com.exhibition.mapper.ExMapper;
 import com.exhibition.service.IExService;
 import org.junit.Test;
 import com.exhibition.entity.ExhibitionReview;
+import com.exhibition.entity.Exhibitionchecked;
 import com.exhibition.entity.UserExRelation;
 import com.exhibition.mapper.ExToBeReviewedMapper;
 import com.exhibition.mapper.UserExRelMapper;
@@ -117,9 +118,9 @@ public class ExhibitionController {
     }
 
     @GetMapping("/getCheckedEx")
-    public List<Exhibition> getCheckedEx(@RequestParam(name = "id") Integer id) {
-
-        return null;
+    public List<Exhibitionchecked> getCheckedEx(@RequestParam(name = "id") Integer user_id) {
+        List<Exhibitionchecked> ret = exService.selectchecked(user_id);
+        return ret;
     }
 
     @GetMapping("/audit/pass")
