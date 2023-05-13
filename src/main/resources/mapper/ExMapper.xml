@@ -23,4 +23,9 @@
         on u.user_id = #{keyword}
         and u.ex_id=e.id;
     </select>
+
+    <select id="getAllOrganizers" resultType="java.lang.String">
+        select distinct organizer
+        from exhibition;
+    </select>
 </mapper>

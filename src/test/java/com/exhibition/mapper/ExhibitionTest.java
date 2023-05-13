@@ -14,7 +14,7 @@ import java.util.List;
 
 @SpringBootTest
 @RunWith(SpringJUnit4ClassRunner.class)
-public class ExhibitionDatabaseTest {
+public class ExhibitionTest {
     @Autowired
     private ExMapper exMapper;
     @Autowired
@@ -27,6 +27,11 @@ public class ExhibitionDatabaseTest {
     private IExService exService;
 
 
+    @Test
+    public void testGetAllOrganizer(){
+        List<String> organizers = exMapper.getAllOrganizers();
+        organizers.forEach(System.out::println);
+    }
     @Test
     public void testExhibitionSelect(){
         List<Exhibition> list= exMapper.selectList(null);
