@@ -17,10 +17,4 @@
     <select id="selectUnchecked" resultType="com.exhibition.entity.ExhibitionUnchecked">
         select id,name,edit_time from exhibition where is_checked = false;
     </select>
-    <select id="selectchecked" resultType="com.exhibition.entity.Exhibitionchecked">
-        select id,name,venue_name,organizer,begin_date,end_date
-        from user_ex_relation u join exhibition e
-        on u.user_id = #{keyword}
-        and u.ex_id=e.id;
-    </select>
 </mapper>

@@ -21,7 +21,7 @@
  "images/1.webp","150RMB",false);
 
  INSERT INTO user_ex_relation(user_id,ex_id,ex_review_id,date,type,is_done,result) VALUES
- (2,1,1,"2002-02-02 09:00:00","change",FALSE,"unfinished"),
+ (1,1,1,"2002-02-02 09:00:00","change",FALSE,"unfinished"),
  (1,2,2,"2002-03-03 09:00:00","change",FALSE,"unfinished");
 
 INSERT INTO tag(id,name) VALUES
