@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.exhibition.mapper.UserExRelMapper">
+    <select id="getUncheckedEx" resultType="com.exhibition.entity.ExhibitionReview">
+        select *
+        from (
+            select ex_review_id
+            from user_ex_relation
+            where is_done=FALSE
+        ) as re left join ex_review on re.ex_review_id=ex_review.id;
+    </select>
+</mapper>

@@ -1,22 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.exhibition.mapper.ExMapper">
-    <resultMap id="ExMap" type="com.exhibition.entity.Exhibition">
-        <result property="id" column="id"/>
-        <result property="name" column="name"/>
-        <result property="venue_name" column="venue_name"/>
-        <result property="organizer" column="organizer"/>
-        <result property="begin_date" column="begin_date"/>
-        <result property="end_date" column="end_date"/>
-        <result property="begin_time" column="begin_time"/>
-        <result property="end_time" column="end_time"/>
-        <result property="location" column="location"/>
-        <result property="introduction" column="introduction"/>
-        <result property="link" column="link"/>
-    </resultMap>
-    <select id="searchByKeyword" resultMap="ExMap">
-        select *
+    <select id="searchByKeyword" resultType="com.exhibition.entity.Exhibition">
+        select exhibition.*
         from exhibition
         where name like CONCAT ('%', #{keyword,jdbcType=VARCHAR},'%');
+    </select>
+
+    <select id="findTagByExId" resultType="com.exhibition.entity.Tag">
+        select tag.*
+        from (
+            select * from exhibition_tag as et where et.ex_id=#{ex_id}
+        ) as t left join tag on t.tag_id=tag.id;
+    </select>
+
+    <select id="selectUnchecked" resultType="com.exhibition.entity.ExhibitionUnchecked">
+        select id,name,edit_time from exhibition where is_checked = false;
     </select>
 </mapper>

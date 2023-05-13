@@ -26,6 +26,7 @@ public class ExhibitionDatabaseTest {
     @Autowired
     private IExService exService;
 
+
     @Test
     public void testExhibitionSelect(){
         List<Exhibition> list= exMapper.selectList(null);
