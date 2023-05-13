@@ -61,7 +61,6 @@ public class ExhibitionController {
             return new Exhibition();
         }
 
-        System.out.print(result);
         return result;
     }
 
