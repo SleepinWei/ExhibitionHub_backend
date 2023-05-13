@@ -15,14 +15,11 @@ public interface SubMapper extends BaseMapper<Subscription> {
             "WHERE user_id=#{userid} and subscription.ex_id=exhibition.id and exhibition.id=exhibition_tag.ex_id and date>=#{begin} and date<=#{end}")
     List<SubExhibitionTemp> getUserSubscription(@Param("userid") Integer userid, @Param("begin")String begin, @Param("end")String end);
 
-    @Select("SELECT *" +
+    @Select("SELECT * " +
             "FROM exhibition " +
-            "WHERE (end_date>=#{begin} or begin_date<=#{end})" +
-            "and venue_name=#{venue_name} and province=#{province} and city=#{city} and area=#{area}" +
-            "and name like CONCAT ('%', #{query,jdbcType=VARCHAR},'%'")
-    List<Exhibition> getSearchResult(@Param("begin")String begin, @Param("end")String end,
-                                     @Param("venue_name")String venue_name,@Param("province")String province,@Param("city")String city,
-                                     @Param("area")String area,@Param("query")String query);
+            "WHERE (end_date>=#{begin} or begin_date<=#{end}) " +
+            "and name like CONCAT ('%', #{query,jdbcType=VARCHAR},'%')")
+    List<Exhibition> getSearchResult(@Param("begin")String src, @Param("end")String dst, @Param("query")String query);
 
 //    @Select("SELECT ex_id,visitdate,name,venue_name,organizer,begin_date,end_date,province,city,area,address,link " +
 //            "FROM subscription,exhibition " +

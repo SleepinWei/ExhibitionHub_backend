@@ -47,7 +47,11 @@ public class UserController {
             return ResultUtil.regularUser("登录成功！即将跳转到普通用户界面...");
         } else if (("Success!This is an administrator.").equals(msg)) {
             return ResultUtil.administrator("登录成功！即将跳转到管理员界面...");
-        } else {
+        }
+        else if (("Success!This is a museum.").equals(msg)) {
+            return ResultUtil.museum("登录成功！即将跳转到博物馆界面...");
+        }
+        else {
             return ResultUtil.error(msg);
         }
     }

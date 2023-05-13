@@ -9,6 +9,8 @@ public enum ResultCode {
     SUCCESS(200,"SUCCESS"),
     REGULAR_USER(300, "登录成功！即将跳转到普通用户界面..."),
     ADMINISTRATOR(400,"登录成功！即将跳转到管理员界面..."),
+
+    MUSEUM(600,"登录成功！即将跳转到博物馆界面..."),
     ERROR(-100, "Error");
 
 

@@ -54,7 +54,7 @@ public class TagSelectionController {
     }
 
     // 根据所选内容返回展览内容
-    @PostMapping("/searchByData/{query}/{src}/{dst}/{venue}/{tags}/{province}/{city}/{area}")
+    @PostMapping("/searchByData")
     public List<Exhibition> selectEx(/*@PathVariable String query,
                                      @PathVariable String src, @PathVariable String dst,
                                      @PathVariable String venue, @PathVariable String tags,
@@ -69,7 +69,7 @@ public class TagSelectionController {
         String city = (String) requestBody.get("city");
         String area = (String) requestBody.get("area");
 
-        if (query == null || src == null || dst == null || venue == null || tags == null || province == null || city == null || area == null) {
+        if (src == null || dst == null || venue == null || tags == null || province == null || city == null || area == null) {
             return new ArrayList<Exhibition>();
         }
 
@@ -80,9 +80,15 @@ public class TagSelectionController {
         tags = (tags.equals("-1")) ? "" : tags;
 
         //不包括tag的查表结果
-        List<Exhibition> ExhibitionList = subMapper.getSearchResult(src,dst,venue,province,city,area,query);
+        List<Exhibition> ExhibitionList = subMapper.getSearchResult(src,dst,query);
 
-        //按tag进行筛选
+        //按不同条件进行筛选
+        if (!venue.isEmpty()) {
+            selectByVenue(ExhibitionList, venue);
+        }
+        if (!province.isEmpty() && !city.isEmpty() && !area.isEmpty()) {
+            selectByLocation(ExhibitionList, province, city, area);
+        }
         if (!tags.isEmpty()) {
             selectByTag(ExhibitionList, tags);
         }
@@ -116,6 +122,33 @@ public class TagSelectionController {
             }
             if (remove) {
                 // 换到末尾进行删除，降低复杂度
+                Collections.swap(ExhibitionList, i, ExhibitionList.size() - 1);
+                ExhibitionList.remove(ExhibitionList.size() - 1);
+                i--;
+            }
+        }
+        return ExhibitionList;
+    }
+
+    // 按展馆查询
+    private List<Exhibition> selectByVenue(List<Exhibition> ExhibitionList, String venue) {
+        for (int i = 0; i < ExhibitionList.size(); i++) {
+            Exhibition exhibition = ExhibitionList.get(i);
+            if (!exhibition.getVenue_name().contains(venue)) {
+                Collections.swap(ExhibitionList, i, ExhibitionList.size() - 1);
+                ExhibitionList.remove(ExhibitionList.size() - 1);
+                i--;
+            }
+        }
+        return ExhibitionList;
+    }
+
+    //按省市查询
+    private List<Exhibition> selectByLocation(List<Exhibition> ExhibitionList,
+                                                   String province, String city, String area) {
+        for (int i = 0; i < ExhibitionList.size(); i++) {
+            Exhibition exhibition = ExhibitionList.get(i);
+            if (!exhibition.getProvince().equals(province) || !exhibition.getCity().equals(city) || !exhibition.getArea().equals(area)) {
                 Collections.swap(ExhibitionList, i, ExhibitionList.size() - 1);
                 ExhibitionList.remove(ExhibitionList.size() - 1);
                 i--;

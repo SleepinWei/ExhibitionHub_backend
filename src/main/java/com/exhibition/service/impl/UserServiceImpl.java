@@ -63,7 +63,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
                         return "Success!This is a regular user.";
                     } else if ("管理员".equals(user.getRole())) {
                         return "Success!This is an administrator.";
-                    } else {
+                    }
+                    else if ("博物馆".equals(user.getRole())) {
+                        return "Success!This is a museum.";
+                    }else {
                         return "SUCCESS";
                     }
                 }
