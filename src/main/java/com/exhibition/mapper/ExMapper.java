@@ -6,6 +6,8 @@ import com.exhibition.entity.Exhibitionchecked;
 import com.exhibition.entity.ExhibitioncheckedStatusBool;
 import com.exhibition.entity.Tag;
 import com.exhibition.entity.ExhibitionUnchecked;
+import com.exhibition.entity.response_type.VenueInfo;
+
 import java.util.List;
 
 public interface ExMapper extends BaseMapper<Exhibition> {
@@ -18,4 +20,7 @@ public interface ExMapper extends BaseMapper<Exhibition> {
     List<ExhibitioncheckedStatusBool> selectchecked(Integer org_id);
 
     List<String> getAllOrganizers();
+
+    List<VenueInfo> getAllVenueInfo();
 }
+
