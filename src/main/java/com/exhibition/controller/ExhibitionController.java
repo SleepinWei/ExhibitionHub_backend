@@ -120,6 +120,7 @@ public class ExhibitionController {
     @GetMapping("/getCheckedEx")
     public List<Exhibitionchecked> getCheckedEx(@RequestParam(name = "id") Integer user_id) {
         List<Exhibitionchecked> ret = exService.selectchecked(user_id);
+
         return ret;
     }
 
