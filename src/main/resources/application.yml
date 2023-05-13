@@ -17,7 +17,7 @@ spring:
   sql:
     init:
       schema-locations: classpath:db/schema.sql
-      data-locations: classpath:db/data.sql
+      data-locations: classpath:db/data.sql, classpath:db/city.sql
       mode: always
   mvc:
     static-path-pattern= /**

@@ -32,9 +32,9 @@ public class CalenderController {
     @GetMapping("/calendar/{userid}/{src}/{dst}")
     public List<SubExhibition> calendar(@PathVariable int userid, @PathVariable String src, @PathVariable String dst) {
         List<SubExhibitionTemp> subExhibitionTempList = subMapper.getUserSubscription(userid, src, dst);    //查表结果
-        //合并同一展览的所有tag，存放在list中
-        System.out.println(subExhibitionTempList);
-
+//        System.out.println(subExhibitionTempList.size());
+//        System.out.println(Arrays.deepToString(subExhibitionTempList.toArray()));
+        //合并同一展览的所有tag，存放在map中
         Map<Integer, SubExhibition> subExhibitionMap = new HashMap<>();
         for (SubExhibitionTemp temp : subExhibitionTempList) {
             Integer exid = temp.getEx_id();
@@ -50,8 +50,9 @@ public class CalenderController {
         calendarCache.setSrc(src);
         calendarCache.setSubExhibitions(new ArrayList<>(subExhibitionMap.values()));
         calendarCache.setTimestamp(System.currentTimeMillis());
-        System.out.println("in calendar "+calendarCache);
+        //System.out.println("in calendar "+calendarCache);
         calendercaches.put(userid, calendarCache);
+//        System.out.println(calendarCache.getSubExhibitions().size());
         return calendarCache.getSubExhibitions();
     }
 
@@ -64,25 +65,20 @@ public class CalenderController {
                                               @PathVariable String src, @PathVariable String dst,
                                               @PathVariable String venue, @PathVariable String tags,
                                               @PathVariable String province, @PathVariable String city, @PathVariable String area) {
-        //System.out.println(userid+"  "+src+"  "+dst+"  "+venue+"  "+tags+"  "+province+"  "+city+"  "+area+"***");
+//        System.out.println(userid+"  "+src+"  "+dst+"  "+venue+"  "+tags+"  "+province+"  "+city+"  "+area+"***");
         if (src == null || dst == null || venue == null || tags == null || province == null || city == null || area == null) {
             return new ArrayList<SubExhibition>();
         }
 
-//        if (calendercaches.isEmpty() || !calendercaches.containsKey(userid)) {
-//            calendar(userid, src, dst);
-//        }
-//
-//        CalendarCache calendarCache = calendercaches.get(userid);
-//        if (!calendarCache.getSrc().equals(src) || !calendarCache.getDst().equals(dst)) {
-//            calendar(userid, src, dst);
-//            calendarCache = calendercaches.get(userid);
-//        }
-        CalendarCache calendarCache = new CalendarCache();
-        calendar(userid, src, dst);
-        calendarCache = calendercaches.get(userid);
-        System.out.println("in calendarSelect "+calendarCache);
-        //System.out.println(calendarCache);
+        if (!calendercaches.containsKey(userid)) {
+            calendar(userid, src, dst);
+        }
+
+        CalendarCache calendarCache = calendercaches.get(userid);
+        if (!calendarCache.getSrc().equals(src) || !calendarCache.getDst().equals(dst)) {
+            calendar(userid, src, dst);
+            calendarCache = calendercaches.get(userid);
+        }
 
         List<SubExhibition> subExhibitons = new ArrayList<>(calendarCache.getSubExhibitions());
         venue = (venue.equals("null")) ? "" : venue;
@@ -101,7 +97,7 @@ public class CalenderController {
             calendarByTag(subExhibitons, tags);
         }
 
-        System.out.println("resultsize"+subExhibitons.size());
+//        System.out.println("resultsize"+subExhibitons.size());
         return subExhibitons;
     }
 
@@ -141,6 +137,9 @@ public class CalenderController {
     private List<SubExhibition> calendarByVenue(List<SubExhibition> subExhibitions, String venue) {
         for (int i = 0; i < subExhibitions.size(); i++) {
             SubExhibition exhibition = subExhibitions.get(i);
+            if (exhibition.getVenue_name() == null) {
+                continue;
+            }
             if (!exhibition.getVenue_name().contains(venue)) {
                 Collections.swap(subExhibitions, i, subExhibitions.size() - 1);
                 subExhibitions.remove(subExhibitions.size() - 1);
@@ -155,6 +154,9 @@ public class CalenderController {
                                                    String province, String city, String area) {
         for (int i = 0; i < subExhibitions.size(); i++) {
             SubExhibition exhibition = subExhibitions.get(i);
+            if (exhibition.getProvince() == null || exhibition.getCity() == null || exhibition.getArea() == null) {
+                continue;
+            }
             if (!exhibition.getProvince().equals(province) || !exhibition.getCity().equals(city) || !exhibition.getArea().equals(area)) {
                 Collections.swap(subExhibitions, i, subExhibitions.size() - 1);
                 subExhibitions.remove(subExhibitions.size() - 1);
@@ -167,11 +169,16 @@ public class CalenderController {
     //当离开日历界面时，要求调用本函数，清除查询记录
     @GetMapping("/calendar/cleancache/{userid}")
     public void cleancache(@PathVariable int userid) {
-        calendercaches.remove(userid);
+        System.out.println(calendercaches.size());
+        System.out.println("***"+calendercaches.remove(userid));
+        if(calendercaches.containsKey(userid))
+            System.out.println("fail to clean cache");
+        else
+        System.out.println("clean cache successfully");
     }
 
     //自动调用对于时间过长的查询记录进行定时清理
-    @Scheduled(cron = "0 */30 * * * ?")     //每30分钟执行一次
+    @Scheduled(cron = "0 */10 * * * ?")     //每10分钟执行一次
     public void scheduleCleancache() {
         Iterator<Map.Entry<Integer, CalendarCache>> iterator = calendercaches.entrySet().iterator();
         while (iterator.hasNext()) {
@@ -179,7 +186,7 @@ public class CalenderController {
             long pastTimestamp = entry.getValue().getTimestamp();
             long currentTimestamp = System.currentTimeMillis();
             long timeDifference = currentTimestamp - pastTimestamp;
-            if (timeDifference <= 30 * 60 * 1000) {  //超过30分钟
+            if (timeDifference <= 10 * 60 * 1000) {  //超过10分钟
                 iterator.remove();
             }
         }

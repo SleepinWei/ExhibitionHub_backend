@@ -77,7 +77,7 @@ CREATE TABLE user_ex_relation (
     user_id INTEGER NOT NULL,
     ex_id INTEGER NOT NULL,
     ex_review_id INTEGER NOT NULL,
-    date DATE NOT NULL,
+    date DATETIME NOT NULL,
     type VARCHAR(20) NOT NULL,
     is_done BOOLEAN NOT NULL,
     result VARCHAR(20) NOT NULL,

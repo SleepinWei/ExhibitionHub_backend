@@ -2,6 +2,7 @@ package com.exhibition.controller;
 
 import com.exhibition.entity.Exhibition;
 import com.exhibition.entity.Tag;
+import com.exhibition.entity.response_type.UncheckedExType;
 import com.exhibition.mapper.ExMapper;
 import com.exhibition.service.IExService;
 import org.junit.Test;
@@ -112,14 +113,17 @@ public class ExhibitionController {
     }
 
     @GetMapping("/getUncheckedEx") // 获取未审核的展览
-    public List<ExhibitionReview> selExhibitionUncheckeds() {
-        List<ExhibitionReview> searchResult = userExRelMapper.getUncheckedEx();
+    public List<UncheckedExType> selExhibitionUncheckeds() {
+        List<UncheckedExType> searchResult = userExRelMapper.getUncheckedEx();
+        System.out.println(searchResult);
+
         return searchResult;
     }
 
     @GetMapping("/getCheckedEx")
     public List<Exhibitionchecked> getCheckedEx(@RequestParam(name = "id") Integer user_id) {
         List<Exhibitionchecked> ret = exService.selectchecked(user_id);
+
         return ret;
     }
 

@@ -8,11 +8,10 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
 import lombok.Data;
 import java.sql.Date;
-import com.exhibition.entity.ExhibitioncheckedStatusBool;
 
 @Data
 @TableName("exhibition")
-public class Exhibitionchecked {
+public class ExhibitioncheckedStatusBool {
     @TableId(value = "id", type = IdType.INPUT)
     private Integer id; // 主键id
 
@@ -36,20 +35,6 @@ public class Exhibitionchecked {
     private Date end_date; // 结束日期
 
     @TableField
-    private String status; // 展览场地名称
-
-    public Exhibitionchecked(ExhibitioncheckedStatusBool i) {
-        this.setName(i.getName());
-        this.setId(i.getId());
-        this.setOrganizer(i.getOrganizer());
-        this.setEnd_date(i.getEnd_date());
-        this.setBegin_date(i.getBegin_date());
-        this.setVenue_name(i.getVenue_name());
-        if (i.getIs_checked()) {
-            this.setStatus("通过");
-        } else {
-            this.setStatus("不通过");
-        }
-    }
+    private Boolean is_checked; // 展览场地名称
 
 }
