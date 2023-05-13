@@ -180,6 +180,8 @@ public class ExhibitionController {
     @GetMapping("/admin/getUnchecked")
     public List<ExhibitionUncheckedAdmin> getUnCheckedEx() {
         List<ExhibitionUncheckedAdmin> ret = exReviewMapper.getUncheckedAdmin();
+        System.out.println("/admin/getUnchecked");
+        System.out.println(ret);
         return ret;
     }
 
