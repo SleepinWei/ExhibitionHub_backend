@@ -81,6 +81,7 @@ public class UserController {
      @PutMapping("/user")//更新用户基本信息
     public boolean update(@RequestBody User user){
         User old=userMapper.selectById(user.getId());
+        System.out.println("bug+"+user.compare(old));
         if(user.compare(old)){
             return false;
         } else {
