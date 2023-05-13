@@ -17,9 +17,9 @@ public interface SubMapper extends BaseMapper<Subscription> {
 
     @Select("SELECT * " +
             "FROM exhibition " +
-            "WHERE (end_date>=#{begin} or begin_date<=#{end}) " +
+            "WHERE NOT (end_date<#{src} or begin_date>#{dst}) " +
             "and name like CONCAT ('%', #{query,jdbcType=VARCHAR},'%')")
-    List<Exhibition> getSearchResult(@Param("begin")String src, @Param("end")String dst, @Param("query")String query);
+    List<Exhibition> getSearchResult(@Param("src")String src, @Param("dst")String dst, @Param("query")String query);
 
 //    @Select("SELECT ex_id,visitdate,name,venue_name,organizer,begin_date,end_date,province,city,area,address,link " +
 //            "FROM subscription,exhibition " +

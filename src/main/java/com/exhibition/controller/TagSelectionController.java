@@ -57,39 +57,39 @@ public class TagSelectionController {
     @PostMapping("/searchByData")
     public List<Exhibition> selectEx(/*@PathVariable String query,
                                      @PathVariable String src, @PathVariable String dst,
-                                     @PathVariable String venue, @PathVariable String tags,
+                                     @PathVariable String organizer, @PathVariable String tags,
                                      @PathVariable String province, @PathVariable String , @PathVariable String area){*/
             @RequestBody Map<String, Object> requestBody){
         String query = (String) requestBody.get("query");
         String src = (String) requestBody.get("src");
         String dst = (String) requestBody.get("dst");
-        String venue = (String) requestBody.get("venue");
+        String organizer = (String) requestBody.get("organizer");
         String tags = (String) requestBody.get("tags");
-        String province = (String) requestBody.get("query");
+        String province = (String) requestBody.get("province");
         String city = (String) requestBody.get("city");
         String area = (String) requestBody.get("area");
 
-        if (src == null || dst == null || venue == null || tags == null || province == null || city == null || area == null) {
+        if (src == null || dst == null || organizer == null || tags == null || province == null || city == null || area == null) {
             return new ArrayList<Exhibition>();
         }
 
-        venue = (venue.equals("null")) ? "" : venue;
+        organizer = (organizer.equals("null")) ? "" : organizer;
         province = (province.equals("null")) ? "" : province;
         city = (city.equals("null")) ? "" : city;
         area = (area.equals("null")) ? "" : area;
         tags = (tags.equals("-1")) ? "" : tags;
 
-        //不包括tag的查表结果
+        // 根据时间和关键词的筛选结果
         List<Exhibition> ExhibitionList = subMapper.getSearchResult(src,dst,query);
 
-        //按不同条件进行筛选
-        if (!venue.isEmpty()) {
-            selectByVenue(ExhibitionList, venue);
+        // 再按其它条件筛选
+        if (!organizer.isEmpty()) {// 按主办方
+            selectByOrganizer(ExhibitionList, organizer);
         }
-        if (!province.isEmpty() && !city.isEmpty() && !area.isEmpty()) {
+        if (!province.isEmpty() && !city.isEmpty() && !area.isEmpty()) {// 按省市区
             selectByLocation(ExhibitionList, province, city, area);
         }
-        if (!tags.isEmpty()) {
+        if (!tags.isEmpty()) {// 按标签
             selectByTag(ExhibitionList, tags);
         }
 
@@ -115,7 +115,7 @@ public class TagSelectionController {
             List<Integer> Tags = exTagMapper.selectAllTagids(exId);// 获取某展览的所有tagid
             boolean remove = true;
             for (Integer tag : Tags) {
-                if (tagids.contains(tag)) {
+                if (tagids.contains(tag-1)) { //前端传来的tag从0开始，后端从1开始，导致标签筛选错误，这里把tag改成tag-1
                     remove = false;
                     break;
                 }
@@ -130,11 +130,11 @@ public class TagSelectionController {
         return ExhibitionList;
     }
 
-    // 按展馆查询
-    private List<Exhibition> selectByVenue(List<Exhibition> ExhibitionList, String venue) {
+    // 按主办方查询
+    private List<Exhibition> selectByOrganizer(List<Exhibition> ExhibitionList, String organizer) {
         for (int i = 0; i < ExhibitionList.size(); i++) {
             Exhibition exhibition = ExhibitionList.get(i);
-            if (!exhibition.getVenue_name().contains(venue)) {
+            if (!exhibition.getOrganizer().contains(organizer)) {
                 Collections.swap(ExhibitionList, i, ExhibitionList.size() - 1);
                 ExhibitionList.remove(ExhibitionList.size() - 1);
                 i--;
@@ -143,7 +143,7 @@ public class TagSelectionController {
         return ExhibitionList;
     }
 
-    //按省市查询
+    //按省市区查询
     private List<Exhibition> selectByLocation(List<Exhibition> ExhibitionList,
                                                    String province, String city, String area) {
         for (int i = 0; i < ExhibitionList.size(); i++) {
