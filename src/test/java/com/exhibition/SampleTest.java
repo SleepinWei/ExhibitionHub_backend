@@ -53,8 +53,8 @@ public class SampleTest {
         return "success";
     }
 
-    @Autowired
-    private IExToBeReviewedService exToBeReviewedService;
+//    @Autowired
+//    private IExToBeReviewedService exToBeReviewedService;
 
     @Autowired
     private IExService exService;

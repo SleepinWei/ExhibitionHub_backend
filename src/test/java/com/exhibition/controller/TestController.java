@@ -30,7 +30,8 @@ public class TestController {
     //http://localhost:8080/test?nickname=zhangsan
     @RequestMapping
     public String hello(String nickname ) {
-        return "hello "+nickname;
+        return "hello " + nickname;
+    }
     @Autowired
     private IExService exService;
 
