@@ -27,16 +27,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/test", produces = "application/json; charset=UTF-8")
 public class TestController {
 
-    // //http://localhost:8080/test?nickname=zhangsan
-    // @RequestMapping
-    // public String hello(String nickname ) {
-    //     return "hello "+nickname;
-    // @Autowired
-    // private IExService exService;
+    //http://localhost:8080/test?nickname=zhangsan
+    @RequestMapping
+    public String hello(String nickname ) {
+        return "hello " + nickname;
+    }
+    @Autowired
+    private IExService exService;
 
-    // @RequestMapping(value = "/get", method = RequestMethod.GET)
-    // public String testGet() {
-    //     return "success";
-    // }
+    @RequestMapping(value = "/get", method = RequestMethod.GET)
+    public String testGet() {
+        return "success";
+    }
 
 }
