@@ -21,4 +21,7 @@ public class ExhibitionUncheckedAdmin {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date date;
 
+    @TableField
+    private Integer id; // 主办方
+
 }
