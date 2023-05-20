@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.exhibition.mapper.ExReTagMapper">
+    <select id="selectTagById" resultType="String">
+        select b.name 
+        from exhibitionRe_tag a join tag b
+        on a.exRe_id=#{keyword}
+        and a.tag_id=b.id;
+    </select>
+</mapper>

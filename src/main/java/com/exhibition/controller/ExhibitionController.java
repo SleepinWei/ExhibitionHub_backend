@@ -3,11 +3,13 @@ package com.exhibition.controller;
 import com.exhibition.entity.Exhibition;
 import com.exhibition.entity.Tag;
 import com.exhibition.mapper.ExMapper;
+import com.exhibition.mapper.ExReTagMapper;
 import com.exhibition.service.IExService;
 
 import org.apache.catalina.connector.Response;
 import org.junit.Test;
 import com.exhibition.entity.ExhibitionReview;
+import com.exhibition.entity.ExhibitionReviewTag;
 import com.exhibition.entity.ExhibitionUncheckedAdmin;
 import com.exhibition.entity.Exhibitionchecked;
 import com.exhibition.entity.UserExRelation;
@@ -78,6 +80,9 @@ public class ExhibitionController {
 
     @Autowired
     private ExToBeReviewedMapper exReviewMapper;
+
+    @Autowired
+    private ExReTagMapper exReTagMapper;
 
     @Autowired
     private UserExRelMapper userExRelMapper;
@@ -153,10 +158,15 @@ public class ExhibitionController {
     }
 
     @GetMapping("/audit/view")
-    public ExhibitionReview auditView(@RequestParam(name = "id") Integer ex_review_id) {
-        ExhibitionReview result = exReviewMapper.selectById(ex_review_id);
-
-        return result;
+    public ExhibitionReviewTag auditView(@RequestParam(name = "id") Integer ex_review_id) {
+        ExhibitionReview resExRe = exReviewMapper.selectById(ex_review_id);
+        List<String> tag_list = exReTagMapper.selectTagById(ex_review_id);
+        System.out.println(tag_list);
+        System.out.println(resExRe);
+        ExhibitionReviewTag res = new ExhibitionReviewTag();
+        BeanUtils.copyProperties(resExRe, res);
+        res.setTag_list(tag_list);
+        return res;
     }
 
     // TO DO
