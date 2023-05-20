@@ -155,6 +155,7 @@ public class ExhibitionController {
     @GetMapping("/audit/view")
     public ExhibitionReview auditView(@RequestParam(name = "id") Integer ex_review_id) {
         ExhibitionReview result = exReviewMapper.selectById(ex_review_id);
+
         return result;
     }
 
