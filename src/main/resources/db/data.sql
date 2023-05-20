@@ -23,8 +23,8 @@
  "images/1.webp","150RMB",false,"上海市","市辖区","嘉定区","上海市嘉定区曹安公路4800号");
 
  INSERT INTO user_ex_relation(user_id,ex_id,ex_review_id,date,type,is_done,result) VALUES
- (2,1,1,"2002-02-02 09:00:00","change",FALSE,"unfinished"),
- (1,2,2,"2002-03-03 09:00:00","change",FALSE,"unfinished");
+ (2,1,5,"2002-02-02 09:00:00","change",FALSE,"unfinished"),
+ (1,2,6,"2002-03-03 09:00:00","change",FALSE,"unfinished");
 
 INSERT INTO tag(id,name) VALUES
 (1,"历史"),
@@ -34,9 +34,7 @@ INSERT INTO exhibition_tag(id,ex_id,tag_id)VALUES
 (1,1,1),
 (4,1,2),
 (2,2,2),
-(3,2,3),
-(5,3,3),
-(6,4,4);
+(3,2,2);
 
 INSERT INTO user(id,role,username,password,email,sex,biography) VALUES
 (1,'管理员','admin','123456','123456@qq.com','男',''),

@@ -20,12 +20,12 @@
         where name like CONCAT ('%', #{keyword,jdbcType=VARCHAR},'%');
     </select>
     <select id="getUncheckedAdmin" resultType="com.exhibition.entity.ExhibitionUncheckedAdmin">
-        select name,organizer,date
+        select name,organizer,date,id
         from ex_review e join user_ex_relation r
         on e.id=r.ex_review_id;
     </select>
     <select id="getUnchecked" resultType="com.exhibition.entity.ExhibitionUncheckedAdmin">
-        select name,organizer,date
+        select name,organizer,date,id
         from ex_review e join user_ex_relation r
         on e.id=r.ex_review_id
         and r.user_id=#{user_id};
