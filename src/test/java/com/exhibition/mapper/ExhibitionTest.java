@@ -24,7 +24,7 @@ public class ExhibitionTest {
     private ExTagMapper exTagMapper;
 
     @Autowired
-    private IExService exService;
+    private ExMapper exMapper;
 
 
     @Test
@@ -50,7 +50,7 @@ public class ExhibitionTest {
 
     @Test
     public void searchByKeywordTest(){
-        List<Exhibition> exhibitions = exService.searchByKeyword("北京");
+        List<Exhibition> exhibitions = exMapper.searchByKeyword("北京");
         exhibitions.forEach(System.out::println);
     }
 }
