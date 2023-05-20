@@ -4,11 +4,11 @@ use exhibition;
 
 CREATE TABLE user(
     id INTEGER NOT NULL AUTO_INCREMENT,
-    role VARCHAR(10) check(role='管理员' or role='普通用户' or role='博物馆') not null,
+    role VARCHAR(10) check(role='管理员' or role='普通用户' or role='博物馆') ,
     username VARCHAR(128) NOT NULL,
     password VARCHAR(32) NOT NULL,
     email VARCHAR(32) NOT NULL,
-    sex VARCHAR(4) check(sex='男' or sex='女') not null,
+    sex VARCHAR(4) check(sex='男' or sex='女') ,
     biography VARCHAR(20),
     PRIMARY KEY(id)
 );
