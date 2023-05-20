@@ -31,4 +31,14 @@
         select distinct organizer
         from exhibition;
     </select>
+
+    <resultMap id="venueMap" type="com.exhibition.entity.response_type.VenueInfo">
+        <result property="venue_name" column="venue_name" javaType="String"/>
+        <result property="venue_address" column="address" javaType="String"/>
+    </resultMap>
+
+    <select id="getAllVenueInfo" resultMap="venueMap">
+        select distinct venue_name, address
+        from exhibition;
+    </select>
 </mapper>

@@ -1,28 +1,23 @@
- INSERT INTO exhibition(id,name,venue_name, organizer,begin_date,end_date,begin_time,end_time,introduction,link,poster_url,ticket_info,is_checked) VALUES
+ INSERT INTO exhibition(id,name,venue_name, organizer,begin_date,end_date,begin_time,end_time,introduction,link,poster_url,ticket_info,is_checked,
+    province,city,area,address) VALUES
  (1,"【北京】国际安徒生奖50周年世界插画大展","北京王府井银泰in88 B2展厅","不知道什么传媒","2023-04-28","2023-10-15","09:00:00","20:00:00"
  ,"横跨百年的传世经典，云集全球插画界“诺贝尔奖”大师代 表画作匠心集成《国际安徒生奖50周年世界插画大展》北京站重磅登陆北京王府井银泰in88！ 26位国际安徒生奖插画家奖得主经典画作，不言而喻的珍贵与稀缺，300余幅作品带你领略艺术大师恢弘的美学世界，“趣味展馆”设计融入炫酷科技与丰富互动体验，打造艺术观展体验。"
- ,"https://bilibili.com","images/2.webp","100RMB",false),
+ ,"https://bilibili.com","images/2.webp","100RMB",false,"上海市","市辖区","杨浦区","上海市杨浦区四平路1239号")),
  (2,"【北京】邂逅·多彩大明 1573","北京市 | 国家典籍博物馆","中国文物交流中心","2023-04-28","2023-08-29","09:00:00","20:00:00"
- ,"1. 130余件明代珍贵文物\n2.不出京的\"金翼善冠\"\n3.大明场景还原，沉浸式打卡\n4.研学互动，活的历史课堂","https://www.douban.com/event/35620820/",
- "images/1.webp","150RMB",false),
+ ,"https://bilibili.com","images/2.webp","100RMB",false,
+ "上海市","市辖区","杨浦区","上海市杨浦区四平路1239号"),
  (3,"【北京】邂逅·多彩大明 1600","北京市 | 国家典籍博物馆","中国文物交流中心","2023-04-28","2023-08-29","09:00:00","20:00:00"
- ,"1. 130余件明代珍贵文物\n2.不出京的\"金翼善冠\"\n3.大明场景还原，沉浸式打卡\n4.研学互动，活的历史课堂","https://www.douban.com/event/35620820/"
- ,"images/1.webp","200RMB",false),
+ "images/1.webp","150RMB",false,"上海市","市辖区","嘉定区","上海市嘉定区曹安公路4800号"),
  (4,"【北京】邂逅·多彩大明 1700","北京市 | 国家典籍博物馆","中国文物交流中心","2023-04-28","2023-08-29","09:00:00","20:00:00"
  ,"1. 130余件明代珍贵文物\n2.不出京的\"金翼善冠\"\n3.大明场景还原，沉浸式打卡\n4.研学互动，活的历史课堂","https://www.douban.com/event/35620820/",
- "images/1.webp","200RMB",false);
+ "images/1.webp","200RMB",false,"上海市","市辖区","嘉定区","上海市嘉定区曹安公路4800号");
 
- UPDATE exhibition
- SET province="上海",city="上海市",area="杨浦区"
- where id=1;
-
- INSERT INTO ex_review(id,name,venue_name, organizer,begin_date,end_date,begin_time,end_time,introduction,link,poster_url,ticket_info,is_checked) VALUES
+ INSERT INTO ex_review(id,name,venue_name, organizer,begin_date,end_date,begin_time,end_time,introduction,link,poster_url,ticket_info,is_checked,province,city,area,address) VALUES
  (1, "【北京】国际安徒生奖","北京王府井银泰in88 B2展厅","不知道什么传媒","2023-04-28","2023-10-15","09:00:00","20:00:00"
  ,"横跨百年的传世经典，云集全球插画界“诺贝尔奖”大师代 表画作匠心集成《国际安徒生奖50周年世界插画大展》北京站重磅登陆北京王府井银泰in88！ 26位国际安徒生奖插画家奖得主经典画作，不言而喻的珍贵与稀缺，300余幅作品带你领略艺术大师恢弘的美学世界，“趣味展馆”设计融入炫酷科技与丰富互动体验，打造艺术观展体验。"
  ,"https://bilibili.com","images/2.webp","300RMB",false),
- (2,"【北京】邂逅·多彩大明xxxx","北京市 | 国家典籍博物馆","中国文物交流中心","2023-04-28","2023-08-29","09:00:00","20:00:00"
- ,"1. 130余件明代珍贵文物\n2.不出京的\"金翼善冠\"\n3.大明场景还原，沉浸式打卡\n4.研学互动，活的历史课堂","https://www.douban.com/event/35620820/",
- "images/1.webp","150RMB",false);
+ (2,"【北京】邂逅·多彩大明xxxx","北京市 | 国家典籍博物馆","中国文物交流中心","2023-04-28","2023-08-29","09:00:00","20:00:00",""
+ ,"https://bilibili.com","images/2.webp","300RMB",false,"上海市","市辖区","杨浦区","上海市杨浦区四平路1239号"),
 
  INSERT INTO user_ex_relation(user_id,ex_id,ex_review_id,date,type,is_done,result) VALUES
  (2,1,1,"2002-02-02 09:00:00","change",FALSE,"unfinished"),
