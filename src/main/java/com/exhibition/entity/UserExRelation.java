@@ -10,6 +10,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Table;
 import java.sql.Date;
+import java.sql.Timestamp;
 
 @Data
 @TableName("user_ex_relation")
@@ -28,12 +29,12 @@ public class UserExRelation {
     @TableField
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date date;
+    private Timestamp date;
 
     @TableField
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date review_date;
+    private Timestamp review_date;
 
     @TableField
     private Boolean is_done;

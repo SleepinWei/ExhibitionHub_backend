@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
@@ -79,7 +80,8 @@ public class ExhibitionController {
         exToBeReviewedService.save(exhibitionReview);
         Integer ex_review_id = exReviewMapper.getNextId();
         Integer user_id = Integer.parseInt(CookieUtil.getCookies(request).get("cookieAccount"));
-        UserExRelation newRelation = new UserExRelation(user_id, -1, ex_review_id, new Date(System.currentTimeMillis()),new Date(System.currentTimeMillis()),
+        UserExRelation newRelation = new UserExRelation(user_id, -1, ex_review_id, new Timestamp(System.currentTimeMillis()),
+                new Timestamp(System.currentTimeMillis()),
                 false, "unfinished", "新增");
         userExRelMapper.insert(newRelation);
 
@@ -96,7 +98,7 @@ public class ExhibitionController {
 
         Integer ex_review_id = exReviewMapper.getNextId();
         Integer user_id = Integer.parseInt(CookieUtil.getCookies(request).get("cookieAccount"));
-        Date current = new Date(System.currentTimeMillis());
+        Timestamp current = new Timestamp(System.currentTimeMillis());
         UserExRelation newreview = new UserExRelation(user_id, ex_id, ex_review_id, current,current, Boolean.FALSE,
                 "unfinished", "修改");
         userExRelMapper.insert(newreview);
@@ -118,6 +120,7 @@ public class ExhibitionController {
         // 修改relation 状态
         relation.setIs_done(Boolean.TRUE);
         relation.setResult("pass");
+        relation.setReview_date(new Timestamp(System.currentTimeMillis()));
         userExRelMapper.updateById(relation);
 
         if (ex_id == -1) {
@@ -138,6 +141,7 @@ public class ExhibitionController {
         UserExRelation relation = userExRelMapper.selectById(ex_review_id);
         relation.setIs_done(Boolean.TRUE);
         relation.setResult("refuse");
+        relation.setReview_date(new Timestamp(System.currentTimeMillis()));
         userExRelMapper.updateById(relation);
 
         return "success";
