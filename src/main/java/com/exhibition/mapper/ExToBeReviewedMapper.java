@@ -1,7 +1,7 @@
 package com.exhibition.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.exhibition.entity.ExhibitionUncheckedAdmin;
+import com.exhibition.entity.response_type.ExhibitionUncheckedAdmin;
 import com.exhibition.entity.ExhibitionReview;
 
 import java.util.List;

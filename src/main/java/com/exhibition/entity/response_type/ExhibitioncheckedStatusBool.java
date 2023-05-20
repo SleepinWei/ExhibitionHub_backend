@@ -1,4 +1,4 @@
-package com.exhibition.entity;
+package com.exhibition.entity.response_type;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
@@ -10,30 +10,21 @@ import lombok.Data;
 import java.sql.Date;
 
 @Data
-@TableName("exhibition")
 public class ExhibitioncheckedStatusBool {
-    @TableId(value = "id", type = IdType.INPUT)
     private Integer id; // 主键id
 
-    @TableField
+    private Integer user_id;
+
     private String name; // 展览名称
 
-    @TableField
-    private String venue_name; // 展览场地名称
-
-    @TableField
-    private String organizer; // 展览场地名称
-
-    @TableField
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    private Date begin_date; // 开始日期
+    private Date date; // 开始日期
 
-    @TableField
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    private Date end_date; // 结束日期
+    private Date review_date; // 结束日期
 
-    @TableField
     private String result;
+    private String type;
 }

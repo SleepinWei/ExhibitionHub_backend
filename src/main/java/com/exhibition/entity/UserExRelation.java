@@ -31,6 +31,11 @@ public class UserExRelation {
     private Date date;
 
     @TableField
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date review_date;
+
+    @TableField
     private Boolean is_done;
 
     @TableField
