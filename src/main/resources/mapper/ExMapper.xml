@@ -13,18 +13,32 @@
             select * from exhibition_tag as et where et.ex_id=#{ex_id}
         ) as t left join tag on t.tag_id=tag.id;
     </select>
+<!--    select checked 仍然在搜索 ex_review-->
     <select id="selectCheckedAdmin" resultType="com.exhibition.entity.ExhibitioncheckedStatusBool">
-        select id,name,venue_name,organizer,begin_date,end_date,is_checked from exhibition;
+        select id,name,venue_name,organizer,begin_date,end_date,result
+        from user_ex_relation as u left join ex_review as e on u.ex_review_id=e.id
+        where is_done=True;
     </select>
     <select id="selectchecked" resultType="com.exhibition.entity.ExhibitioncheckedStatusBool">
-        select id,name,venue_name,organizer,begin_date,end_date,is_checked
-        from user_ex_relation u join exhibition e
+        select id,name,venue_name,organizer,begin_date,end_date,result
+        from user_ex_relation as u left join ex_review as e
         on u.user_id = #{keyword}
-        and u.ex_id=e.id;
+        and u.ex_id=e.id
+        where is_done=True;
     </select>
 
     <select id="getAllOrganizers" resultType="java.lang.String">
         select distinct organizer
+        from exhibition;
+    </select>
+
+    <resultMap id="venueMap" type="com.exhibition.entity.response_type.VenueInfo">
+        <result property="venue_name" column="venue_name" javaType="String"/>
+        <result property="venue_address" column="address" javaType="String"/>
+    </resultMap>
+
+    <select id="getAllVenueInfo" resultMap="venueMap">
+        select distinct venue_name, address
         from exhibition;
     </select>
 </mapper>

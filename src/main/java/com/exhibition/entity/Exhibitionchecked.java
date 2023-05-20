@@ -36,7 +36,7 @@ public class Exhibitionchecked {
     private Date end_date; // 结束日期
 
     @TableField
-    private String status; // 展览场地名称
+    private String status;
 
     public Exhibitionchecked(ExhibitioncheckedStatusBool i) {
         this.setName(i.getName());
@@ -45,11 +45,7 @@ public class Exhibitionchecked {
         this.setEnd_date(i.getEnd_date());
         this.setBegin_date(i.getBegin_date());
         this.setVenue_name(i.getVenue_name());
-        if (i.getIs_checked()) {
-            this.setStatus("通过");
-        } else {
-            this.setStatus("不通过");
-        }
+        this.setStatus(i.getResult());
     }
 
 }
