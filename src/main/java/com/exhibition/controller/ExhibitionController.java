@@ -1,31 +1,25 @@
 package com.exhibition.controller;
 
 import com.exhibition.entity.*;
-import com.exhibition.entity.response_type.UncheckedExType;
+import com.exhibition.entity.response_type.ExhibitionUncheckedAdmin;
+import com.exhibition.entity.response_type.ExhibitioncheckedStatusBool;
 import com.exhibition.entity.response_type.VenueInfo;
 import com.exhibition.mapper.ExMapper;
 import com.exhibition.service.IExService;
 
-import org.apache.catalina.connector.Response;
-import org.junit.Test;
 import com.exhibition.mapper.ExToBeReviewedMapper;
 import com.exhibition.mapper.UserExRelMapper;
-import com.exhibition.service.IExService;
 import com.exhibition.service.IExToBeReviewedService;
 
 import com.exhibition.util.CookieUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import com.exhibition.mapper.ExMapper;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import java.sql.Date;
 import java.util.List;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.springframework.beans.BeanUtils;
 
@@ -40,7 +34,7 @@ public class ExhibitionController {
 
     @GetMapping("/searchByKeyword")
     public List<Exhibition> searchByKeyword(@RequestParam(name = "querytext") String querytext) {
-        List<Exhibition> searchResult = exService.searchByKeyword(querytext);
+        List<Exhibition> searchResult = exMapper.searchByKeyword(querytext);
 
         return searchResult;
     }
@@ -85,7 +79,7 @@ public class ExhibitionController {
         exToBeReviewedService.save(exhibitionReview);
         Integer ex_review_id = exReviewMapper.getNextId();
         Integer user_id = Integer.parseInt(CookieUtil.getCookies(request).get("cookieAccount"));
-        UserExRelation newRelation = new UserExRelation(user_id, -1, ex_review_id, new Date(System.currentTimeMillis()),
+        UserExRelation newRelation = new UserExRelation(user_id, -1, ex_review_id, new Date(System.currentTimeMillis()),new Date(System.currentTimeMillis()),
                 false, "unfinished", "新增");
         userExRelMapper.insert(newRelation);
 
@@ -103,7 +97,7 @@ public class ExhibitionController {
         Integer ex_review_id = exReviewMapper.getNextId();
         Integer user_id = Integer.parseInt(CookieUtil.getCookies(request).get("cookieAccount"));
         Date current = new Date(System.currentTimeMillis());
-        UserExRelation newreview = new UserExRelation(user_id, ex_id, ex_review_id, current, Boolean.FALSE,
+        UserExRelation newreview = new UserExRelation(user_id, ex_id, ex_review_id, current,current, Boolean.FALSE,
                 "unfinished", "修改");
         userExRelMapper.insert(newreview);
 

@@ -1,4 +1,4 @@
-package com.exhibition.entity;
+package com.exhibition.entity.response_type;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
@@ -8,10 +8,10 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
 import lombok.Data;
 import java.sql.Date;
-import com.exhibition.entity.ExhibitioncheckedStatusBool;
 
 @Data
 @TableName("exhibition")
+@Deprecated
 public class Exhibitionchecked {
     @TableId(value = "id", type = IdType.INPUT)
     private Integer id; // 主键id
@@ -37,15 +37,4 @@ public class Exhibitionchecked {
 
     @TableField
     private String status;
-
-    public Exhibitionchecked(ExhibitioncheckedStatusBool i) {
-        this.setName(i.getName());
-        this.setId(i.getId());
-        this.setOrganizer(i.getOrganizer());
-        this.setEnd_date(i.getEnd_date());
-        this.setBegin_date(i.getBegin_date());
-        this.setVenue_name(i.getVenue_name());
-        this.setStatus(i.getResult());
-    }
-
 }

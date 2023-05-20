@@ -13,18 +13,20 @@
             select * from exhibition_tag as et where et.ex_id=#{ex_id}
         ) as t left join tag on t.tag_id=tag.id;
     </select>
-<!--    select checked 仍然在搜索 ex_review-->
-    <select id="selectCheckedAdmin" resultType="com.exhibition.entity.ExhibitioncheckedStatusBool">
-        select id,name,venue_name,organizer,begin_date,end_date,result
+
+    <select id="selectCheckedAdmin" resultType="com.exhibition.entity.response_type.ExhibitioncheckedStatusBool">
+        select e.id,name,date,review_date,user_id,result,type
         from user_ex_relation as u left join ex_review as e on u.ex_review_id=e.id
-        where is_done=True;
+        where is_done=True
+        Order by review_date;
     </select>
-    <select id="selectchecked" resultType="com.exhibition.entity.ExhibitioncheckedStatusBool">
-        select id,name,venue_name,organizer,begin_date,end_date,result
-        from user_ex_relation as u left join ex_review as e
-        on u.user_id = #{keyword}
-        and u.ex_id=e.id
-        where is_done=True;
+
+    <select id="selectchecked" resultType="com.exhibition.entity.response_type.ExhibitioncheckedStatusBool">
+        select e.id,name,date,review_date,user_id,result,type
+        from user_ex_relation u left join ex_review as e
+        on u.ex_id=e.id
+        where u.user_id = #{keyword} and is_done=True
+        Order by review_date;
     </select>
 
     <select id="getAllOrganizers" resultType="java.lang.String">

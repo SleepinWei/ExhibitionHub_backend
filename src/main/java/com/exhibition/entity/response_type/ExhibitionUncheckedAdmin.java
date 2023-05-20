@@ -1,4 +1,4 @@
-package com.exhibition.entity;
+package com.exhibition.entity.response_type;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -8,20 +8,16 @@ import lombok.Data;
 import java.sql.Date;
 
 @Data
-@TableName("ex_review")
 public class ExhibitionUncheckedAdmin {
-    @TableField
-    private String name;
+    private String name; // 展览名
 
-    @TableField
-    private String organizer; // 主办方
+    private Integer id; // 修改记录id
 
-    @TableField
+    private String user_id; // 修改人
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date date;
+    private Date date; // 修改日期
 
-    @TableField
-    private Integer id; // 主办方    
-
+    private String type;
 }

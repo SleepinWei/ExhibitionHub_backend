@@ -19,19 +19,20 @@
         from ex_review
         where name like CONCAT ('%', #{keyword,jdbcType=VARCHAR},'%');
     </select>
-    <select id="getUncheckedAdmin" resultType="com.exhibition.entity.ExhibitionUncheckedAdmin">
-        select name,organizer,date,id
+    <select id="getUncheckedAdmin" resultType="com.exhibition.entity.response_type.ExhibitionUncheckedAdmin">
+        select name,e.id,user_id,date,type
         from ex_review e join user_ex_relation r
         on e.id=r.ex_review_id
         where is_done=False;
     </select>
-    <select id="getUnchecked" resultType="com.exhibition.entity.ExhibitionUncheckedAdmin">
-        select name,organizer,date,id
+    <select id="getUnchecked" resultType="com.exhibition.entity.response_type.ExhibitionUncheckedAdmin">
+        select name,e.id,user_id,date,type
         from ex_review e join user_ex_relation r
         on e.id=r.ex_review_id
         and r.user_id=#{user_id}
         where is_done=False;
     </select>
+
     <select id="getNextId" resultType="java.lang.Integer">
         select max(id) from ex_review;
     </select>
