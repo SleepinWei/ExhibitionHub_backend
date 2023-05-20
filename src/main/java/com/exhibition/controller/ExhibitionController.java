@@ -161,8 +161,8 @@ public class ExhibitionController {
     public ExhibitionReviewTag auditView(@RequestParam(name = "id") Integer ex_review_id) {
         ExhibitionReview resExRe = exReviewMapper.selectById(ex_review_id);
         List<String> tag_list = exReTagMapper.selectTagById(ex_review_id);
-        System.out.println(tag_list);
-        System.out.println(resExRe);
+        // System.out.println(tag_list);
+        // System.out.println(resExRe);
         ExhibitionReviewTag res = new ExhibitionReviewTag();
         BeanUtils.copyProperties(resExRe, res);
         res.setTag_list(tag_list);
