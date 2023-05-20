@@ -63,17 +63,17 @@ public class TagSelectionController {
         String query = (String) requestBody.get("query");
         String src = (String) requestBody.get("src");
         String dst = (String) requestBody.get("dst");
-        String organizer = (String) requestBody.get("organizer");
+        String venue = (String) requestBody.get("venue");
         String tags = (String) requestBody.get("tags");
         String province = (String) requestBody.get("province");
         String city = (String) requestBody.get("city");
         String area = (String) requestBody.get("area");
 
-        if (src == null || dst == null || organizer == null || tags == null || province == null || city == null || area == null) {
+        if (src == null || dst == null || venue == null || tags == null || province == null || city == null || area == null) {
             return new ArrayList<Exhibition>();
         }
 
-        organizer = (organizer.equals("null")) ? "" : organizer;
+        venue = (venue.equals("null")) ? "" : venue;
         province = (province.equals("null")) ? "" : province;
         city = (city.equals("null")) ? "" : city;
         area = (area.equals("null")) ? "" : area;
@@ -83,8 +83,8 @@ public class TagSelectionController {
         List<Exhibition> ExhibitionList = subMapper.getSearchResult(src,dst,query);
 
         // 再按其它条件筛选
-        if (!organizer.isEmpty()) {// 按主办方
-            selectByOrganizer(ExhibitionList, organizer);
+        if (!venue.isEmpty()) {// 按主办方
+            selectByVenue(ExhibitionList, venue);
         }
         if (!province.isEmpty() && !city.isEmpty() && !area.isEmpty()) {// 按省市区
             selectByLocation(ExhibitionList, province, city, area);
@@ -130,11 +130,11 @@ public class TagSelectionController {
         return ExhibitionList;
     }
 
-    // 按主办方查询
-    private List<Exhibition> selectByOrganizer(List<Exhibition> ExhibitionList, String organizer) {
+    // 按展馆查询
+    private List<Exhibition> selectByVenue(List<Exhibition> ExhibitionList, String venue) {
         for (int i = 0; i < ExhibitionList.size(); i++) {
             Exhibition exhibition = ExhibitionList.get(i);
-            if (!exhibition.getOrganizer().contains(organizer)) {
+            if (!exhibition.getVenue_name().contains(venue)) {
                 Collections.swap(ExhibitionList, i, ExhibitionList.size() - 1);
                 ExhibitionList.remove(ExhibitionList.size() - 1);
                 i--;

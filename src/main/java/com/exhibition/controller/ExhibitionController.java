@@ -3,6 +3,7 @@ package com.exhibition.controller;
 import com.exhibition.entity.Exhibition;
 import com.exhibition.entity.Tag;
 import com.exhibition.entity.response_type.UncheckedExType;
+import com.exhibition.entity.response_type.VenueInfo;
 import com.exhibition.mapper.ExMapper;
 import com.exhibition.service.IExService;
 
@@ -196,4 +197,10 @@ public class ExhibitionController {
     // ExhibitionToBeReviewed searchResult = exMapper.selectUnchecked();
     // return searchResult;
     // }
+
+    @GetMapping("/ExhibitionMap/getAllVenue")
+    List<VenueInfo> getAllVenueInfo(){
+        List<VenueInfo> infos = exMapper.getAllVenueInfo();
+        return infos;
+    }
 }
