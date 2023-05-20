@@ -1,17 +1,12 @@
 package com.exhibition.controller;
 
-import com.exhibition.entity.Exhibition;
-import com.exhibition.entity.Tag;
+import com.exhibition.entity.*;
 import com.exhibition.entity.response_type.UncheckedExType;
 import com.exhibition.mapper.ExMapper;
 import com.exhibition.service.IExService;
 
 import org.apache.catalina.connector.Response;
 import org.junit.Test;
-import com.exhibition.entity.ExhibitionReview;
-import com.exhibition.entity.ExhibitionUncheckedAdmin;
-import com.exhibition.entity.Exhibitionchecked;
-import com.exhibition.entity.UserExRelation;
 import com.exhibition.mapper.ExToBeReviewedMapper;
 import com.exhibition.mapper.UserExRelMapper;
 import com.exhibition.service.IExService;
@@ -116,6 +111,7 @@ public class ExhibitionController {
 
     @GetMapping("/audit/pass")
     public String auditExPass(@RequestParam(name = "id") Integer ex_review_id) {
+        System.out.println("/audit/pass");
         // 此id为ex_review_id
         ExhibitionReview exPassTmp = exToBeReviewedService.getById(ex_review_id);
         UserExRelation relation = userExRelMapper.selectById(ex_review_id);
@@ -166,8 +162,8 @@ public class ExhibitionController {
     }
 
     @GetMapping("/getCheckedEx")
-    public List<Exhibitionchecked> getCheckedEx(@RequestParam(name = "id") Integer user_id) {
-        List<Exhibitionchecked> ret = exService.selectchecked(user_id);
+    public List<ExhibitioncheckedStatusBool> getCheckedEx(@RequestParam(name = "id") Integer user_id) {
+        List<ExhibitioncheckedStatusBool> ret = exMapper.selectchecked(user_id);
         return ret;
     }
 
@@ -186,8 +182,8 @@ public class ExhibitionController {
     }
 
     @GetMapping("/admin/getChecked")
-    public List<Exhibitionchecked> adminGetChecked() {
-        List<Exhibitionchecked> ret = exService.selectCheckedAdmin();
+    public List<ExhibitioncheckedStatusBool> adminGetChecked() {
+        List<ExhibitioncheckedStatusBool> ret = exMapper.selectCheckedAdmin();
         return ret;
     }
 

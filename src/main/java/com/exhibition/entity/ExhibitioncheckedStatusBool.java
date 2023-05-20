@@ -35,6 +35,5 @@ public class ExhibitioncheckedStatusBool {
     private Date end_date; // 结束日期
 
     @TableField
-    private Boolean is_checked; // 展览场地名称
-
+    private String result;
 }
