@@ -6,6 +6,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import java.sql.Date;
+import java.sql.Timestamp;
 
 @Data
 public class ExhibitionUncheckedAdmin {
@@ -17,7 +18,7 @@ public class ExhibitionUncheckedAdmin {
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date date; // 修改日期
+    private Timestamp date; // 修改日期
 
     private String type;
 }
