@@ -197,4 +197,10 @@ public class ExhibitionController {
         List<VenueInfo> infos = exMapper.getAllVenueInfo();
         return infos;
     }
+
+    @GetMapping("/getExPoster")
+    List<Exhibition> getPoster(){
+        List<Exhibition> infos = exMapper.getExInfo();
+        return infos;
+    }
 }
