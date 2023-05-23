@@ -1,6 +1,7 @@
 package com.exhibition.controller;
 
 import com.exhibition.entity.*;
+import com.exhibition.entity.request_type.ExhibitionChange;
 import com.exhibition.entity.response_type.ExhibitionUncheckedAdmin;
 import com.exhibition.entity.response_type.ExhibitioncheckedStatusBool;
 import com.exhibition.entity.response_type.VenueInfo;
@@ -90,9 +91,11 @@ public class ExhibitionController {
 
     @PostMapping("/alterExInfo")
     public String alterExInfo(HttpServletRequest request, HttpServletResponse response,
-            @RequestBody ExhibitionReview exhibitionReview) {
+            @RequestBody ExhibitionChange exhibitionChange) {
         System.out.println("alterExInfo");
-        Integer ex_id = exhibitionReview.getId();
+        Integer ex_id = exhibitionChange.getId();
+        ExhibitionReview exhibitionReview = new ExhibitionReview();
+        exhibitionReview = exhibitionChange;
         exhibitionReview.setId(0);
         exReviewMapper.insert(exhibitionReview);
 
@@ -102,6 +105,8 @@ public class ExhibitionController {
         UserExRelation newreview = new UserExRelation(user_id, ex_id, ex_review_id, current,current, Boolean.FALSE,
                 "unfinished", "修改");
         userExRelMapper.insert(newreview);
+
+        List<Tag> tags = exhibitionChange.getTags();
 
         return "success";
     }
