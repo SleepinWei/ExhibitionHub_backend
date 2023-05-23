@@ -21,4 +21,6 @@ public interface ExMapper extends BaseMapper<Exhibition> {
     List<ExhibitioncheckedStatusBool> selectCheckedAdmin();
 
     List<VenueInfo> getAllVenueInfo();
+
+    List<Exhibition> getExInfo();
 }

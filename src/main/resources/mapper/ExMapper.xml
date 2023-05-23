@@ -43,4 +43,10 @@
         select distinct venue_name, address
         from exhibition;
     </select>
+
+    <select id="getExInfo" resultType="com.exhibition.entity.Exhibition">
+        select exhibition.*
+        from exhibition;
+    </select>
+
 </mapper>
