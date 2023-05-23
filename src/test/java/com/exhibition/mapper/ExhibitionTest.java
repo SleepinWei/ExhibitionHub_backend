@@ -23,33 +23,32 @@ public class ExhibitionTest {
     @Autowired
     private ExTagMapper exTagMapper;
 
-    @Autowired
-    private ExMapper exMapper;
-
-
     @Test
-    public void testGetAllOrganizer(){
+    public void testGetAllOrganizer() {
         List<String> organizers = exMapper.getAllOrganizers();
         organizers.forEach(System.out::println);
     }
+
     @Test
-    public void testExhibitionSelect(){
-        List<Exhibition> list= exMapper.selectList(null);
-        list.forEach(System.out::println);
-    }
-    @Test
-    public void testTagSelect(){
-        List<Tag> list = tagMapper.selectList(null);
-        list.forEach(System.out::println);
-    }
-    @Test
-    public void testExhibitionTagSelect(){
-        List<ExTag> list= exTagMapper.selectList(null);
+    public void testExhibitionSelect() {
+        List<Exhibition> list = exMapper.selectList(null);
         list.forEach(System.out::println);
     }
 
     @Test
-    public void searchByKeywordTest(){
+    public void testTagSelect() {
+        List<Tag> list = tagMapper.selectList(null);
+        list.forEach(System.out::println);
+    }
+
+    @Test
+    public void testExhibitionTagSelect() {
+        List<ExTag> list = exTagMapper.selectList(null);
+        list.forEach(System.out::println);
+    }
+
+    @Test
+    public void searchByKeywordTest() {
         List<Exhibition> exhibitions = exMapper.searchByKeyword("北京");
         exhibitions.forEach(System.out::println);
     }

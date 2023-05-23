@@ -37,7 +37,8 @@ CREATE TABLE exhibition(
     link VARCHAR(256) DEFAULT NULL,
     poster_url VARCHAR(256) DEFAULT NULL,
     is_checked BOOLEAN NOT NULL DEFAULT FALSE,
-    PRIMARY KEY(id)
+    PRIMARY KEY(id),
+    FULLTEXT KEY (name,introduction) WITH PARSER `ngram` 
 );
 
 CREATE TABLE ex_review(
@@ -87,5 +88,11 @@ CREATE TABLE user_ex_relation (
     result VARCHAR(20) NOT NULL,
 --    true : finished , false: unfinished
     PRIMARY KEY (ex_review_id)
+);
+
+CREATE TABLE search_score (
+    id INTEGER NOT NULL,
+    score FLOAT NOT NULL DEFAULT 1, --设置为1是因为如果输入空字符串不做匹配，防止因为初始值问题认为搜索内容不匹配
+    FOREIGN KEY (id) REFERENCES exhibition(id)
 );
 
