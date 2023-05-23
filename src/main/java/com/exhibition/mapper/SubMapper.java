@@ -19,14 +19,14 @@ public interface SubMapper extends BaseMapper<Subscription> {
         List<SubExhibitionTemp> getUserSubscription(@Param("userid") Integer userid, @Param("begin") String begin,
                         @Param("end") String end);
 
-        @Select("SELECT * "
-                        +
+        @Select("SELECT * " +
                         "FROM exhibition " +
                         "WHERE NOT (end_date<#{src} or begin_date>#{dst})")
         List<Exhibition> getSearchResult(@Param("src") String src, @Param("dst") String dst);
 
         @Select("SELECT id , match(name, introduction) against ( #{query} IN NATURAL LANGUAGE MODE ) as score "
-                        + "FROM exhibition")
+                        + "FROM exhibition "
+                        + "order by score ")
         List<searchScore> getSearchScore(@Param("query") String query);
 
         // @Select("SELECT

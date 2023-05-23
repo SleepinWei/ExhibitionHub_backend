@@ -87,26 +87,28 @@ public class TagSelectionController {
         tags = (tags.equals("-1")) ? "" : tags;
 
         List<searchScore> scoreList = new ArrayList<searchScore>();
-
         // 根据时间和关键词的筛选结果
         List<Exhibition> ExhibitionList = subMapper.getSearchResult(src, dst);
 
-        if (query != null) {
-            // 内容匹配相似度
+        if (query != "") {
+            // 内容匹配相似度（按照score降序排列）
             scoreList = subMapper.getSearchScore(query);
-        }
-
-        for (int i = 0; i < scoreList.size(); i++) {
-            searchScore ex_score = scoreList.get(i);
-            System.out.println(ex_score);
-            if (ex_score.getScore() <= 0) {
-                Collections.swap(scoreList, i, ExhibitionList.size() - 1);
-                scoreList.remove(scoreList.size() - 1);
-
-                Collections.swap(ExhibitionList, i, ExhibitionList.size() - 1);
-                ExhibitionList.remove(ExhibitionList.size() - 1);
-                i--;
+            for (int i = 0; i < scoreList.size(); i++) {
+                searchScore ex_score = scoreList.get(i);
+                if (ex_score.getScore() <= 0) {
+                    Collections.swap(scoreList, i, ExhibitionList.size() - 1);
+                    scoreList.remove(scoreList.size() - 1);
+                    i--;
+                }
             }
+
+            List<Exhibition> temp = new ArrayList<Exhibition>();
+            for (int i = 0; i < scoreList.size(); i++) {
+                searchScore ex_score = scoreList.get(i);
+                int id = ex_score.getId();
+                temp.add(ExhibitionList.get(id - 1));
+            }
+            ExhibitionList = temp;
         }
 
         // 再按其它条件筛选

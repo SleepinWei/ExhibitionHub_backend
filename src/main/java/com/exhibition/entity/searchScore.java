@@ -15,7 +15,8 @@ public class searchScore {
     @TableField
     private Float score;
 
-    public searchScore() {
+    public Integer getId() {
+        return id;
     }
 
     public Float getScore() {
