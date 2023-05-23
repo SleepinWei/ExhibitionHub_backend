@@ -35,9 +35,9 @@ public class RecommendController {
     public List<Exhibition> getAllRecommendations(@PathVariable Integer ex_id)
     {
 //        Integer ex_id = parseInt(String.valueOf(requestBody.get("ex_id")));
-        System.out.println(ex_id);
+//        System.out.println(ex_id);
         List<Tag> tags = exMapper.findTagByExId(ex_id); // 获取某一展览所有tag
-        System.out.println(tags);
+//        System.out.println(tags);
         List<Integer> getAllExids = new ArrayList<>(); // 至少包含tags之一的所有展览
         for(Tag tag : tags){
             List<Integer> getExIds =  recommendMapper.getExIds(tag.getId());// 获取含有某tag的所有展览id
@@ -50,9 +50,11 @@ public class RecommendController {
         // 获取所有推荐展览
         List<Exhibition> recommendations = new ArrayList<>();
         for(Integer getAllExId : getAllExids){
-            recommendations.add(recommendMapper.getAllRecommendations(getAllExId));
+            if(getAllExId!=ex_id)// 不推荐该展览本身
+                recommendations.add(recommendMapper.getAllRecommendations(getAllExId));
         }
-        System.out.println(recommendations);
+//        System.out.println("---------------------------------");
+//        System.out.println(recommendations);
         return recommendations;
     }
 }
