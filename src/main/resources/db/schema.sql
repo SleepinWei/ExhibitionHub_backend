@@ -69,6 +69,13 @@ CREATE TABLE exhibition_tag(
     PRIMARY KEY(id)
 );
 
+CREATE TABLE exhibitionRe_tag(
+    id INTEGER NOT NULL AUTO_INCREMENT,
+    exRe_id INTEGER NOT NULL,
+    tag_id INTEGER NOT NULL,
+    PRIMARY KEY(id)
+);
+
 CREATE TABLE subscription(
     user_id INTEGER NOT NULL AUTO_INCREMENT,
     ex_id INTEGER NOT NULL,
