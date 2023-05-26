@@ -67,7 +67,8 @@ CREATE TABLE exhibition_tag(
     id INTEGER NOT NULL AUTO_INCREMENT,
     ex_id INTEGER NOT NULL,
     tag_id INTEGER NOT NULL,
-    PRIMARY KEY(id)
+    PRIMARY KEY(id),
+    FOREIGN KEY (ex_id) REFERENCES exhibition(id)
 );
 
 CREATE TABLE subscription(
