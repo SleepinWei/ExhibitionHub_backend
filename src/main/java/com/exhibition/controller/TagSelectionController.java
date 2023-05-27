@@ -93,20 +93,23 @@ public class TagSelectionController {
         if (query != "") {
             // 内容匹配相似度（按照score降序排列）
             scoreList = subMapper.getSearchScore(query);
+            List<Exhibition> temp = new ArrayList<Exhibition>();
+
             for (int i = 0; i < scoreList.size(); i++) {
                 searchScore ex_score = scoreList.get(i);
                 if (ex_score.getScore() <= 0) {
-                    Collections.swap(scoreList, i, ExhibitionList.size() - 1);
-                    scoreList.remove(scoreList.size() - 1);
-                    i--;
-                }
-            }
-
-            List<Exhibition> temp = new ArrayList<Exhibition>();
-            for (int i = 0; i < scoreList.size(); i++) {
-                searchScore ex_score = scoreList.get(i);
-                int id = ex_score.getId();
-                temp.add(ExhibitionList.get(id - 1));
+                    break;
+                } // 由于是降序排列，后面都是0不需要遍历了
+                else {
+                    int id = ex_score.getId();
+                    for (int j = 0; j < ExhibitionList.size(); j++) {
+                        if (ExhibitionList.get(j).getId() == id) {// 找到id对应的展览
+                            temp.add(ExhibitionList.get(j));
+                            break;
+                        }
+                    }
+                    // temp.add(ExhibitionList.get(id - 1));
+                } // 加到temp里
             }
             ExhibitionList = temp;
         }

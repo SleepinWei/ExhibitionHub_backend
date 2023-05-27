@@ -26,7 +26,7 @@ public interface SubMapper extends BaseMapper<Subscription> {
 
         @Select("SELECT id , match(name, introduction) against ( #{query} IN NATURAL LANGUAGE MODE ) as score "
                         + "FROM exhibition "
-                        + "order by score ")
+                        + "order by score desc")
         List<searchScore> getSearchScore(@Param("query") String query);
 
         // @Select("SELECT
