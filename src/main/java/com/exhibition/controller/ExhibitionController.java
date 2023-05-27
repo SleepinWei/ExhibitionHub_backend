@@ -10,7 +10,7 @@ import com.exhibition.mapper.ExReTagMapper;
 import com.exhibition.service.IExService;
 
 import com.exhibition.entity.ExhibitionReview;
-import com.exhibition.entity.ExhibitionReviewTag;
+import com.exhibition.entity.response_type.ExhibitionReviewTag;
 import com.exhibition.entity.UserExRelation;
 import com.exhibition.mapper.ExToBeReviewedMapper;
 import com.exhibition.mapper.UserExRelMapper;
@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -161,13 +160,7 @@ public class ExhibitionController {
 
     @GetMapping("/audit/view")
     public ExhibitionReviewTag auditView(@RequestParam(name = "id") Integer ex_review_id) {
-        ExhibitionReview resExRe = exReviewMapper.selectById(ex_review_id);
-        List<String> tag_list = exReTagMapper.selectTagById(ex_review_id);
-        // System.out.println(tag_list);
-        // System.out.println(resExRe);
-        ExhibitionReviewTag res = new ExhibitionReviewTag();
-        BeanUtils.copyProperties(resExRe, res);
-        res.setTag_list(tag_list);
+        ExhibitionReviewTag res = exToBeReviewedService.selectFullInfoById(ex_review_id);
         return res;
     }
 
