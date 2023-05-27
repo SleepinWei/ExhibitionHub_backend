@@ -5,6 +5,7 @@ import com.exhibition.mapper.ExTagMapper;
 import com.exhibition.mapper.SubMapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.exhibition.mapper.ExMapper;
+import com.exhibition.mapper.TagMapper;
 import com.exhibition.service.IExService;
 import com.exhibition.service.ITagService;
 import com.exhibition.util.NumericUtil;
@@ -36,6 +37,9 @@ public class TagSelectionController {
     private ExTagMapper exTagMapper;
 
     @Autowired
+    private TagMapper tagMapper;
+
+    @Autowired
     private SubMapper subMapper;
 
     // 获取标签名列表
@@ -44,6 +48,11 @@ public class TagSelectionController {
         List<String> tags = tagservice.getTagName();
         System.out.println(tags);
         return tags;
+    }
+
+    @GetMapping("/getAllTags")
+    public List<Tag> getAllTags(){
+        return tagMapper.getAllTags();
     }
 
     // 获取主办方列表

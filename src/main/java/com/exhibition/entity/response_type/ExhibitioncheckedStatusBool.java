@@ -28,5 +28,6 @@ public class ExhibitioncheckedStatusBool {
     private Timestamp review_date; // 结束日期
 
     private String result;
+
     private String type;
 }

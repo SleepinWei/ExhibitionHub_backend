@@ -1,14 +1,13 @@
 package com.exhibition.controller;
 
 import com.exhibition.entity.*;
-import com.exhibition.entity.response_type.ExhibitionUncheckedAdmin;
-import com.exhibition.entity.response_type.ExhibitioncheckedStatusBool;
-import com.exhibition.entity.response_type.VenueInfo;
-import com.exhibition.mapper.ExMapper;
+import com.exhibition.entity.request_type.ExhibitionChange;
+import com.exhibition.entity.response_type.*;
+import com.exhibition.mapper.*;
 import com.exhibition.service.IExService;
 
-import com.exhibition.mapper.ExToBeReviewedMapper;
-import com.exhibition.mapper.UserExRelMapper;
+import com.exhibition.entity.ExhibitionReview;
+import com.exhibition.entity.UserExRelation;
 import com.exhibition.service.IExToBeReviewedService;
 
 import com.exhibition.util.CookieUtil;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -41,18 +39,18 @@ public class ExhibitionController {
     }
 
     @GetMapping("/searchById")
-    public Exhibition searchById(HttpServletRequest request, HttpServletResponse response,
+    public ExhibitionTag searchById(HttpServletRequest request, HttpServletResponse response,
             @RequestParam(name = "exId") Integer exId) {
         // test
         // Exhibition exInfo = new Exhibition(1,"2","3",
         // Date.valueOf("2001-01-01"),Date.valueOf("2001-03-03"),"Shanghai","sssssssssss\nsssssss","https://bilibili.com");
-        Exhibition result = exService.getById(exId);
+        ExhibitionTag result = exService.selectAllInfoById(exId);
         if (result == null) {
             // The Exhibition is not found
             System.out.println("Exhibition Not Exist");
 
             response.setStatus(400);
-            return new Exhibition();
+            return new ExhibitionTag();
         }
 
         return result;
@@ -68,14 +66,20 @@ public class ExhibitionController {
     private IExToBeReviewedService exToBeReviewedService;
 
     @Autowired
+    private ExTagMapper exTagMapper;
+
+    @Autowired
     private ExToBeReviewedMapper exReviewMapper;
+
+    @Autowired
+    private ExReTagMapper exReTagMapper;
 
     @Autowired
     private UserExRelMapper userExRelMapper;
 
     @PostMapping("/addEx") // 增加展览信息
     public String addEx(HttpServletRequest request, HttpServletResponse response,
-            @RequestBody ExhibitionReview exhibitionReview) {
+            @RequestBody ExhibitionReviewTag exhibitionReview) {
         // add a new exhibition
         exToBeReviewedService.save(exhibitionReview);
         Integer ex_review_id = exReviewMapper.getNextId();
@@ -85,14 +89,23 @@ public class ExhibitionController {
                 false, "unfinished", "新增");
         userExRelMapper.insert(newRelation);
 
+        // add tag records
+        List<Tag> tags = exhibitionReview.getTag_list();
+        for (Tag tag: tags) {
+            ExReTag relation = new ExReTag(0, ex_review_id, tag.getId());
+            exReTagMapper.updateById(relation);
+        }
+
         return "success";
     }
 
     @PostMapping("/alterExInfo")
     public String alterExInfo(HttpServletRequest request, HttpServletResponse response,
-            @RequestBody ExhibitionReview exhibitionReview) {
+            @RequestBody ExhibitionReviewTag exhibitionTag) {
         System.out.println("alterExInfo");
-        Integer ex_id = exhibitionReview.getId();
+        Integer ex_id = exhibitionTag.getId();
+        ExhibitionReview exhibitionReview = new ExhibitionReview();
+        exhibitionReview = exhibitionTag;
         exhibitionReview.setId(0);
         exReviewMapper.insert(exhibitionReview);
 
@@ -103,6 +116,13 @@ public class ExhibitionController {
                 "unfinished", "修改");
         userExRelMapper.insert(newreview);
 
+        // add tag records
+        List<Tag> tags = exhibitionTag.getTag_list();
+        for (Tag tag: tags) {
+            ExReTag relation = new ExReTag(0, ex_review_id, tag.getId());
+            exReTagMapper.insert(relation);
+        }
+
         return "success";
     }
 
@@ -110,8 +130,10 @@ public class ExhibitionController {
     public String auditExPass(@RequestParam(name = "id") Integer ex_review_id) {
         System.out.println("/audit/pass");
         // 此id为ex_review_id
-        ExhibitionReview exPassTmp = exToBeReviewedService.getById(ex_review_id);
+        ExhibitionReviewTag exPassTmp = exToBeReviewedService.selectFullInfoById(ex_review_id);
+
         UserExRelation relation = userExRelMapper.selectById(ex_review_id);
+
         Integer user_id = relation.getUser_id();
         Integer ex_id = relation.getEx_id();
         Exhibition exPass = new Exhibition();
@@ -132,6 +154,15 @@ public class ExhibitionController {
             exPass.setId(ex_id);
             exMapper.updateById(exPass);
         }
+
+        // 修改 exhibition_tag 关系表
+        // 删除原有连接
+        exTagMapper.deleteAllByExId(ex_id);
+        // 添加新连接
+        for(Tag tag:exPassTmp.getTag_list()){
+            exTagMapper.insert(new ExTag(0,ex_id,tag.getId()));
+        }
+
         return "success";
     }
 
@@ -148,9 +179,9 @@ public class ExhibitionController {
     }
 
     @GetMapping("/audit/view")
-    public ExhibitionReview auditView(@RequestParam(name = "id") Integer ex_review_id) {
-        ExhibitionReview result = exReviewMapper.selectById(ex_review_id);
-        return result;
+    public ExhibitionReviewTag auditView(@RequestParam(name = "id") Integer ex_review_id) {
+        ExhibitionReviewTag res = exToBeReviewedService.selectFullInfoById(ex_review_id);
+        return res;
     }
 
     // TO DO
