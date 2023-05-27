@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface ExTagMapper extends BaseMapper<ExTag> {
     List<Integer> selectAllTagids(Integer ex_id);
+
+    void deleteAllByExId(Integer ex_id);
 }

@@ -6,4 +6,9 @@
         from exhibition_tag
         where ex_id = #{ex_id}
     </select>
+
+    <delete id="deleteAllByExId" >
+        delete from exhibition_tag
+        where ex_id=#{ex_id};
+    </delete>
 </mapper>
