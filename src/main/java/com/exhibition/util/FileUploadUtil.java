@@ -56,6 +56,7 @@ public class FileUploadUtil {
         } else {
             System.out.println("not exists");
             fileName = "user.jpg";
+            filePath = classespath + "static/avatars/" + fileName;
             file = new File(filePath);
             System.out.println("==========================exists+==========================" + file.toPath());
             try {
