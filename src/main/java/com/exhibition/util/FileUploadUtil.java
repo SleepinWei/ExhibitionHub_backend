@@ -3,12 +3,14 @@ package com.exhibition.util;
 import java.io.File;
 import java.io.IOException;
 
+import org.springframework.util.ClassUtils;
 import org.springframework.web.multipart.MultipartFile;
 import java.nio.file.Files;
 
 public class FileUploadUtil {
     /**
      * 上传文件
+     * 
      * @param multipartFile
      * @return 文件存储路径
      */
@@ -20,9 +22,10 @@ public class FileUploadUtil {
         // 拼接新的文件名
         String newFileName = uid + suffix;
         // 文件存储位置，文件的目录要存在才行，可以先创建文件目录，然后进行存储
-        File path= new File("");
-        String filePath = path.getAbsolutePath()+"\\src\\main\\resources\\static\\avatars\\"+uid+".jpg" ;
-        System.out.println("lxcr2+++++++++++++"+filePath);
+        File path = new File("");
+        String classespath = ClassUtils.getDefaultClassLoader().getResource("").getPath();
+        String filePath = classespath + "static/avatars/" + uid + ".jpg";
+        System.out.println("lxcr2+++++++++++++" + filePath);
         File file = new File(filePath);
         // 如果文件已存在，则先删除原文件
         if (file.exists()) {
@@ -30,7 +33,7 @@ public class FileUploadUtil {
         }
         // 文件存储
         try {
-            System.out.println("walx+"+file.getAbsolutePath());
+            System.out.println("walx+" + file.getAbsolutePath());
             multipartFile.transferTo(file);
         } catch (IOException e) {
             System.out.println("fail");
@@ -41,21 +44,21 @@ public class FileUploadUtil {
 
     public static byte[] load(int uid) {
         String fileName = uid + ".jpg";
-        String filePath = "src\\main\\resources\\static\\avatars\\" + fileName;
+        String classespath = ClassUtils.getDefaultClassLoader().getResource("").getPath();
+        String filePath = classespath + "static/avatars/" + fileName;
         File file = new File(filePath);
-        if (file.exists()) {            
+        if (file.exists()) {
             try {
                 return Files.readAllBytes(file.toPath());
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
-        else {
+        } else {
             System.out.println("not exists");
-            fileName="user.jpg";
-            filePath = "src\\main\\resources\\static\\avatars\\" + fileName;
+            fileName = "user.jpg";
+            filePath = classespath + "static/avatars/" + fileName;
             file = new File(filePath);
-            System.out.println("==========================exists+=========================="+file.toPath());
+            System.out.println("==========================exists+==========================" + file.toPath());
             try {
                 return Files.readAllBytes(file.toPath());
             } catch (IOException e) {
@@ -66,4 +69,3 @@ public class FileUploadUtil {
         return null;
     }
 }
-

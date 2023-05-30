@@ -42,14 +42,6 @@ public class TagSelectionController {
     @Autowired
     private SubMapper subMapper;
 
-    // 获取标签名列表
-    @GetMapping("/getAllTag")
-    public List<String> getTagName() {
-        List<String> tags = tagservice.getTagName();
-        System.out.println(tags);
-        return tags;
-    }
-
     @GetMapping("/getAllTags")
     public List<Tag> getAllTags(){
         return tagMapper.getAllTags();
@@ -156,7 +148,7 @@ public class TagSelectionController {
             List<Integer> Tags = exTagMapper.selectAllTagids(exId);// 获取某展览的所有tagid
             boolean remove = true;
             for (Integer tag : Tags) {
-                if (tagids.contains(tag - 1)) { // 前端传来的tag从0开始，后端从1开始，导致标签筛选错误，这里把tag改成tag-1
+                if (tagids.contains(tag)) { 
                     remove = false;
                     break;
                 }
