@@ -24,7 +24,7 @@
     <select id="selectchecked" resultType="com.exhibition.entity.response_type.ExhibitioncheckedStatusBool">
         select e.id,name,date,review_date,user_id,result,type
         from user_ex_relation u left join ex_review as e
-        on u.ex_id=e.id
+        on u.ex_review_id=e.id
         where u.user_id = #{keyword} and is_done=True
         Order by review_date;
     </select>

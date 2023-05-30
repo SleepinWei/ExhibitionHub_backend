@@ -27,7 +27,7 @@
     </select>
     <select id="getUnchecked" resultType="com.exhibition.entity.response_type.ExhibitionUncheckedAdmin">
         select name,e.id,user_id,date,type
-        from ex_review e join user_ex_relation r
+        from user_ex_relation as r left join ex_review as e
         on e.id=r.ex_review_id
         and r.user_id=#{user_id}
         where is_done=False;
