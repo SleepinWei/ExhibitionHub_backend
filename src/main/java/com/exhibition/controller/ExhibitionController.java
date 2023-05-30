@@ -5,8 +5,10 @@ import com.exhibition.entity.response_type.*;
 import com.exhibition.mapper.*;
 import com.exhibition.service.IExService;
 import com.exhibition.service.IExToBeReviewedService;
+import com.exhibition.util.Base64DecodedMultipartFile;
 import com.exhibition.util.CookieUtil;
 import com.exhibition.util.FileUploadUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +18,15 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.Timestamp;
+import java.util.Base64;
 import java.util.List;
+import java.util.Map;
+import java.util.Base64.Decoder;
+import org.springframework.util.ClassUtils;
+
+import static java.lang.Integer.parseInt;
+
+import java.io.*;
 
 @RestController
 @RequestMapping()
@@ -75,32 +85,100 @@ public class ExhibitionController {
 
     @PostMapping("/addEx") // 增加展览信息
     public String addEx(HttpServletRequest request, HttpServletResponse response,
-            @RequestBody ExhibitionReviewTag exhibitionReview) {
+            @RequestBody Map<String, Object> requestBody) {
+        String file_base64 = (String) requestBody.get("file_base64");
+        // ObjectMapper objectMapper = new ObjectMapper();
+        // System.out.println(requestBody);
+        ExhibitionReviewTag exReTag = new ExhibitionReviewTag();
+        BeanUtils.copyProperties(requestBody.get("data"), exReTag);
+        System.out.println(exReTag);
+        // ExhibitionReviewTag exhibitionReview =
+        // objectMapper.convertValue(ExhibitionReviewTag.getData(),
+        // ExhibitionReviewTag.class);
+        // ExhibitionReviewTag exhibitionReview = (ExhibitionReviewTag)
+        // requestBody.get("data");
         // add a new exhibition
-        exToBeReviewedService.save(exhibitionReview);
-        Integer ex_review_id = exReviewMapper.getNextId();
-        Integer user_id = Integer.parseInt(CookieUtil.getCookies(request).get("cookieAccount"));
-        UserExRelation newRelation = new UserExRelation(user_id, -1, ex_review_id,
-                new Timestamp(System.currentTimeMillis()),
-                new Timestamp(System.currentTimeMillis()),
-                false, "unfinished", "新增");
-        userExRelMapper.insert(newRelation);
+        // exToBeReviewedService.save(exhibitionReview);
+        // Integer ex_review_id = exReviewMapper.getNextId();
+        // Integer user_id =
+        // Integer.parseInt(CookieUtil.getCookies(request).get("cookieAccount"));
+        // Timestamp time = new Timestamp(System.currentTimeMillis());// 时间戳
+        // UserExRelation newRelation = new UserExRelation(user_id, -1, ex_review_id,
+        // time, time,
+        // false, "unfinished", "新增");
+        // userExRelMapper.insert(newRelation);
 
-        // add tag records
-        List<Tag> tags = exhibitionReview.getTag_list();
-        for (Tag tag : tags) {
-            ExReTag relation = new ExReTag(0, ex_review_id, tag.getId());
-            exReTagMapper.updateById(relation);
-        }
+        // MultipartFile image = null;
+        // StringBuilder base64 = new StringBuilder("");
+        // if (file_base64 != null && !"".equals(file_base64)) {
+        // base64.append(file_base64);
+        // String[] baseStrs = base64.toString().split(",");
+        // Decoder decoder = Base64.getDecoder();
+        // byte[] b = new byte[0];
+        // b = decoder.decode(baseStrs[1]);
+        // for (int j = 0; j < b.length; ++j) {
+        // if (b[j] < 0) {
+        // b[j] += 256;
+        // }
+        // }
+        // image = new Base64DecodedMultipartFile(b, baseStrs[0]);
+        // }
+        // FileUploadUtil.upload(image, "static/images/", 0).replaceAll("\\\\", "/");
+
+        // // add poster
+        // String classespath =
+        // ClassUtils.getDefaultClassLoader().getResource("").getPath();
+        // String oldPath = classespath + "static/images/" + user_id + ".jpg";
+        // String newPath = classespath + "static/images/" + user_id + '_' + time +
+        // ".jpg";
+        // System.out.println(newPath);
+
+        // File oldfile = new File(oldPath);
+        // System.out.println(oldPath);
+        // File newfile = new File(newPath);
+        // if (oldfile.renameTo(newfile)) {
+        // System.out.println("rename!");
+        // }
+
+        // // add tag records
+        // List<Tag> tags = exhibitionReview.getTag_list();
+        // for (Tag tag : tags) {
+        // ExReTag relation = new ExReTag(0, ex_review_id, tag.getId());
+        // exReTagMapper.updateById(relation);
+        // }
 
         return "success";
     }
 
     @PostMapping("/addEx/uploadPoster") // 上传海报
-    public String upload(@RequestParam("file") MultipartFile multipartFile, @RequestParam("ex_id") int ex_id) {
+    public String upload(@RequestBody Map<String, Object> requestBody) {
+        String file_base64 = (String) requestBody.get("file_base64");
+        ExhibitionReviewTag exhibitionReview;
+        Integer uid = parseInt(String.valueOf(requestBody.get("uid")));
         // replaceAll 用来替换windows中的\\ 为 /
-        System.out.println("ex_id=" + ex_id);
-        return FileUploadUtil.upload(multipartFile, "static/images/unsaved", ex_id).replaceAll("\\\\", "/");
+
+        MultipartFile image = null;
+        StringBuilder base64 = new StringBuilder("");
+        if (file_base64 != null && !"".equals(file_base64)) {
+            base64.append(file_base64);
+            String[] baseStrs = base64.toString().split(",");
+            Decoder decoder = Base64.getDecoder();
+            byte[] b = new byte[0];
+            b = decoder.decode(baseStrs[1]);
+            for (int j = 0; j < b.length; ++j) {
+                if (b[j] < 0) {
+                    b[j] += 256;
+                }
+            }
+            image = new Base64DecodedMultipartFile(b, baseStrs[0]);
+        }
+        return FileUploadUtil.upload(image, "static/images/", uid).replaceAll("\\\\", "/");
+    }
+
+    @PostMapping("/addEx/stash") // 文件暂存
+    public String upload(@RequestParam("file") MultipartFile multipartFile) {
+        // replaceAll 用来替换windows中的\\ 为 /
+        return FileUploadUtil.upload(multipartFile, "static/images/", -1).replaceAll("\\\\", "/");
     }
 
     @PostMapping("/alterExInfo")
