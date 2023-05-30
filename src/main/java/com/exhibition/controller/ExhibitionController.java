@@ -6,9 +6,12 @@ import com.exhibition.mapper.*;
 import com.exhibition.service.IExService;
 import com.exhibition.service.IExToBeReviewedService;
 import com.exhibition.util.CookieUtil;
+import com.exhibition.util.FileUploadUtil;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -93,6 +96,13 @@ public class ExhibitionController {
         return "success";
     }
 
+    @PostMapping("/addEx/uploadPoster") // 上传海报
+    public String upload(@RequestParam("file") MultipartFile multipartFile, @RequestParam("ex_id") int ex_id) {
+        // replaceAll 用来替换windows中的\\ 为 /
+        System.out.println("ex_id=" + ex_id);
+        return FileUploadUtil.upload(multipartFile, "static/images/unsaved", ex_id).replaceAll("\\\\", "/");
+    }
+
     @PostMapping("/alterExInfo")
     public String alterExInfo(HttpServletRequest request, HttpServletResponse response,
             @RequestBody ExhibitionReviewTag exhibitionTag) {
@@ -139,16 +149,16 @@ public class ExhibitionController {
         relation.setReview_date(new Timestamp(System.currentTimeMillis()));
         userExRelMapper.updateById(relation);
 
-//        System.out.println("这里出现了问题");
-//        System.out.println(ex_id);
+        // System.out.println("这里出现了问题");
+        // System.out.println(ex_id);
 
         if (ex_id == -1) {
             // 新增
             ex_id = exMapper.getNextId() + 1;
             exPass.setId(ex_id);
             exMapper.insert(exPass);
-//            System.out.println(ex_id);
-//            System.out.println(exPass);
+            // System.out.println(ex_id);
+            // System.out.println(exPass);
         } else {
             // 修改
             exPass.setId(ex_id);
@@ -236,7 +246,7 @@ public class ExhibitionController {
     }
 
     @GetMapping("/getOwnerId")
-    Integer getOwnerId(@RequestParam(name = "ex_id") Integer ex_id){
+    Integer getOwnerId(@RequestParam(name = "ex_id") Integer ex_id) {
         Integer owner_id = userExRelMapper.getOwnerId(ex_id);
         return owner_id;
     }

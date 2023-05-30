@@ -14,7 +14,7 @@ public class FileUploadUtil {
      * @param multipartFile
      * @return 文件存储路径
      */
-    public static String upload(MultipartFile multipartFile, int uid) {
+    public static String upload(MultipartFile multipartFile, String staticpath, int uid) {
         // 获取原始文件名
         String originalFilename = multipartFile.getOriginalFilename();
         // 获取原始文件名的后缀
@@ -24,7 +24,7 @@ public class FileUploadUtil {
         // 文件存储位置，文件的目录要存在才行，可以先创建文件目录，然后进行存储
         File path = new File("");
         String classespath = ClassUtils.getDefaultClassLoader().getResource("").getPath();
-        String filePath = classespath + "static/avatars/" + uid + ".jpg";
+        String filePath = classespath + staticpath + uid + ".jpg";
         System.out.println("lxcr2+++++++++++++" + filePath);
         File file = new File(filePath);
         // 如果文件已存在，则先删除原文件
