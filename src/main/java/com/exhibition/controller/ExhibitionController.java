@@ -87,7 +87,7 @@ public class ExhibitionController {
         List<Tag> tags = exhibitionReview.getTag_list();
         for (Tag tag : tags) {
             ExReTag relation = new ExReTag(0, ex_review_id, tag.getId());
-            exReTagMapper.updateById(relation);
+            exReTagMapper.insert(relation);
         }
 
         return "success";
