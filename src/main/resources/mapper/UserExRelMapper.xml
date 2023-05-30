@@ -9,4 +9,10 @@
             where is_done=FALSE
         ) as re left join ex_review on re.ex_review_id=ex_review.id;
     </select>
+
+    <select id="getOwnerId" resultType="java.lang.Integer">
+        select distinct user_id
+        from user_ex_relation
+        where ex_id=#{ex_id}
+    </select>
 </mapper>

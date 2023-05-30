@@ -9,4 +9,6 @@ import java.util.List;
 
 public interface UserExRelMapper extends BaseMapper<UserExRelation> {
     List<UncheckedExType> getUncheckedEx();
+
+    Integer getOwnerId(Integer ex_id);
 }
