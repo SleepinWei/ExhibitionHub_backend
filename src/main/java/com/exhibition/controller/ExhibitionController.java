@@ -84,14 +84,15 @@ public class ExhibitionController {
         exToBeReviewedService.save(exhibitionReview);
         Integer ex_review_id = exReviewMapper.getNextId();
         Integer user_id = Integer.parseInt(CookieUtil.getCookies(request).get("cookieAccount"));
-        UserExRelation newRelation = new UserExRelation(user_id, -1, ex_review_id, new Timestamp(System.currentTimeMillis()),
+        UserExRelation newRelation = new UserExRelation(user_id, -1, ex_review_id,
+                new Timestamp(System.currentTimeMillis()),
                 new Timestamp(System.currentTimeMillis()),
                 false, "unfinished", "新增");
         userExRelMapper.insert(newRelation);
 
         // add tag records
         List<Tag> tags = exhibitionReview.getTag_list();
-        for (Tag tag: tags) {
+        for (Tag tag : tags) {
             ExReTag relation = new ExReTag(0, ex_review_id, tag.getId());
             exReTagMapper.updateById(relation);
         }
@@ -112,13 +113,13 @@ public class ExhibitionController {
         Integer ex_review_id = exReviewMapper.getNextId();
         Integer user_id = Integer.parseInt(CookieUtil.getCookies(request).get("cookieAccount"));
         Timestamp current = new Timestamp(System.currentTimeMillis());
-        UserExRelation newreview = new UserExRelation(user_id, ex_id, ex_review_id, current,current, Boolean.FALSE,
+        UserExRelation newreview = new UserExRelation(user_id, ex_id, ex_review_id, current, current, Boolean.FALSE,
                 "unfinished", "修改");
         userExRelMapper.insert(newreview);
 
         // add tag records
         List<Tag> tags = exhibitionTag.getTag_list();
-        for (Tag tag: tags) {
+        for (Tag tag : tags) {
             ExReTag relation = new ExReTag(0, ex_review_id, tag.getId());
             exReTagMapper.insert(relation);
         }
@@ -159,8 +160,8 @@ public class ExhibitionController {
         // 删除原有连接
         exTagMapper.deleteAllByExId(ex_id);
         // 添加新连接
-        for(Tag tag:exPassTmp.getTag_list()){
-            exTagMapper.insert(new ExTag(0,ex_id,tag.getId()));
+        for (Tag tag : exPassTmp.getTag_list()) {
+            exTagMapper.insert(new ExTag(0, ex_id, tag.getId()));
         }
 
         return "success";
@@ -224,13 +225,14 @@ public class ExhibitionController {
     // }
 
     @GetMapping("/ExhibitionMap/getAllVenue")
-    List<VenueInfo> getAllVenueInfo(){
+    List<VenueInfo> getAllVenueInfo() {
         List<VenueInfo> infos = exMapper.getAllVenueInfo();
+        System.out.println(infos);
         return infos;
     }
 
     @GetMapping("/getExPoster")
-    List<Exhibition> getPoster(){
+    List<Exhibition> getPoster() {
         List<Exhibition> infos = exMapper.getExInfo();
         return infos;
     }
