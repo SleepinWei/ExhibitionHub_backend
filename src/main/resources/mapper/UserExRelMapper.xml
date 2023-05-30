@@ -15,4 +15,10 @@
         from user_ex_relation
         where ex_id=#{ex_id}
     </select>
+
+    <select id="getExistingRecord" resultType="com.exhibition.entity.UserExRelation">
+        select *
+        from user_ex_relation
+        where is_done=FALSE and user_id=#{user_id} and ex_id=#{ex_id}
+    </select>
 </mapper>

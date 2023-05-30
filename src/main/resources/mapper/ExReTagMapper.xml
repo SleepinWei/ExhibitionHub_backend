@@ -7,4 +7,9 @@
         on a.exRe_id=#{keyword}
         and a.tag_id=b.id;
     </select>
+
+    <delete id="deleteTagByExReId">
+        delete from exhibitionre_tag as re
+        where re.exRe_id=#{ex_review_id}
+    </delete>
 </mapper>

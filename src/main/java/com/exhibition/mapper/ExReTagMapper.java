@@ -7,5 +7,7 @@ import com.exhibition.entity.Tag;
 import java.util.List;
 
 public interface ExReTagMapper extends BaseMapper<ExReTag> {
-    List<Tag> selectTagById(Integer exRe_id);
+    public List<Tag> selectTagById(Integer exRe_id);
+
+    public void deleteTagByExReId(Integer ex_review_id);
 }
