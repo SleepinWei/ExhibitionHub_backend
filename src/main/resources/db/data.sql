@@ -384,7 +384,8 @@ INSERT INTO exhibitionRe_tag(id,exRe_id,tag_id)VALUES
 INSERT INTO user(id,role,username,password,email,sex,biography) VALUES
 (1,'管理员','admin','123456','123456@qq.com','男',''),
 (2,'普通用户','user','123456','666666@qq.com','女',''),
-(3,'博物馆','wuwu','123456','111111@qq.com','女','');
+(3,'博物馆','wuwu','123456','111111@qq.com','女',''),
+(4,'博物馆','zyw','123456','123123@qq.com','男','');
 
 INSERT INTO subscription(user_id,ex_id,date) VALUES
     (2,5,"2023-05-09"),

@@ -11,4 +11,6 @@ public interface UserExRelMapper extends BaseMapper<UserExRelation> {
     List<UncheckedExType> getUncheckedEx();
 
     Integer getOwnerId(Integer ex_id);
+
+    UserExRelation getExistingRecord(Integer user_id,Integer ex_id);
 }

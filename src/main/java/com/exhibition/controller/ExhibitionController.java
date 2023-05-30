@@ -98,23 +98,51 @@ public class ExhibitionController {
             @RequestBody ExhibitionReviewTag exhibitionTag) {
         System.out.println("alterExInfo");
         Integer ex_id = exhibitionTag.getId();
-        ExhibitionReview exhibitionReview = new ExhibitionReview();
-        exhibitionReview = exhibitionTag;
-        exhibitionReview.setId(0);
-        exReviewMapper.insert(exhibitionReview);
-
-        Integer ex_review_id = exReviewMapper.getNextId();
         Integer user_id = Integer.parseInt(CookieUtil.getCookies(request).get("cookieAccount"));
         Timestamp current = new Timestamp(System.currentTimeMillis());
-        UserExRelation newreview = new UserExRelation(user_id, ex_id, ex_review_id, current, current, Boolean.FALSE,
-                "unfinished", "修改");
-        userExRelMapper.insert(newreview);
 
-        // add tag records
-        List<Tag> tags = exhibitionTag.getTag_list();
-        for (Tag tag : tags) {
-            ExReTag relation = new ExReTag(0, ex_review_id, tag.getId());
-            exReTagMapper.insert(relation);
+        // 先查询是否有未通过审核的修改
+        UserExRelation record = userExRelMapper.getExistingRecord(user_id,ex_id);
+        if(record == null) {
+            // 插入新纪录
+            Integer ex_review_id = exReviewMapper.getNextId() + 1;
+            UserExRelation newreview = new UserExRelation(user_id, ex_id, ex_review_id, current, current, Boolean.FALSE,
+                    "unfinished", "修改");
+            userExRelMapper.insert(newreview);
+
+            ExhibitionReview exhibitionReview = new ExhibitionReview();
+            exhibitionReview = exhibitionTag;
+            exhibitionReview.setId(ex_review_id);
+            exReviewMapper.insert(exhibitionReview);
+
+            // add tag records
+            List<Tag> tags = exhibitionTag.getTag_list();
+            for (Tag tag : tags) {
+                ExReTag relation = new ExReTag(0, ex_review_id, tag.getId());
+                exReTagMapper.insert(relation);
+            }
+        }
+        else{
+            // 更新旧记录
+            Integer ex_review_id = record.getEx_review_id();
+            UserExRelation newreview = new UserExRelation(user_id, ex_id, ex_review_id, current, current, Boolean.FALSE,
+                    "unfinished", "修改");
+
+            newreview.setEx_review_id(record.getEx_review_id());
+            userExRelMapper.updateById(newreview);
+
+            ExhibitionReview exhibitionReview = new ExhibitionReview();
+            exhibitionReview = exhibitionTag;
+            exhibitionReview.setId(record.getEx_review_id());
+            exReviewMapper.updateById(exhibitionReview);
+
+            List<Tag> tags = exhibitionTag.getTag_list();
+            // 删除原本的tag
+            exReTagMapper.deleteTagByExReId(ex_review_id);
+            for (Tag tag : tags) {
+                ExReTag relation = new ExReTag(0, ex_review_id, tag.getId());
+                exReTagMapper.insert(relation);
+            }
         }
 
         return "success";
