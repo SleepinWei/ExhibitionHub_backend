@@ -119,8 +119,8 @@
  ,"https://bilibili.com","images/2.webp","300RMB",false,"上海市","市辖区","杨浦区","四平路1239号");
 
  INSERT INTO user_ex_relation(user_id,ex_id,ex_review_id,date,type,is_done,result) VALUES
- (3,1,1,"2002-02-02 09:00:00","修改",FALSE,"unfinished"),
- (3,2,2,"2002-03-03 09:00:00","修改",FALSE,"unfinished");
+ (3,5,1,"2002-02-02 09:00:00","修改",FALSE,"unfinished"),
+ (3,-1,2,"2002-03-03 09:00:00","新增",FALSE,"unfinished");
 
 INSERT INTO tag(id,name) VALUES
 (1,"绘画"),(2,"书法"),(3,"瓷器"),(4,"雕塑"),

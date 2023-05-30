@@ -52,4 +52,7 @@
         from exhibition;
     </select>
 
+    <select id="getNextId" resultType="java.lang.Integer">
+        select max(id) from exhibition;
+    </select>
 </mapper>

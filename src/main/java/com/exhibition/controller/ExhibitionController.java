@@ -1,26 +1,19 @@
 package com.exhibition.controller;
 
 import com.exhibition.entity.*;
-import com.exhibition.entity.request_type.ExhibitionChange;
 import com.exhibition.entity.response_type.*;
 import com.exhibition.mapper.*;
 import com.exhibition.service.IExService;
-
-import com.exhibition.entity.ExhibitionReview;
-import com.exhibition.entity.UserExRelation;
 import com.exhibition.service.IExToBeReviewedService;
-
 import com.exhibition.util.CookieUtil;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import java.sql.Timestamp;
 import java.util.List;
-
-import org.springframework.beans.BeanUtils;
 
 @RestController
 @RequestMapping()
@@ -146,10 +139,16 @@ public class ExhibitionController {
         relation.setReview_date(new Timestamp(System.currentTimeMillis()));
         userExRelMapper.updateById(relation);
 
+//        System.out.println("这里出现了问题");
+//        System.out.println(ex_id);
+
         if (ex_id == -1) {
             // 新增
-            exPass.setId(0);
+            ex_id = exMapper.getNextId() + 1;
+            exPass.setId(ex_id);
             exMapper.insert(exPass);
+//            System.out.println(ex_id);
+//            System.out.println(exPass);
         } else {
             // 修改
             exPass.setId(ex_id);
