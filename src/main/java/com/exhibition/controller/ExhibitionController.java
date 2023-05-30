@@ -1,10 +1,13 @@
 package com.exhibition.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.exhibition.entity.*;
 import com.exhibition.entity.response_type.*;
 import com.exhibition.mapper.*;
 import com.exhibition.service.IExService;
 import com.exhibition.service.IExToBeReviewedService;
+import com.exhibition.util.Base64DecodedMultipartFile;
 import com.exhibition.util.CookieUtil;
 import com.exhibition.util.FileUploadUtil;
 
@@ -16,7 +19,16 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.Timestamp;
+import java.util.Base64;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Base64.Decoder;
+import org.springframework.util.ClassUtils;
+
+import static java.lang.Integer.parseInt;
+
+import java.io.*;
 
 @RestController
 @RequestMapping()
@@ -75,19 +87,60 @@ public class ExhibitionController {
 
     @PostMapping("/addEx") // 增加展览信息
     public String addEx(HttpServletRequest request, HttpServletResponse response,
-            @RequestBody ExhibitionReviewTag exhibitionReview) {
+            @RequestBody Map<String, Object> requestBody) {
+
+        Timestamp time = new Timestamp(System.currentTimeMillis());// 时间戳
+        String savetime = "" + System.currentTimeMillis() / 1000;
+        Integer user_id = Integer.parseInt(CookieUtil.getCookies(request).get("cookieAccount"));
+
+        String file_base64 = (String) requestBody.get("file_base64");
+        MultipartFile image = null;
+        StringBuilder base64 = new StringBuilder("");
+        if (file_base64 != null && !"".equals(file_base64)) {
+            base64.append(file_base64);
+            String[] baseStrs = base64.toString().split(",");
+            Decoder decoder = Base64.getDecoder();
+            byte[] b = new byte[0];
+            b = decoder.decode(baseStrs[1]);
+            for (int j = 0; j < b.length; ++j) {
+                if (b[j] < 0) {
+                    b[j] += 256;
+                }
+            }
+            image = new Base64DecodedMultipartFile(b, baseStrs[0]);
+        }
+
+        String savepath = FileUploadUtil.upload(image, "static/images/" + savetime + "_", user_id).replaceAll("\\\\",
+                "/");
+        System.out.println(savepath);
+
+        LinkedHashMap hashmap = (LinkedHashMap) requestBody.get("data");
+        System.out.println(hashmap);
+
+        hashmap.put("poster_url", "images/" + savetime + "_" + user_id + ".jpg");
+
+        System.out.println(hashmap);
+
+        String jSONstr = JSON.toJSONString(hashmap);
+        System.out.println(jSONstr);
+
+        ExhibitionReviewTag exhibitionReview = JSON.parseObject(jSONstr, ExhibitionReviewTag.class);
+        System.out.println(exhibitionReview);
+
         // add a new exhibition
         exToBeReviewedService.save(exhibitionReview);
         Integer ex_review_id = exReviewMapper.getNextId();
-        Integer user_id = Integer.parseInt(CookieUtil.getCookies(request).get("cookieAccount"));
+
         UserExRelation newRelation = new UserExRelation(user_id, -1, ex_review_id,
-                new Timestamp(System.currentTimeMillis()),
-                new Timestamp(System.currentTimeMillis()),
+                time, time,
                 false, "unfinished", "新增");
         userExRelMapper.insert(newRelation);
 
         // add tag records
         List<Tag> tags = exhibitionReview.getTag_list();
+        if (tags.isEmpty()) {
+            return "fail";
+        }
         for (Tag tag : tags) {
             ExReTag relation = new ExReTag(0, ex_review_id, tag.getId());
             exReTagMapper.insert(relation);
@@ -97,10 +150,34 @@ public class ExhibitionController {
     }
 
     @PostMapping("/addEx/uploadPoster") // 上传海报
-    public String upload(@RequestParam("file") MultipartFile multipartFile, @RequestParam("ex_id") int ex_id) {
+    public String upload(@RequestBody Map<String, Object> requestBody) {
+        String file_base64 = (String) requestBody.get("file_base64");
+        ExhibitionReviewTag exhibitionReview;
+        Integer uid = parseInt(String.valueOf(requestBody.get("uid")));
         // replaceAll 用来替换windows中的\\ 为 /
-        System.out.println("ex_id=" + ex_id);
-        return FileUploadUtil.upload(multipartFile, "static/images/unsaved", ex_id).replaceAll("\\\\", "/");
+
+        MultipartFile image = null;
+        StringBuilder base64 = new StringBuilder("");
+        if (file_base64 != null && !"".equals(file_base64)) {
+            base64.append(file_base64);
+            String[] baseStrs = base64.toString().split(",");
+            Decoder decoder = Base64.getDecoder();
+            byte[] b = new byte[0];
+            b = decoder.decode(baseStrs[1]);
+            for (int j = 0; j < b.length; ++j) {
+                if (b[j] < 0) {
+                    b[j] += 256;
+                }
+            }
+            image = new Base64DecodedMultipartFile(b, baseStrs[0]);
+        }
+        return FileUploadUtil.upload(image, "static/images/", uid).replaceAll("\\\\", "/");
+    }
+
+    @PostMapping("/addEx/stash") // 文件暂存
+    public String upload(@RequestParam("file") MultipartFile multipartFile) {
+        // replaceAll 用来替换windows中的\\ 为 /
+        return FileUploadUtil.upload(multipartFile, "static/images/", -1).replaceAll("\\\\", "/");
     }
 
     @PostMapping("/alterExInfo")
