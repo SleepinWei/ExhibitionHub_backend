@@ -138,6 +138,9 @@ public class ExhibitionController {
 
         // add tag records
         List<Tag> tags = exhibitionReview.getTag_list();
+        if (tags.isEmpty()) {
+            return "fail";
+        }
         for (Tag tag : tags) {
             ExReTag relation = new ExReTag(0, ex_review_id, tag.getId());
             exReTagMapper.updateById(relation);
