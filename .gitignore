@@ -2,3 +2,5 @@
 .idea
 target
 src/main/resources/db/*.xlsx
+src/main/resources/db/*.CSV
+src/main/resources/db/*.py
