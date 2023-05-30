@@ -71,6 +71,9 @@ public class ExhibitionReview {
     @TableField
     private String area; // 区
 
+    @TableField
+    private String address;
+
 
     @TableField
     private String introduction; // 图文内容简介
