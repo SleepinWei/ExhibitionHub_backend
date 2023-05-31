@@ -47,14 +47,11 @@ public class UserController {
 
         if (("Success!This is a regular user.").equals(msg)) {
             return ResultUtil.regularUser("登录成功！即将跳转到普通用户界面...");
-        } 
-        else if (("Success!This is an administrator.").equals(msg)) {
+        } else if (("Success!This is an administrator.").equals(msg)) {
             return ResultUtil.administrator("登录成功！即将跳转到管理员界面...");
-        }
-        else if (("Success!This is a museum.").equals(msg)) {
+        } else if (("Success!This is a museum.").equals(msg)) {
             return ResultUtil.museum("登录成功！即将跳转到博物馆界面...");
-        } 
-        else {
+        } else {
             return ResultUtil.error(msg);
         }
     }
@@ -73,16 +70,16 @@ public class UserController {
     private UserMapper userMapper;
 
     @GetMapping("/user/find/{id}")
-    public User query(@PathVariable int id){//根据用户id查找用户信息
-        User u=userMapper.selectById(id);
+    public User query(@PathVariable int id) {// 根据用户id查找用户信息
+        User u = userMapper.selectById(id);
         return u;
     }
 
-     @PutMapping("/user")//更新用户基本信息
-    public boolean update(@RequestBody User user){
-        User old=userMapper.selectById(user.getId());
-        System.out.println("bug+"+user.compare(old));
-        if(user.compare(old)){
+    @PutMapping("/user") // 更新用户基本信息
+    public boolean update(@RequestBody User user) {
+        User old = userMapper.selectById(user.getId());
+        System.out.println("bug+" + user.compare(old));
+        if (user.compare(old)) {
             return false;
         } else {
             userMapper.updateById(user);
@@ -109,15 +106,16 @@ public class UserController {
         return vercode;
     }
 
-    @PostMapping("/test/upload")//上传头像
-    public String upload(@RequestParam("file") MultipartFile multipartFile,@RequestParam("uid") int uid) {
+    @PostMapping("/test/upload") // 上传头像
+    public String upload(@RequestParam("file") MultipartFile multipartFile, @RequestParam("uid") int uid) {
         // replaceAll 用来替换windows中的\\ 为 /
-        System.out.println("uid="+uid);
-        return FileUploadUtil.upload(multipartFile,uid).replaceAll("\\\\", "/");
+        System.out.println("uid=" + uid);
+        return FileUploadUtil.upload(multipartFile, "static/avatars/", uid).replaceAll("\\\\", "/");
     }
-    @GetMapping("/user/load_avatar/{id}")//根据Id加载头像，返回二进制数据
-    public byte[] loadAvatar(@PathVariable int id){
-        System.out.println("this+"+FileUploadUtil.load(id));
+
+    @GetMapping("/user/load_avatar/{id}") // 根据Id加载头像，返回二进制数据
+    public byte[] loadAvatar(@PathVariable int id) {
+        System.out.println("this+" + FileUploadUtil.load(id));
         return FileUploadUtil.load(id);
     }
 }
