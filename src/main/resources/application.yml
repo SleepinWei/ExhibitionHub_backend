@@ -13,7 +13,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/exhibition?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT
     username: root
-    password: "000000"
+    password: ".Kjkttt114514"
   sql:
     init:
       schema-locations: classpath:db/schema.sql
