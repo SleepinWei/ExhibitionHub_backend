@@ -57,10 +57,10 @@ public class Base64DecodedMultipartFile implements MultipartFile {
         new FileOutputStream(dest).write(imgContent);
     }
 
-    @Override
-    public void transferTo(File dest) throws IOException, IllegalStateException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'transferTo'");
-    }
+//    @Override
+//    public void transferTo(File dest) throws IOException, IllegalStateException {
+//        // TODO Auto-generated method stub
+//        throw new UnsupportedOperationException("Unimplemented method 'transferTo'");
+//    }
 
 }
