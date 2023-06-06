@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 
 import com.exhibition.service.MailVerCodeService;
 
+import java.io.IOException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -96,6 +98,8 @@ public class UserController {
     @Autowired
     private MailVerCodeService mailVerCodeServie;
 
+    private FileUploadUtil fileUploadUtil=new FileUploadUtil();
+
     private String vercode = "";
 
     @GetMapping("/user/sendVerCodeMail/{email}")
@@ -110,12 +114,12 @@ public class UserController {
     public String upload(@RequestParam("file") MultipartFile multipartFile, @RequestParam("uid") int uid) {
         // replaceAll 用来替换windows中的\\ 为 /
         System.out.println("uid=" + uid);
-        return FileUploadUtil.upload(multipartFile, "static/avatars/", uid).replaceAll("\\\\", "/");
+        return fileUploadUtil.upload(multipartFile, "static/avatars/", uid).replaceAll("\\\\", "/");
     }
 
     @GetMapping("/user/load_avatar/{id}") // 根据Id加载头像，返回二进制数据
     public byte[] loadAvatar(@PathVariable int id) {
-        System.out.println("this+" + FileUploadUtil.load(id));
-        return FileUploadUtil.load(id);
+        System.out.println("this+" + id);
+        return fileUploadUtil.load(id);
     }
 }

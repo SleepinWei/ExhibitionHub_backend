@@ -13,6 +13,7 @@ import com.exhibition.util.FileUploadUtil;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -85,6 +86,8 @@ public class ExhibitionController {
     @Autowired
     private UserExRelMapper userExRelMapper;
 
+    private FileUploadUtil fileUploadUtil=new FileUploadUtil();
+
     @PostMapping("/addEx") // 增加展览信息
     public String addEx(HttpServletRequest request, HttpServletResponse response,
             @RequestBody Map<String, Object> requestBody) {
@@ -110,7 +113,7 @@ public class ExhibitionController {
             image = new Base64DecodedMultipartFile(b, baseStrs[0]);
         }
 
-        String savepath = FileUploadUtil.upload(image, "static/images/" + savetime + "_", user_id).replaceAll("\\\\",
+        String savepath = fileUploadUtil.upload(image, "static/images/" + savetime + "_", user_id).replaceAll("\\\\",
                 "/");
         System.out.println(savepath);
 
@@ -171,13 +174,13 @@ public class ExhibitionController {
             }
             image = new Base64DecodedMultipartFile(b, baseStrs[0]);
         }
-        return FileUploadUtil.upload(image, "static/images/", uid).replaceAll("\\\\", "/");
+        return fileUploadUtil.upload(image, "static/images/", uid).replaceAll("\\\\", "/");
     }
 
     @PostMapping("/addEx/stash") // 文件暂存
     public String upload(@RequestParam("file") MultipartFile multipartFile) {
         // replaceAll 用来替换windows中的\\ 为 /
-        return FileUploadUtil.upload(multipartFile, "static/images/", -1).replaceAll("\\\\", "/");
+        return fileUploadUtil.upload(multipartFile, "static/images/", -1).replaceAll("\\\\", "/");
     }
 
     @PostMapping("/alterExInfo")
