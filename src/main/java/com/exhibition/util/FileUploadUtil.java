@@ -3,7 +3,6 @@ package com.exhibition.util;
 import java.io.File;
 import java.io.IOException;
 
-
 import org.springframework.web.multipart.MultipartFile;
 import java.nio.file.Files;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +11,7 @@ import org.springframework.stereotype.Component;
 public class FileUploadUtil {
     // 请修改这里的路径
     private final String staticFilepath = "/home/nginx/oss-file/";
+
     /**
      * 上传文件
      * 
@@ -20,11 +20,12 @@ public class FileUploadUtil {
      */
     public String upload(MultipartFile multipartFile, String staticpath, int uid) {
         // 获取原始文件名
-        String originalFilename = multipartFile.getOriginalFilename();
-        // 获取原始文件名的后缀
-        String suffix = originalFilename.substring(originalFilename.lastIndexOf("."));
+        // String originalFilename = multipartFile.getOriginalFilename();
+        // // 获取原始文件名的后缀
+        // String suffix =
+        // originalFilename.substring(originalFilename.lastIndexOf("."));
         // 拼接新的文件名
-        String newFileName = uid + suffix;
+        String newFileName = uid + ".jpg";
 
         System.out.println("lxcr1+++++++++++++ " + staticFilepath);
 
@@ -46,7 +47,7 @@ public class FileUploadUtil {
         return file.getAbsolutePath();
     }
 
-    public byte[] load(int uid){
+    public byte[] load(int uid) {
         String fileName = uid + ".jpg";
         String filePath = staticFilepath + "static/avatars/" + fileName;
         File file = new File(filePath);
@@ -78,28 +79,29 @@ public class FileUploadUtil {
         // System.out.println("文件名称: " + resource.getFilename());
 
         // if (resource.exists()) {
-        //     // 资源存在，进行相应操作
-        //     InputStream inputStream = resource.getInputStream();
-        //     try {
-        //         return inputStream.readAllBytes();
-        //     } catch (IOException e) {
-        //         e.printStackTrace();
-        //     }
+        // // 资源存在，进行相应操作
+        // InputStream inputStream = resource.getInputStream();
+        // try {
+        // return inputStream.readAllBytes();
+        // } catch (IOException e) {
+        // e.printStackTrace();
+        // }
         // } else {
-        //     // 文件不存在，处理文件不存在的情况
-        //     System.out.println("not exists");
-        //     fileName = "user.jpg";
-        //     fileRelativePath= "classpath:static/avatars/" + fileName;
-        //     resource = resourceLoader.getResource(fileRelativePath);
-        //     InputStream inputStream=resource.getInputStream();
-        //     System.out.println("==========================exists+==========================" + resource.getFilename());
-        //     try {
-        //         byte[] b=inputStream.readAllBytes();
-        //         return b;
-        //     } catch (IOException e) {
-        //         System.out.println("fail");
-        //         e.printStackTrace();
-        //     }
+        // // 文件不存在，处理文件不存在的情况
+        // System.out.println("not exists");
+        // fileName = "user.jpg";
+        // fileRelativePath= "classpath:static/avatars/" + fileName;
+        // resource = resourceLoader.getResource(fileRelativePath);
+        // InputStream inputStream=resource.getInputStream();
+        // System.out.println("==========================exists+=========================="
+        // + resource.getFilename());
+        // try {
+        // byte[] b=inputStream.readAllBytes();
+        // return b;
+        // } catch (IOException e) {
+        // System.out.println("fail");
+        // e.printStackTrace();
+        // }
         // }
         // return null;
     }
