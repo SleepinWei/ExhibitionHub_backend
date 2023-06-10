@@ -9,7 +9,7 @@
     </select>
 
     <delete id="deleteTagByExReId">
-        delete from exhibitionre_tag as re
+        delete from exhibitionRe_tag as re
         where re.exRe_id=#{ex_review_id}
     </delete>
 </mapper>

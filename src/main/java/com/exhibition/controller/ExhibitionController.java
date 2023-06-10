@@ -86,7 +86,7 @@ public class ExhibitionController {
     @Autowired
     private UserExRelMapper userExRelMapper;
 
-    private FileUploadUtil fileUploadUtil=new FileUploadUtil();
+    private FileUploadUtil fileUploadUtil = new FileUploadUtil();
 
     @PostMapping("/addEx") // 增加展览信息
     public String addEx(HttpServletRequest request, HttpServletResponse response,
@@ -185,15 +185,51 @@ public class ExhibitionController {
 
     @PostMapping("/alterExInfo")
     public String alterExInfo(HttpServletRequest request, HttpServletResponse response,
-            @RequestBody ExhibitionReviewTag exhibitionTag) {
+            @RequestBody Map<String, Object> requestBody) {
+        String savetime = "" + System.currentTimeMillis() / 1000;
+        Integer user_id = Integer.parseInt(CookieUtil.getCookies(request).get("cookieAccount"));
+
+        String file_base64 = (String) requestBody.get("file_base64");
+        System.out.println("file_base64");
+        System.out.println(file_base64);
+        MultipartFile image = null;
+        StringBuilder base64 = new StringBuilder("");
+        if (file_base64 != null && !"null".equals(file_base64) && !"".equals(file_base64)) {
+            System.out.println("not null");
+            base64.append(file_base64);
+            String[] baseStrs = base64.toString().split(",");
+            Decoder decoder = Base64.getDecoder();
+            byte[] b = new byte[0];
+            b = decoder.decode(baseStrs[1]);
+            for (int j = 0; j < b.length; ++j) {
+                if (b[j] < 0) {
+                    b[j] += 256;
+                }
+            }
+            image = new Base64DecodedMultipartFile(b, baseStrs[0]);
+        }
+        LinkedHashMap hashmap = (LinkedHashMap) requestBody.get("data");
+
+        // 上传文件
+        if (image != null) {
+            fileUploadUtil.upload(image, "static/images/" + savetime + "_", user_id).replaceAll("\\\\",
+                    "/");
+            hashmap.put("poster_url", "images/" + savetime + "_" + user_id + ".jpg");
+        }
+
+        String jSONstr = JSON.toJSONString(hashmap);
+        System.out.println(jSONstr);
+
+        ExhibitionReviewTag exhibitionTag = JSON.parseObject(jSONstr, ExhibitionReviewTag.class);
+        System.out.println(exhibitionTag);
+
         System.out.println("alterExInfo");
         Integer ex_id = exhibitionTag.getId();
-        Integer user_id = Integer.parseInt(CookieUtil.getCookies(request).get("cookieAccount"));
         Timestamp current = new Timestamp(System.currentTimeMillis());
 
         // 先查询是否有未通过审核的修改
-        UserExRelation record = userExRelMapper.getExistingRecord(user_id,ex_id);
-        if(record == null) {
+        UserExRelation record = userExRelMapper.getExistingRecord(user_id, ex_id);
+        if (record == null) {
             // 插入新纪录
             Integer ex_review_id = exReviewMapper.getNextId() + 1;
             UserExRelation newreview = new UserExRelation(user_id, ex_id, ex_review_id, current, current, Boolean.FALSE,
@@ -211,8 +247,7 @@ public class ExhibitionController {
                 ExReTag relation = new ExReTag(0, ex_review_id, tag.getId());
                 exReTagMapper.insert(relation);
             }
-        }
-        else{
+        } else {
             // 更新旧记录
             Integer ex_review_id = record.getEx_review_id();
             UserExRelation newreview = new UserExRelation(user_id, ex_id, ex_review_id, current, current, Boolean.FALSE,
