@@ -118,6 +118,7 @@ public class RegisterController {
         user.setEmail(email);
         user.setRole("普通用户");
         user.setSex("男");
+        user.setBiography("");
         int isright=isVerCodeRight(requestBody);
         if(isright < 0)
             return false;
