@@ -68,6 +68,7 @@ public class RegisterController {
     public int isVerCodeRight(@RequestBody Map<String, Object> requestBody) {
         String email = (String) requestBody.get("email");
         String code = (String) requestBody.get("code");
+//        System.out.println(emailVerifications);
 
         if(emailVerifications.containsKey(email)==false)
             return -2;
@@ -112,11 +113,13 @@ public class RegisterController {
         String email = (String) requestBody.get("email");
         String username = (String) requestBody.get("username");
         String password = (String) requestBody.get("password");
+        String role = (String) requestBody.get("role");
+
         User user = new User();
         user.setUsername(username);
         user.setPassword(password);
         user.setEmail(email);
-        user.setRole("普通用户");
+        user.setRole(role);
         user.setSex("男");
         user.setBiography("");
         int isright=isVerCodeRight(requestBody);
