@@ -373,7 +373,17 @@ INSERT INTO exhibition_tag(ex_id,tag_id)VALUES
 (53,9),
 (53,7),
 (54,11),
-(55,15);
+(55,15),
+(56,1),
+(56,3),
+(57,1),
+(57,15),
+(58,1),
+(58,30),
+(59,15),
+(59,1),
+(59,9),
+(59,10);
 
 INSERT INTO exhibitionRe_tag(id,exRe_id,tag_id)VALUES
 (1,1,1),
