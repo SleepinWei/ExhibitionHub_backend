@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.naming.Name;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.Timestamp;
@@ -392,5 +393,10 @@ public class ExhibitionController {
     Integer getOwnerId(@RequestParam(name = "ex_id") Integer ex_id) {
         Integer owner_id = userExRelMapper.getOwnerId(ex_id);
         return owner_id;
+    }
+
+    @GetMapping("/ex/delete")
+    void deleteByExId(@RequestParam(name = "ex_id") Integer ex_id){
+        Integer status = exMapper.deleteById(ex_id);
     }
 }
