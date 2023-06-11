@@ -96,6 +96,23 @@ public class ExhibitionController {
         String savetime = "" + System.currentTimeMillis() / 1000;
         Integer user_id = Integer.parseInt(CookieUtil.getCookies(request).get("cookieAccount"));
 
+        LinkedHashMap hashmap = (LinkedHashMap) requestBody.get("data");
+        System.out.println(hashmap);
+        hashmap.put("poster_url", "images/" + savetime + "_" + user_id + ".jpg");
+        System.out.println(hashmap);
+
+        String jSONstr = JSON.toJSONString(hashmap);
+        System.out.println(jSONstr);
+
+        ExhibitionReviewTag exhibitionReview = JSON.parseObject(jSONstr, ExhibitionReviewTag.class);
+        System.out.println(exhibitionReview);
+
+        /* 判断tags是否符合要求 */
+        List<Tag> tags = exhibitionReview.getTag_list();
+        if (tags.isEmpty()) {
+            return "fail";
+        }
+
         String file_base64 = (String) requestBody.get("file_base64");
         MultipartFile image = null;
         StringBuilder base64 = new StringBuilder("");
@@ -117,19 +134,6 @@ public class ExhibitionController {
                 "/");
         System.out.println(savepath);
 
-        LinkedHashMap hashmap = (LinkedHashMap) requestBody.get("data");
-        System.out.println(hashmap);
-
-        hashmap.put("poster_url", "images/" + savetime + "_" + user_id + ".jpg");
-
-        System.out.println(hashmap);
-
-        String jSONstr = JSON.toJSONString(hashmap);
-        System.out.println(jSONstr);
-
-        ExhibitionReviewTag exhibitionReview = JSON.parseObject(jSONstr, ExhibitionReviewTag.class);
-        System.out.println(exhibitionReview);
-
         // add a new exhibition
         exToBeReviewedService.save(exhibitionReview);
         Integer ex_review_id = exReviewMapper.getNextId();
@@ -140,10 +144,7 @@ public class ExhibitionController {
         userExRelMapper.insert(newRelation);
 
         // add tag records
-        List<Tag> tags = exhibitionReview.getTag_list();
-        if (tags.isEmpty()) {
-            return "fail";
-        }
+
         for (Tag tag : tags) {
             ExReTag relation = new ExReTag(0, ex_review_id, tag.getId());
             exReTagMapper.insert(relation);
