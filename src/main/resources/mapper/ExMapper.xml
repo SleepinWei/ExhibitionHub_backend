@@ -18,7 +18,7 @@
         select e.id,name,date,review_date,user_id,result,type
         from user_ex_relation as u left join ex_review as e on u.ex_review_id=e.id
         where is_done=True
-        Order by review_date;
+        Order by review_date desc;
     </select>
 
     <select id="selectchecked" resultType="com.exhibition.entity.response_type.ExhibitioncheckedStatusBool">
@@ -26,7 +26,7 @@
         from user_ex_relation u left join ex_review as e
         on u.ex_review_id=e.id
         where u.user_id = #{keyword} and is_done=True
-        Order by review_date;
+        Order by review_date desc;
     </select>
 
     <select id="getAllOrganizers" resultType="java.lang.String">
