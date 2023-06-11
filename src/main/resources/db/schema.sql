@@ -68,7 +68,7 @@ CREATE TABLE exhibition_tag(
     ex_id INTEGER NOT NULL,
     tag_id INTEGER NOT NULL,
     PRIMARY KEY(id),
-    FOREIGN KEY (ex_id) REFERENCES exhibition(id)
+    FOREIGN KEY (ex_id) REFERENCES exhibition(id) on delete cascade
 );
 
 CREATE TABLE exhibitionRe_tag(
@@ -82,8 +82,8 @@ CREATE TABLE subscription(
     user_id INTEGER NOT NULL AUTO_INCREMENT,
     ex_id INTEGER NOT NULL,
     date DATE NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES user(id),
-    FOREIGN KEY (ex_id) REFERENCES exhibition(id)
+    FOREIGN KEY (user_id) REFERENCES user(id) on delete cascade,
+    FOREIGN KEY (ex_id) REFERENCES exhibition(id) on delete cascade
 );
 CREATE TABLE user_ex_relation (
     user_id INTEGER NOT NULL,
@@ -101,6 +101,6 @@ CREATE TABLE user_ex_relation (
 CREATE TABLE search_score (
     id INTEGER NOT NULL,
     score FLOAT NOT NULL DEFAULT 1, --设置为1是因为如果输入空字符串不做匹配，防止因为初始值问题认为搜索内容不匹配
-    FOREIGN KEY (id) REFERENCES exhibition(id)
+    FOREIGN KEY (id) REFERENCES exhibition(id) on delete cascade
 );
 
